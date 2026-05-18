@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UPI retention, cross-sell &amp; wealth intent — May 2026</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --brand: #0049cf;
+      --brand-hover: #0036a3;
+      --brand-soft: rgba(0, 73, 207, 0.08);
+      --brand-border: rgba(0, 73, 207, 0.2);
+      --text: #0f172a;
+      --text-secondary: #475569;
+      --surface: #ffffff;
+      --bg: #f1f5f9;
+      --radius: 12px;
+      --shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 8px 24px rgba(15, 23, 42, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.55;
+    }
+
+    a {
+      color: var(--brand);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: var(--brand-hover);
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.9em;
+      background: var(--brand-soft);
+      color: var(--brand);
+      padding: 0.15em 0.45em;
+      border-radius: 4px;
+    }
+
+    .wrap {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 28px 20px 64px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, var(--brand) 0%, #0066e6 55%, #1a7cff 100%);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 28px 28px 32px;
+      box-shadow: var(--shadow);
+      margin-bottom: 28px;
+    }
+
+    .hero h1 {
+      margin: 0 0 16px;
+      font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+
+    .hero p {
+      margin: 0;
+      opacity: 0.95;
+      font-size: 1rem;
+      max-width: 70ch;
+    }
+
+    .hero strong {
+      font-weight: 600;
+    }
+
+    h2 {
+      color: var(--brand);
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin: 36px 0 16px;
+      letter-spacing: -0.02em;
+    }
+
+    h3 {
+      color: var(--text);
+      font-size: 1.08rem;
+      font-weight: 600;
+      margin: 28px 0 12px;
+    }
+
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--brand-border);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .card-h {
+      padding: 14px 20px;
+      background: var(--brand-soft);
+      border-bottom: 1px solid var(--brand-border);
+      font-weight: 600;
+      color: var(--brand);
+    }
+
+    .card-b {
+      padding: 18px 20px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .agenda {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 8px 32px;
+      margin-top: 8px;
+    }
+
+    .agenda p {
+      margin: 0 0 8px;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .callout {
+      border-left: 4px solid var(--brand);
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      box-shadow: var(--shadow);
+      margin: 24px 0;
+    }
+
+    .callout h3 {
+      margin: 0 0 12px;
+      color: var(--brand);
+      font-size: 1.1rem;
+    }
+
+    .callout p {
+      margin: 0 0 10px;
+      color: var(--text);
+    }
+
+    .callout p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Executive summary — scannable pointers */
+    .executive-summary {
+      margin: 28px 0;
+      padding: 22px 22px 24px;
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--brand-border);
+      box-shadow: var(--shadow);
+    }
+
+    .executive-summary .exec-title {
+      margin: 0 0 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--brand);
+    }
+
+    .executive-summary h3 {
+      margin: 0 0 18px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.03em;
+      line-height: 1.3;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(0, 73, 207, 0.12);
+    }
+
+    .exec-pointers {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .exec-pointers li {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 13px 16px 13px 14px;
+      background: rgba(0, 73, 207, 0.045);
+      border-radius: 10px;
+      border: 1px solid rgba(0, 73, 207, 0.12);
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .exec-pointers li:focus-within,
+    .exec-pointers li:hover {
+      border-color: rgba(0, 73, 207, 0.28);
+      box-shadow: 0 2px 8px rgba(0, 73, 207, 0.08);
+    }
+
+    .exec-pointers .exec-marker {
+      flex-shrink: 0;
+      width: 5px;
+      margin-top: 0.45em;
+      min-height: calc(1em + 4px);
+      background: var(--brand);
+      border-radius: 3px;
+    }
+
+    .exec-pointers .exec-body {
+      flex: 1;
+      min-width: 0;
+      color: var(--text);
+      font-size: 0.94rem;
+      line-height: 1.58;
+    }
+
+    .exec-pointers .exec-body strong {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    @media (max-width: 520px) {
+      .executive-summary {
+        padding: 18px 16px 20px;
+      }
+      .exec-pointers li {
+        padding: 12px 14px;
+      }
+    }
+
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin: 16px 0 8px;
+    }
+
+    .stat {
+      flex: 1 1 140px;
+      min-width: 120px;
+      background: var(--surface);
+      border: 1px solid var(--brand-border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+
+    .stat .v {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--brand);
+    }
+
+    .stat .l {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      background: var(--surface);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      margin: 14px 0 20px;
+    }
+
+    th {
+      text-align: left;
+      background: var(--brand);
+      color: #fff;
+      padding: 10px 12px;
+      font-weight: 600;
+    }
+
+    td {
+      padding: 9px 12px;
+      border-bottom: 1px solid #e2e8f0;
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td {
+      background: var(--brand-soft);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .num {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .chart-wrap {
+      position: relative;
+      height: 260px;
+      margin: 14px 0 22px;
+    }
+
+    .chart-wrap.tall {
+      height: 300px;
+    }
+
+    .chart-wrap.short {
+      height: 220px;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--brand-border), transparent);
+      margin: 36px 0;
+    }
+
+    .muted {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .footer-note {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--brand-border);
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+    }
+
+    ul.caveats,
+    ol.steps {
+      margin: 0;
+      padding-left: 1.25rem;
+      color: var(--text-secondary);
+    }
+
+    ul.caveats li,
+    ol.steps li {
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <h1>UPI retention, cross-sell &amp; wealth intent — May 2026</h1>
+      <p>
+        Warehouse cohorts (<strong>bharatpe-analytics-prod</strong> · <strong>upi</strong>) plus behavioural analytics
+        (<strong>Mixpanel bharatpe-consumer</strong> · project id <strong>3987072</strong>). Single narrative for product,
+        growth, and CRM: who pays again, who pays bills, who expresses investment intent, and how that differs by
+        region.
+      </p>
+    </header>
+
+    <section>
+      <h2>Agenda</h2>
+      <div class="agenda">
+        <div>
+          <p>1. Executive summary</p>
+          <p>2. Data sources &amp; definitions</p>
+          <p>3. BigQuery — pooled baseline, then acquisition &amp; volume cohorts</p>
+          <p>4. BigQuery — engagement intensity by volume cohort</p>
+          <p>4b. BigQuery — outgoing-first cohort (subtype, pay-in, MCC, amount, QR)</p>
+        </div>
+        <div>
+          <p>5. Mixpanel — all-India benchmarks &amp; 90d scale</p>
+          <p>6. Mixpanel — geography (macro-region breakdowns)</p>
+          <p>7. BBPS segment impact — velocity, retention &amp; scale</p>
+          <p>8. Regional playbook &amp; limitations</p>
+          <p>9. References, glossary &amp; next steps</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="executive-summary" aria-labelledby="exec-summary-heading">
+      <p class="exec-title">At a glance</p>
+      <h3 id="exec-summary-heading">Executive summary — what to say in 2 minutes</h3>
+      <ul class="exec-pointers">
+        <li>
+          <span class="exec-marker" aria-hidden="true"></span>
+          <div class="exec-body">
+            <strong>Outgoing-first BigQuery lenses:</strong> after first <strong>outgoing</strong> SUCCESS, ticket size,
+            pay-ins, rail/MCC, and QR share in the next 30 days map to wide spreads in <strong>monthly outgoing</strong>
+            retention — Sep&nbsp;2025 cohort <strong>~10% M+1</strong> when average outgoing ticket is under ₹100 vs
+            <strong>~45%</strong> in the ₹500–2k band (see Part&nbsp;Ib).
+          </div>
+        </li>
+        <li>
+          <span class="exec-marker" aria-hidden="true"></span>
+          <div class="exec-body">
+            <strong>Volume cohort lever:</strong> <strong>Power</strong> users reach <strong>~93% M+1</strong> vs
+            <strong>~5%</strong> for <strong>Light</strong> — different lifecycle programmes, not one blanket campaign.
+          </div>
+        </li>
+        <li>
+          <span class="exec-marker" aria-hidden="true"></span>
+          <div class="exec-body">
+            <strong>Light cohort nuance:</strong> often <strong>higher M+3 than M+1</strong> (skip-a-month then return);
+            win-back timing should not assume steady decay.
+          </div>
+        </li>
+        <li>
+          <span class="exec-marker" aria-hidden="true"></span>
+          <div class="exec-body">
+            <strong>Mixpanel return paths:</strong> <strong>~85%</strong> weekly return to <code>upi_transactions_success</code>;
+            <strong>~73%</strong> of users who hit <strong>FAILED</strong> <code>native_upi_txns_flow</code> later succeed — treat failures as recoverable, not final churn.
+          </div>
+        </li>
+        <li>
+          <span class="exec-marker" aria-hidden="true"></span>
+          <div class="exec-body">
+            <strong>Bill pay attach:</strong> <strong>~17%</strong> W+1 from UPI (all-India); <strong>North ~18%</strong>,
+            <strong>South ~13%</strong> — regional playbook differs.
+          </div>
+        </li>
+        <li>
+          <span class="exec-marker" aria-hidden="true"></span>
+          <div class="exec-body">
+            <strong>Wealth intent (landings):</strong> <strong>West</strong> leads penetration vs UPI base;
+            <strong>East</strong> lags on gold, MF, FD — trust, supply, relevance, not only UI.
+          </div>
+        </li>
+        <li>
+          <span class="exec-marker" aria-hidden="true"></span>
+          <div class="exec-body">
+            <strong>Silver / SIP</strong> landings are <strong>two orders of magnitude</strong> smaller than gold (90d
+            uniques) — separate experiments and resourcing vs gold.
+          </div>
+        </li>
+        <li>
+          <span class="exec-marker" aria-hidden="true"></span>
+          <div class="exec-body">
+            <strong>BBPS segment:</strong> ~<strong>2.7×</strong> txns/user vs Non-BBPS (Mar 2026), retention floor
+            ~<strong>64–68%</strong> vs under <strong>32%</strong> Non-BBPS — utility hub behaviour vs discretionary UPI.
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <div class="divider"></div>
+
+    <section>
+      <h2>Data sources &amp; definitions</h2>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-h">BigQuery</div>
+          <div class="card-b" style="padding: 0;">
+            <table>
+              <thead><tr><th>Item</th><th>Detail</th></tr></thead>
+              <tbody>
+                <tr><td>Project / dataset</td><td>bharatpe-analytics-prod · upi</td></tr>
+                <tr><td>Primary fact table</td><td>upi_transactions</td></tr>
+                <tr><td>Users dimension</td><td>users (join profile_id ↔ user_profile_id)</td></tr>
+                <tr><td>Row filters</td><td>status = SUCCESS, user_profile_id set, __deleted = false</td></tr>
+                <tr><td>upi_transactions scale</td><td>78.2M+ rows; partition created_at (DAY)</td></tr>
+                <tr><td>users scale</td><td>6.3M+ rows</td></tr>
+                <tr><td>Region</td><td>asia-south1</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-h">Mixpanel</div>
+          <div class="card-b" style="padding: 0;">
+            <table>
+              <thead><tr><th>Item</th><th>Detail</th></tr></thead>
+              <tbody>
+                <tr><td>Project</td><td>bharatpe-consumer (3987072)</td></tr>
+                <tr><td>Pay &amp; funnel events</td><td>upi_transactions_success, native_upi_txns_flow, BBPS_bill_payment_success, voucher_payment_success</td></tr>
+                <tr><td>Failure filter</td><td>transaction_status = FAILED on native_upi_txns_flow</td></tr>
+                <tr><td>Analysis window</td><td>90 days rolling for most cross-sell &amp; intent tables</td></tr>
+                <tr><td>Geography</td><td>$region (IP → state); custom North/South/East/West buckets</td></tr>
+                <tr><td>Tier cities</td><td>Not available as a standard user property in lookup — use BQ tier join if required</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="callout">
+      <h3>How to read this deck</h3>
+      <p>
+        Pooled / all-India (or warehouse-wide) figures come first; segmented views — volume cohorts and macro-regions —
+        come next so benchmarks are anchored before the splits.
+      </p>
+    </div>
+
+    <section>
+      <h2>Part I — BigQuery: overall (pooled baseline)</h2>
+      <p class="muted">
+        Same SUCCESS and user filters apply to every slice. The volume pool counts users whose first SUCCESS falls in the
+        analysis window; <strong>blended M+1</strong> weights segment-level M+1 by users in each Light→Power bucket
+        (headline “typical” retention before you open the segments).
+      </p>
+      <div class="stats">
+        <div class="stat"><div class="v">78.2M+</div><div class="l">upi_transactions (fact rows)</div></div>
+        <div class="stat"><div class="v">6.3M+</div><div class="l">users dimension (rows)</div></div>
+        <div class="stat"><div class="v" id="bqPoolUsers">—</div><div class="l">Users in volume pool</div></div>
+        <div class="stat"><div class="v" id="bqBlendedM1">—</div><div class="l">Blended M+1 (volume-weighted)</div></div>
+        <div class="stat"><div class="v" id="bqAcqMeanStat">—</div><div class="l">Mean acquisition M+1 (monthly cohorts)</div></div>
+      </div>
+      <table>
+        <thead><tr><th>Metric</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Project / dataset</td><td>bharatpe-analytics-prod · upi</td></tr>
+          <tr><td>Partition (fact)</td><td>created_at (DAY)</td></tr>
+          <tr><td>Users in volume pool (Σ segments)</td><td id="bqPoolUsersCell">—</td></tr>
+          <tr><td>Blended M+1</td><td id="bqBlendedCell">—</td></tr>
+          <tr><td>Mean M+1 by first-success month</td><td id="bqAcqMeanCell">—</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Part I — BigQuery: acquisition cohort (first SUCCESS month)</h2>
+      <p class="muted">
+        Every user is placed in the month of their first SUCCESS. <strong>M+1 retention</strong> is the share of that
+        month’s starters who have ≥1 SUCCESS in the following calendar month. Cohort mean M+1 ≈ <strong id="acqMeanText">—</strong>.
+        September 2025 is a clear negative outlier.
+      </p>
+      <table>
+        <thead>
+          <tr><th>First-success month</th><th class="num">M+1 %</th><th class="num">Δ vs mean (pp)</th></tr>
+        </thead>
+        <tbody id="acqTableBody"></tbody>
+      </table>
+      <div class="chart-wrap"><canvas id="chartAcquisition"></canvas></div>
+      <p class="muted" style="margin-top: -8px; font-size: 0.88rem;">
+        Chart series matches the acquisition M+1 table above (same months and percentages).
+      </p>
+    </section>
+
+    <section>
+      <h2>Part I — BigQuery: volume cohorts (Light → Power)</h2>
+      <p class="muted">
+        After the first qualifying SUCCESS, we count how many further SUCCESS events occur within 30 days. That count maps
+        to <strong>Light / Medium / Heavy / Power</strong>. Retention <strong>M+k</strong>: share of users in that volume
+        bucket whose cohort month is the month of first success, with at least one SUCCESS in the calendar month k months
+        later.
+      </p>
+      <table>
+        <thead>
+          <tr><th>Segment</th><th class="num">Users in pool</th><th>Rule</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Light</td><td class="num">2,40,494</td><td>1 SUCCESS in first 30d after first SUCCESS</td></tr>
+          <tr><td>Medium</td><td class="num">2,93,215</td><td>2–5 SUCCESS txns / first 30d</td></tr>
+          <tr><td>Heavy</td><td class="num">2,84,931</td><td>6–20 / first 30d</td></tr>
+          <tr><td>Power</td><td class="num">1,78,015</td><td>21+ / first 30d</td></tr>
+        </tbody>
+      </table>
+
+      <div class="stats">
+        <div class="stat"><div class="v">93.3%</div><div class="l">Power — M+1</div></div>
+        <div class="stat"><div class="v">76.6%</div><div class="l">Heavy — M+1</div></div>
+        <div class="stat"><div class="v">35.6%</div><div class="l">Medium — M+1</div></div>
+        <div class="stat"><div class="v">4.7%</div><div class="l">Light — M+1</div></div>
+      </div>
+
+      <h3>M+1 vs segment (ranking)</h3>
+      <table>
+        <thead><tr><th>Segment</th><th class="num">Monthly M+1 retention %</th></tr></thead>
+        <tbody>
+          <tr><td>Light</td><td class="num">4.65%</td></tr>
+          <tr><td>Medium</td><td class="num">35.59%</td></tr>
+          <tr><td>Heavy</td><td class="num">76.64%</td></tr>
+          <tr><td>Power</td><td class="num">93.32%</td></tr>
+        </tbody>
+      </table>
+      <div class="chart-wrap short"><canvas id="chartM1Bar"></canvas></div>
+
+      <h3>Full monthly retention matrix (% of cohort active in M+k)</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Segment (pool rule)</th>
+            <th class="num">M+0</th><th class="num">M+1</th><th class="num">M+2</th><th class="num">M+3</th>
+            <th class="num">M+4</th><th class="num">M+5</th><th class="num">M+6</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Light (1 SUCCESS in first 30d after first SUCCESS)</td>
+            <td class="num">100.00%</td><td class="num">4.65%</td><td class="num">7.86%</td><td class="num">7.77%</td>
+            <td class="num">7.06%</td><td class="num">5.73%</td><td class="num">4.54%</td>
+          </tr>
+          <tr>
+            <td>Medium (2–5 SUCCESS txns / first 30d)</td>
+            <td class="num">100.00%</td><td class="num">35.59%</td><td class="num">24.34%</td><td class="num">21.67%</td>
+            <td class="num">18.89%</td><td class="num">14.16%</td><td class="num">10.17%</td>
+          </tr>
+          <tr>
+            <td>Heavy (6–20 / first 30d)</td>
+            <td class="num">100.00%</td><td class="num">76.64%</td><td class="num">56.84%</td><td class="num">48.59%</td>
+            <td class="num">42.17%</td><td class="num">30.95%</td><td class="num">21.78%</td>
+          </tr>
+          <tr>
+            <td>Power (21+ / first 30d)</td>
+            <td class="num">100.00%</td><td class="num">93.32%</td><td class="num">76.38%</td><td class="num">65.27%</td>
+            <td class="num">56.94%</td><td class="num">42.41%</td><td class="num">29.98%</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="chart-wrap tall"><canvas id="chartRetentionLine"></canvas></div>
+      <p class="muted" style="margin-top: -8px; font-size: 0.88rem;">
+        Chart series matches the full monthly retention matrix above (one line per segment).
+      </p>
+
+      <h3>Engagement depth — avg SUCCESS txns among users active in that month</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Volume cohort</th>
+            <th class="num">M+0</th><th class="num">M+1</th><th class="num">M+2</th><th class="num">M+3</th>
+            <th class="num">M+4</th><th class="num">M+5</th><th class="num">M+6</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Light</td><td class="num">1</td><td class="num">3.72</td><td class="num">6.94</td><td class="num">8.29</td><td class="num">9.31</td><td class="num">9.93</td><td class="num">10.56</td></tr>
+          <tr><td>Medium</td><td class="num">2.63</td><td class="num">3.11</td><td class="num">6.03</td><td class="num">6.83</td><td class="num">7.04</td><td class="num">7.41</td><td class="num">7.71</td></tr>
+          <tr><td>Heavy</td><td class="num">7.36</td><td class="num">8.98</td><td class="num">10.48</td><td class="num">10.75</td><td class="num">10</td><td class="num">10.01</td><td class="num">9.79</td></tr>
+          <tr><td>Power</td><td class="num">28.13</td><td class="num">39.67</td><td class="num">33.05</td><td class="num">30.72</td><td class="num">26.98</td><td class="num">25.42</td><td class="num">23.27</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout">
+        <h3>Narrative cue</h3>
+        <p>
+          Power users sustain high counts per active month even late in the curve; Light users who return climb toward
+          double-digit monthly txns among actives — the segment is “low frequency” not “low value” for those who
+          reactivate.
+        </p>
+      </div>
+    </section>
+
+      <section>
+        <h2>Part Ib — BigQuery: outgoing-first cohort (multi-lens)</h2>
+        <p class="muted">
+          Figures from <code>bharatpe-analytics-prod.upi.upi_transactions</code>; illustrative cohort month
+          <strong>2025-09-01</strong> unless noted. Re-run SQL under <code>bigquery-mcp/bharatpe-consumer/sql/</code> for
+          new months. <strong>Outgoing</strong> = SUCCESS rows where <code>subType</code> is null or not
+          <code>RECEIVE_EXTERNAL</code>; pay-ins use <code>RECEIVE_EXTERNAL</code> only. <strong>Cohort month</strong> =
+          month of first outgoing SUCCESS. <strong>Retention</strong> = share with ≥1 outgoing SUCCESS in calendar month
+          M+k.
+        </p>
+
+        <div class="callout">
+          <h3>Headline insights (Sep 2025 cohort)</h3>
+          <p>
+            <strong>Ticket size:</strong> average outgoing under ₹100 in the first 30d aligns with <strong>~10% M+1</strong>
+            vs <strong>~39–45%</strong> for higher averages; ₹500–2k band leads this month.
+          </p>
+          <p>
+            <strong>Pay-ins:</strong> count of <code>RECEIVE_EXTERNAL</code> in the same 30d window rises with subsequent
+            outgoing M+1 (<strong>~45%</strong> for &gt;20 pay-ins vs <strong>~17%</strong> for &lt;5).
+          </p>
+          <p>
+            <strong>Rails:</strong> dominant <strong>QR</strong> shows higher M+1 than <strong>UPI ID</strong>;
+            <strong>CONTACT</strong>-dominant is thin with very low M+1 — validate behaviour, not only product surface.
+          </p>
+          <p>
+            <strong>MCC:</strong> spread across dominant categories (e.g. telecom <strong>4814</strong> vs generic
+            <strong>0000</strong>) — use for merchant-led programmes when refreshed.
+          </p>
+          <p>
+            <strong>BharatPe QR flag:</strong> treat high “mixed QR” M+1 as <strong>hypothesis-grade</strong> until
+            <code>is_bharatpe_qr</code> coverage is audited.
+          </p>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><div class="v">10.1%</div><div class="l">Sep 2025 — &lt; ₹100 avg → M+1</div></div>
+          <div class="stat"><div class="v">44.7%</div><div class="l">Sep 2025 — ₹500–2k avg → M+1</div></div>
+          <div class="stat"><div class="v">45.2%</div><div class="l">Sep 2025 — pay-in &gt;20 → M+1</div></div>
+          <div class="stat"><div class="v">16.8%</div><div class="l">Sep 2025 — pay-in &lt;5 → M+1</div></div>
+        </div>
+
+        <h3>A) Average outgoing ticket (first 30d)</h3>
+        <table>
+          <thead><tr><th>Avg amount bucket</th><th class="num">Users</th><th class="num">M+1 %</th><th class="num">M+2 %</th></tr></thead>
+          <tbody>
+            <tr><td>&lt; ₹100 avg</td><td class="num">80,726</td><td class="num">10.11</td><td class="num">5.66</td></tr>
+            <tr><td>₹100–₹500 avg</td><td class="num">30,952</td><td class="num">38.87</td><td class="num">22.21</td></tr>
+            <tr><td>₹500–₹2,000 avg</td><td class="num">15,586</td><td class="num">44.69</td><td class="num">27.79</td></tr>
+            <tr><td>≥ ₹2,000 avg</td><td class="num">5,156</td><td class="num">40.46</td><td class="num">26.59</td></tr>
+          </tbody>
+        </table>
+        <div class="chart-wrap short"><canvas id="chartOutAmt"></canvas></div>
+
+        <h3>B) Pay-in volume (RECEIVE_EXTERNAL in same 30d)</h3>
+        <table>
+          <thead><tr><th>Pay-in bucket</th><th class="num">Users</th><th class="num">M+1 %</th><th class="num">M+2 %</th></tr></thead>
+          <tbody>
+            <tr><td>&lt; 5</td><td class="num">1,04,816</td><td class="num">16.82</td><td class="num">9.90</td></tr>
+            <tr><td>5–20</td><td class="num">20,402</td><td class="num">41.00</td><td class="num">23.46</td></tr>
+            <tr><td>&gt; 20</td><td class="num">7,202</td><td class="num">45.15</td><td class="num">27.62</td></tr>
+          </tbody>
+        </table>
+        <div class="chart-wrap short"><canvas id="chartOutPayin"></canvas></div>
+
+        <h3>C) Dominant outgoing subType (first 30d)</h3>
+        <table>
+          <thead><tr><th>Dominant subType</th><th class="num">Users</th><th class="num">M+1 %</th><th class="num">M+2 %</th></tr></thead>
+          <tbody>
+            <tr><td>QR</td><td class="num">82,095</td><td class="num">27.28</td><td class="num">15.60</td></tr>
+            <tr><td>UPI_ID</td><td class="num">27,777</td><td class="num">17.47</td><td class="num">10.62</td></tr>
+            <tr><td>CONTACT</td><td class="num">14,717</td><td class="num">4.55</td><td class="num">3.99</td></tr>
+            <tr><td>INTENT</td><td class="num">2,870</td><td class="num">24.98</td><td class="num">14.32</td></tr>
+          </tbody>
+        </table>
+
+        <h3>D) Dominant MCC (vs global top-20 outgoing volume)</h3>
+        <table>
+          <thead><tr><th>MCC</th><th>Comment</th><th class="num">Users</th><th class="num">M+1 %</th></tr></thead>
+          <tbody>
+            <tr><td>0000</td><td>Generic / largest bucket</td><td class="num">87,482</td><td class="num">20.34</td></tr>
+            <tr><td>5411</td><td>Grocery stores</td><td class="num">18,010</td><td class="num">30.05</td></tr>
+            <tr><td>OTHER</td><td>Not in global top 20 by txn count</td><td class="num">8,374</td><td class="num">17.20</td></tr>
+            <tr><td>4814</td><td>Telecom</td><td class="num">4,091</td><td class="num">36.25</td></tr>
+            <tr><td>5814</td><td>Fast food</td><td class="num">3,909</td><td class="num">22.33</td></tr>
+          </tbody>
+        </table>
+
+        <h3>E) BharatPe QR share of outgoing (first 30d)</h3>
+        <table>
+          <thead><tr><th>Segment</th><th class="num">Users</th><th class="num">M+1 %</th><th class="num">M+2 %</th></tr></thead>
+          <tbody>
+            <tr><td>No BharatPe QR (0%)</td><td class="num">1,11,586</td><td class="num">16.74</td><td class="num">9.50</td></tr>
+            <tr><td>Mixed (0–50%)</td><td class="num">14,270</td><td class="num">66.49</td><td class="num">41.30</td></tr>
+            <tr><td>Mostly BharatPe QR (≥50%)</td><td class="num">6,564</td><td class="num">16.36</td><td class="num">9.90</td></tr>
+          </tbody>
+        </table>
+        <p class="muted" style="font-size: 0.88rem;">
+          SQL: <code>retention_by_avg_outgoing_amount.sql</code>, <code>retention_by_payin_bucket_first_30d.sql</code>,
+          <code>retention_by_dominant_outgoing_subtype.sql</code>, <code>retention_by_top20_mcc.sql</code>,
+          <code>retention_by_bharatpe_qr_share.sql</code>.
+        </p>
+      </section>
+
+      <div class="divider"></div>
+
+      <section>
+      <h2>Part II — Mixpanel: all-India (overall)</h2>
+      <div class="stats">
+        <div class="stat"><div class="v">~85%</div><div class="l">UPI success → UPI success (W+1)</div></div>
+        <div class="stat"><div class="v">~73%</div><div class="l">FAILED native flow → later UPI success (W+1)</div></div>
+        <div class="stat"><div class="v">~17%</div><div class="l">UPI success → BBPS (W+1)</div></div>
+        <div class="stat"><div class="v">~1%</div><div class="l">UPI success → voucher (W+1)</div></div>
+      </div>
+      <p class="muted">
+        Optional 13-point UPI→UPI curve (report $average): first values ≈ 85%, 69%, 62%, 57%, 54%, 50% … (trailing
+        incomplete weeks compress the tail in the UI).
+      </p>
+
+      <h3>Investment intent — event inventory (landings, not purchases)</h3>
+      <table>
+        <thead><tr><th>Mixpanel event name</th></tr></thead>
+        <tbody>
+          <tr><td>wealthtech_gold_buy_onetime_landed</td></tr>
+          <tr><td>wealthtech_gold_buy_SIP_landed</td></tr>
+          <tr><td>wealthtech_fd_buy_dashboard_landed</td></tr>
+          <tr><td>wealthtech_mf_explore_new_screen_landed</td></tr>
+          <tr><td>wealthtech_silver_buy_one_time_landed</td></tr>
+          <tr><td>wealthtech_silver_buy_sip_landed</td></tr>
+        </tbody>
+      </table>
+
+      <h3>90d unique users — all-India totals</h3>
+      <table>
+        <thead><tr><th>Event</th><th class="num">Unique users (90d)</th></tr></thead>
+        <tbody>
+          <tr><td>upi_transactions_success</td><td class="num">4,42,563</td></tr>
+          <tr><td>wealthtech_gold_buy_onetime_landed</td><td class="num">88,332</td></tr>
+          <tr><td>wealthtech_gold_buy_SIP_landed</td><td class="num">97,195</td></tr>
+          <tr><td>wealthtech_fd_buy_dashboard_landed</td><td class="num">37,276</td></tr>
+          <tr><td>wealthtech_mf_explore_new_screen_landed</td><td class="num">29,101</td></tr>
+          <tr><td>wealthtech_silver_buy_one_time_landed</td><td class="num">1,288</td></tr>
+          <tr><td>wealthtech_silver_buy_sip_landed</td><td class="num">604</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Part II — Mixpanel: by macro-region</h2>
+      <p class="muted">
+        Geography uses custom North / South / East / West buckets on <strong>$region</strong> (IP → state). Read national
+        benchmarks above first, then compare how attach and intent vary.
+      </p>
+
+      <h3>UPI return by macro-region (same-event weekly retention, %)</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Macro-region</th>
+            <th class="num">W+0</th><th class="num">W+1</th><th class="num">W+2</th><th class="num">W+3</th><th class="num">W+4</th>
+            <th class="num">W+5</th><th class="num">W+6</th><th class="num">W+7</th><th class="num">W+8</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>North</td><td class="num">84%</td><td class="num">68%</td><td class="num">62%</td><td class="num">57%</td><td class="num">53%</td><td class="num">50%</td><td class="num">47%</td><td class="num">45%</td><td class="num">43%</td></tr>
+          <tr><td>South</td><td class="num">85%</td><td class="num">70%</td><td class="num">64%</td><td class="num">59%</td><td class="num">55%</td><td class="num">51%</td><td class="num">49%</td><td class="num">47%</td><td class="num">45%</td></tr>
+          <tr><td>East</td><td class="num">85%</td><td class="num">68%</td><td class="num">61%</td><td class="num">56%</td><td class="num">52%</td><td class="num">48%</td><td class="num">45%</td><td class="num">43%</td><td class="num">41%</td></tr>
+          <tr><td>West</td><td class="num">85%</td><td class="num">70%</td><td class="num">63%</td><td class="num">59%</td><td class="num">55%</td><td class="num">51%</td><td class="num">48%</td><td class="num">46%</td><td class="num">44%</td></tr>
+        </tbody>
+      </table>
+      <div class="chart-wrap"><canvas id="chartRegionUpi"></canvas></div>
+
+      <h3>UPI → BBPS bill pay (by region)</h3>
+      <table>
+        <thead>
+          <tr><th>Region</th><th class="num">W+1</th><th class="num">W+4</th><th class="num">W+8</th><th>Comment</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>North</td><td class="num">18%</td><td class="num">10%</td><td class="num">8%</td><td>Strongest bill-pay attach after pay</td></tr>
+          <tr><td>South</td><td class="num">13%</td><td class="num">7%</td><td class="num">6%</td><td>Weakest — investigate despite solid UPI return</td></tr>
+          <tr><td>East</td><td class="num">17%</td><td class="num">9%</td><td class="num">7%</td><td>Mid-pack</td></tr>
+          <tr><td>West</td><td class="num">17%</td><td class="num">9%</td><td class="num">7%</td><td>Mid-pack</td></tr>
+        </tbody>
+      </table>
+      <div class="chart-wrap short"><canvas id="chartBbps"></canvas></div>
+
+      <h3>Wealth: penetration vs regional UPI base (90d)</h3>
+      <table>
+        <thead>
+          <tr><th>Region</th><th class="num">Gold OT %</th><th class="num">MF %</th><th class="num">FD %</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>North</td><td class="num">19.97</td><td class="num">6.70</td><td class="num">8.75</td></tr>
+          <tr><td>South</td><td class="num">21.55</td><td class="num">6.53</td><td class="num">8.15</td></tr>
+          <tr><td>East</td><td class="num">16.83</td><td class="num">5.77</td><td class="num">7.38</td></tr>
+          <tr><td>West</td><td class="num">22.29</td><td class="num">7.17</td><td class="num">9.16</td></tr>
+        </tbody>
+      </table>
+      <div class="chart-wrap short"><canvas id="chartGoldPen"></canvas></div>
+
+      <h3>Regional scale — raw uniques (90d, same window)</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Macro-region</th><th>Mixpanel bucket (abbrev.)</th>
+            <th class="num">UPI success</th><th class="num">Gold OT</th><th class="num">Gold SIP</th><th class="num">FD dash</th><th class="num">MF explore</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>North</td><td>Punjab, Haryana, Delhi, UP, UK, RJ, HP, JK, CH …</td>
+            <td class="num">1,68,595</td><td class="num">33,662</td><td class="num">37,732</td><td class="num">14,755</td><td class="num">11,293</td>
+          </tr>
+          <tr>
+            <td>West</td><td>MH, GJ, MP, GA, CT …</td>
+            <td class="num">91,228</td><td class="num">20,331</td><td class="num">21,919</td><td class="num">8,353</td><td class="num">6,544</td>
+          </tr>
+          <tr>
+            <td>South</td><td>TG, KA, TN, KL, AP …</td>
+            <td class="num">64,205</td><td class="num">13,838</td><td class="num">14,129</td><td class="num">5,234</td><td class="num">4,194</td>
+          </tr>
+          <tr>
+            <td>East</td><td>WB, BR, OD, JH, AS …</td>
+            <td class="num">1,09,007</td><td class="num">18,348</td><td class="num">21,193</td><td class="num">8,049</td><td class="num">6,288</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout">
+        <h3>MF explore — retention curve caveat (speaker note)</h3>
+        <p>
+          Do not read weekly <code>UPI → wealthtech_mf_explore_new_screen_landed</code> like a pay retention curve —
+          intent can appear many weeks after first pay. Pair with funnels, paths, and time-to-event in Mixpanel.
+        </p>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section>
+      <h2>Part III — BBPS segment impact assessment</h2>
+      <p class="muted" style="font-weight: 600;">The BBPS catalyst for user retention and transactional velocity</p>
+      <p class="muted">
+        Integrating Bharat Bill Payment System (BBPS) is a strategic lever for platform stickiness: utility bill payments
+        anchor users in the ecosystem and move them from discretionary transactors toward habitual use. This section
+        contrasts BBPS users with Non-BBPS and Pure UPI cohorts on velocity and retention.
+      </p>
+
+      <h3>1. Strategic overview — segment definitions</h3>
+      <table>
+        <thead><tr><th>Segment</th><th>Definition</th></tr></thead>
+        <tbody>
+          <tr><td>BBPS users</td><td>Active users paying utility / biller flows integrated via the BBPS framework.</td></tr>
+          <tr><td>Non-BBPS users</td><td>Active platform users who have not used the BBPS module (mixed services).</td></tr>
+          <tr><td>Pure UPI cohort</td><td>Control group: activity limited to UPI transactions — baseline for incremental value of biller integration.</td></tr>
+        </tbody>
+      </table>
+      <p class="muted">
+        Segmentation shows a clear trajectory: recurring utility payments accelerate transactional velocity versus non-biller baselines.
+      </p>
+
+      <h3>2. Transactional velocity (txns per user)</h3>
+      <p class="muted">
+        <strong>Transactional velocity</strong> — average transactions per user (<code>txns_per_user</code>) — signals
+        “top-of-wallet” depth. Longitudinal data (2025–Q1 2026): Non-BBPS users ranged ~6.39–7.08 txns/user (Nov 2025–Feb
+        2026); the BBPS segment ran at ~17.75–18.41 in the same window — a material engagement gap, not a marginal bump.
+      </p>
+      <p class="muted"><strong>The BBPS velocity multiplier (peak — March 2026)</strong></p>
+      <table>
+        <thead><tr><th>Segment</th><th class="num">Peak txns / user (Mar 2026)</th><th class="num">Multiplier vs Non-BBPS</th></tr></thead>
+        <tbody>
+          <tr><td>BBPS User</td><td class="num">17.78</td><td class="num">2.72×</td></tr>
+          <tr><td>Pure UPI Cohort</td><td class="num">7.62</td><td class="num">1.16×</td></tr>
+          <tr><td>Non-BBPS User (baseline)</td><td class="num">6.54</td><td class="num">1.00×</td></tr>
+        </tbody>
+      </table>
+      <div class="callout">
+        <h3>Utility hub vs payment tool</h3>
+        <p>
+          In Mar 2026, Pure UPI averaged ~7.62 txns/user vs ~18.49 for the BBPS cohort — roughly a <strong>142% delta</strong>.
+          UPI enables easy payments; BBPS turns the app into a <strong>high-frequency utility hub</strong> by capturing
+          recurring, essential bills — graduating users from occasional P2P to utility-dependent power usage. That consistency
+          underpins the retention architecture.
+        </p>
+      </div>
+
+      <h3>3. Stickiness &amp; retention architecture</h3>
+      <p class="muted">
+        Growth leans on retention efficiency. In the six months ending Mar 2026, the BBPS segment held a retention
+        <strong>floor above ~64%</strong>, peaking at <strong>67.59%</strong> (Feb 2026). Non-BBPS struggled to exceed
+        <strong>~32%</strong> — a stickiness gap of <strong>35+ percentage points</strong>.
+      </p>
+      <table>
+        <thead><tr><th>Insight</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>~2× churn differential</td>
+            <td>BBPS churn ~32.4–35.6%; Non-BBPS churn up to ~70.25% (Nov 2025) — non-biller users far likelier to exit.</td>
+          </tr>
+          <tr>
+            <td>Cohort stability at scale</td>
+            <td>BBPS actives grew from 59,705 (Oct 2025) to 83,253 (Mar 2026) while retention stayed stable (67.52% → 65.39%) — scalable proposition without typical dilution.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="muted">
+        Managing life services via BBPS builds a digital habit and raises switching costs vs competitors.
+      </p>
+
+      <h3>4. Growth trajectory &amp; scale evolution</h3>
+      <p class="muted">
+        From <strong>6 active BBPS users (Jun 2024)</strong> to <strong>103,855 active users (Mar 2026)</strong> — exceptional
+        volume scaling. Per-capita intensity also rose: ~6.88 txns/user (Jan 2025) to a peak of ~18.41 (Feb 2026) —
+        <strong>dual growth</strong> in base and density.
+      </p>
+      <div class="callout">
+        <h3>Data note — May 2026</h3>
+        <p>
+          May 2026 figures (~44k BBPS users, ~5.55 txns/user) are treated as <strong>provisional</strong> (partial month) — not
+          a segment collapse.
+        </p>
+      </div>
+
+      <h3>5. Synthesis &amp; strategic recommendations</h3>
+      <table>
+        <thead><tr><th>Pillar</th><th>Takeaway</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Retention dominance</td>
+            <td>A ~60%+ BBPS retention floor reduces reliance on raw acquisition; prioritise high-LTV utility users.</td>
+          </tr>
+          <tr>
+            <td>Transaction intensity</td>
+            <td>Shift from occasional UPI to mandatory recurring bills powers the move to “power user” behaviour.</td>
+          </tr>
+          <tr>
+            <td>Cross-segment superiority</td>
+            <td>BBPS consistently beats Pure UPI — biller integration differentiates payment tool vs primary financial utility.</td>
+          </tr>
+          <tr>
+            <td>Strategic imperative</td>
+            <td>Migrate Pure UPI and Non-BBPS users into the biller ecosystem to capture upside in retention and density.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="muted">
+        Empirical summary: evidence supports <strong>~2×</strong> retention lift and <strong>~2.7×</strong> transaction
+        frequency vs Non-BBPS baseline — BBPS is a primary catalyst for long-term loyalty; resource allocation should
+        reflect migration into bill pay.
+      </p>
+    </section>
+
+    <div class="divider"></div>
+
+    <section>
+      <h2>Part IV — Synthesis: regional playbook</h2>
+      <table>
+        <thead><tr><th>Region</th><th>Strength</th><th>Risk / gap</th><th>Priority moves</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>North</td>
+            <td>Largest UPI &amp; wealth raw counts; strongest UPI→BBPS attach.</td>
+            <td>Wealth penetration vs base mid vs West; optimise yield on scale.</td>
+            <td>BBPS growth, biller coverage, reminders; cross-sell FD/MF to high-RFM payers.</td>
+          </tr>
+          <tr>
+            <td>West</td>
+            <td>Highest gold / MF / FD penetration vs UPI base.</td>
+            <td>Slightly smaller UPI counts than North.</td>
+            <td>Double down on wealth funnels; mirror best journeys to other regions.</td>
+          </tr>
+          <tr>
+            <td>South</td>
+            <td>Strong UPI weekly return; solid wealth penetration.</td>
+            <td>Weakest BBPS W+1 vs other macro-regions.</td>
+            <td>Diagnose BBPS awareness &amp; use-cases (education, default tab, seasonality).</td>
+          </tr>
+          <tr>
+            <td>East</td>
+            <td>Material UPI base.</td>
+            <td>Lowest gold / MF / FD penetration; BBPS mid-pack.</td>
+            <td>Trust, localisation, partner depth; segment before performance creative tests.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Limitations &amp; caveats</h3>
+      <ul class="caveats">
+        <li>BQ vs MP timings differ — do not expect point-identical user counts across systems.</li>
+        <li>Mixpanel geography is IP-derived state; VPNs and travel distort $region.</li>
+        <li>Intent landings are not conversions; downstream funnel needed for revenue.</li>
+        <li>Penetration rates double-count users who hit multiple intent events when reading columns side-by-side.</li>
+        <li>POSTPE dominance in BQ users limits client-level story — use other attributes for app variants.</li>
+      </ul>
+
+      <h3>Suggested next steps</h3>
+      <ol class="steps">
+        <li>Explain Sep 2025 M+1 dip (data quality, onboarding, seasonality).</li>
+        <li>South BBPS deep-dive: qualitative + competitive + biller catalogue vs North.</li>
+        <li>East wealth: trust / education creative test, agent/partner presence, and FD vs MF offer mix.</li>
+        <li>Tie census city-tier from BigQuery onto Mixpanel distinct_id for tier slides.</li>
+        <li>Build one Cohort in Mixpanel for “any wealth intent” with OR across the six landings.</li>
+        <li>Refresh outgoing-first lens SQL monthly; audit <code>is_bharatpe_qr</code> coverage before hard product bets.</li>
+      </ol>
+
+      <h3>Glossary</h3>
+      <table>
+        <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Cohort month (BQ)</td>
+            <td>Calendar month of the user’s first SUCCESS transaction meeting row filters.</td>
+          </tr>
+          <tr>
+            <td>Volume cohort</td>
+            <td>Label from the count of SUCCESS txns in the 30 days after that first success.</td>
+          </tr>
+          <tr>
+            <td>M+k / W+k</td>
+            <td>Months or weeks after cohort / anchor event; retention = active in that period.</td>
+          </tr>
+          <tr>
+            <td>Macro-region (MP)</td>
+            <td>Custom buckets on Mixpanel user property $region (IP → state).</td>
+          </tr>
+          <tr>
+            <td>Penetration</td>
+            <td>Unique intent users ÷ unique UPI success users in the same date window (not deduped across intents).</td>
+          </tr>
+          <tr>
+            <td>Outgoing (BQ)</td>
+            <td>SUCCESS rows where subType is null or not RECEIVE_EXTERNAL; incoming pay-in uses RECEIVE_EXTERNAL only.</td>
+          </tr>
+          <tr>
+            <td>Outgoing cohort month</td>
+            <td>Month of the user’s first qualifying outgoing SUCCESS (distinct from “first SUCCESS over all subTypes”).</td>
+          </tr>
+          <tr>
+            <td>First 30d window (outgoing lenses)</td>
+            <td>From first outgoing day: label dominant subtype/MCC, pay-in counts, avg amount, QR share; retention is still outgoing activity by month.</td>
+          </tr>
+          <tr>
+            <td>MCC segment (outgoing lens)</td>
+            <td>Global top 20 merchant categories by outgoing txn volume; user tagged by dominant outgoing MCC in window, else OTHER.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Mixpanel report links</h3>
+      <p class="muted" id="mpLinks"></p>
+    </section>
+
+    <footer class="footer-note">
+      <strong>Pairing:</strong>
+      <code>bigquery-mcp/bharatpe-consumer/upi-cohort-retention.canvas.tsx</code>,
+      <code>~/.cursor/projects/…/canvases/upi-cohort-retention.canvas.tsx</code> (IDE preview), and
+      <code>upi-cohort-retention.html</code>. Volume cohort SQL: <code>sql/cohort_volume_retention.sql</code>; outgoing lenses:
+      <code>retention_by_avg_outgoing_amount.sql</code>, <code>retention_by_payin_bucket_first_30d.sql</code>,
+      <code>retention_by_dominant_outgoing_subtype.sql</code>, <code>retention_by_top20_mcc.sql</code>,
+      <code>retention_by_bharatpe_qr_share.sql</code>. Theme <code>#0049CF</code>. Refresh when re-running warehouse
+      &amp; Mixpanel exports.
+    </footer>
+  </div>
+
+  <script>
+(function () {
+  const BRAND = "#0049CF";
+  const palette = [BRAND, "#2563eb", "#60a5fa", "#93c5fd"];
+
+  const chartDefaults = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: "bottom", labels: { boxWidth: 12, padding: 16 } }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: { color: "rgba(0, 73, 207, 0.08)" },
+        ticks: { callback: (v) => v + "%" }
+      },
+      x: { grid: { display: false } }
+    }
+  };
+
+  new Chart(document.getElementById("chartM1Bar"), {
+    type: "bar",
+    data: {
+      labels: ["Light", "Medium", "Heavy", "Power"],
+      datasets: [{
+        label: "Monthly M+1 retention %",
+        data: [4.65, 35.59, 76.64, 93.32],
+        backgroundColor: "rgba(0, 73, 207, 0.75)",
+        borderColor: BRAND,
+        borderWidth: 1,
+        borderRadius: 6
+      }]
+    },
+    options: {
+      ...chartDefaults,
+      plugins: { ...chartDefaults.plugins, legend: { display: false } }
+    }
+  });
+
+  new Chart(document.getElementById("chartOutAmt"), {
+    type: "bar",
+    data: {
+      labels: ["< ₹100", "₹100–500", "₹500–2k", "≥ ₹2k"],
+      datasets: [{
+        label: "Outgoing M+1 % (Sep 2025)",
+        data: [10.11, 38.87, 44.69, 40.46],
+        backgroundColor: "rgba(0, 73, 207, 0.7)",
+        borderColor: BRAND,
+        borderWidth: 1,
+        borderRadius: 6
+      }]
+    },
+    options: {
+      ...chartDefaults,
+      plugins: { ...chartDefaults.plugins, legend: { display: false } }
+    }
+  });
+
+  new Chart(document.getElementById("chartOutPayin"), {
+    type: "bar",
+    data: {
+      labels: ["< 5 pay-ins", "5–20 pay-ins", "> 20 pay-ins"],
+      datasets: [{
+        label: "Outgoing M+1 % (Sep 2025)",
+        data: [16.82, 41.0, 45.15],
+        backgroundColor: "rgba(0, 73, 207, 0.6)",
+        borderColor: BRAND,
+        borderWidth: 1,
+        borderRadius: 6
+      }]
+    },
+    options: {
+      ...chartDefaults,
+      plugins: { ...chartDefaults.plugins, legend: { display: false } }
+    }
+  });
+
+  const periods = ["M+0", "M+1", "M+2", "M+3", "M+4", "M+5", "M+6"];
+  const retention = {
+    Light: [100, 4.65, 7.86, 7.77, 7.06, 5.73, 4.54],
+    Medium: [100, 35.59, 24.34, 21.67, 18.89, 14.16, 10.17],
+    Heavy: [100, 76.64, 56.84, 48.59, 42.17, 30.95, 21.78],
+    Power: [100, 93.32, 76.38, 65.27, 56.94, 42.41, 29.98]
+  };
+  new Chart(document.getElementById("chartRetentionLine"), {
+    type: "line",
+    data: {
+      labels: periods,
+      datasets: Object.keys(retention).map((k, i) => ({
+        label: k,
+        data: retention[k],
+        borderColor: palette[i],
+        backgroundColor: palette[i] + "33",
+        fill: true,
+        tension: 0.25,
+        pointRadius: 3
+      }))
+    },
+    options: {
+      ...chartDefaults,
+      scales: {
+        ...chartDefaults.scales,
+        y: { ...chartDefaults.scales.y, max: 100 }
+      }
+    }
+  });
+
+  const ACQUISITION_M1 = [
+    { month: "2025-09", m1: 43.18 },
+    { month: "2025-10", m1: 58.69 },
+    { month: "2025-11", m1: 59.55 },
+    { month: "2025-12", m1: 57.73 },
+    { month: "2026-01", m1: 57.14 },
+    { month: "2026-02", m1: 56.23 },
+    { month: "2026-03", m1: 55.39 }
+  ];
+  const acqMean = ACQUISITION_M1.reduce((s, r) => s + r.m1, 0) / ACQUISITION_M1.length;
+
+  const BQ_VOLUME_SEGMENTS = [
+    { users: 240494, m1: 4.65 },
+    { users: 293215, m1: 35.59 },
+    { users: 284931, m1: 76.64 },
+    { users: 178015, m1: 93.32 }
+  ];
+  const poolUsers = BQ_VOLUME_SEGMENTS.reduce((s, x) => s + x.users, 0);
+  const blendedM1 = BQ_VOLUME_SEGMENTS.reduce((s, x) => s + x.users * x.m1, 0) / poolUsers;
+
+  document.getElementById("bqPoolUsers").textContent = poolUsers.toLocaleString("en-IN");
+  document.getElementById("bqPoolUsersCell").textContent = poolUsers.toLocaleString("en-IN");
+  document.getElementById("bqBlendedM1").textContent = blendedM1.toFixed(1) + "%";
+  document.getElementById("bqBlendedCell").textContent =
+    blendedM1.toFixed(2) + "% (= Σ(users × segment M+1) / Σ users)";
+  document.getElementById("bqAcqMeanStat").textContent = acqMean.toFixed(1) + "%";
+  document.getElementById("bqAcqMeanCell").textContent = acqMean.toFixed(2) + "% (see acquisition cohort)";
+
+  document.getElementById("acqMeanText").textContent = acqMean.toFixed(1) + "%";
+
+  const tbody = document.getElementById("acqTableBody");
+  ACQUISITION_M1.forEach((r) => {
+    const d = r.m1 - acqMean;
+    const tr = document.createElement("tr");
+    tr.innerHTML =
+      "<td>" +
+      r.month +
+      '</td><td class="num">' +
+      r.m1.toFixed(2) +
+      '%</td><td class="num">' +
+      (d >= 0 ? "+" : "") +
+      d.toFixed(2) +
+      "</td>";
+    tbody.appendChild(tr);
+  });
+
+  new Chart(document.getElementById("chartAcquisition"), {
+    type: "line",
+    data: {
+      labels: ACQUISITION_M1.map((r) => r.month),
+      datasets: [{
+        label: "M+1 %",
+        data: ACQUISITION_M1.map((r) => r.m1),
+        borderColor: BRAND,
+        backgroundColor: "rgba(0, 73, 207, 0.12)",
+        fill: true,
+        tension: 0.2,
+        pointRadius: 4
+      }]
+    },
+    options: {
+      ...chartDefaults,
+      plugins: { ...chartDefaults.plugins, legend: { display: false } }
+    }
+  });
+
+  const WEEK_LBL9 = ["W+0", "W+1", "W+2", "W+3", "W+4", "W+5", "W+6", "W+7", "W+8"];
+  const MIXPANEL_REGION_UPI_RETURN = {
+    North: [84, 68, 62, 57, 53, 50, 47, 45, 43],
+    South: [85, 70, 64, 59, 55, 51, 49, 47, 45],
+    East: [85, 68, 61, 56, 52, 48, 45, 43, 41],
+    West: [85, 70, 63, 59, 55, 51, 48, 46, 44]
+  };
+
+  new Chart(document.getElementById("chartRegionUpi"), {
+    type: "line",
+    data: {
+      labels: WEEK_LBL9,
+      datasets: Object.keys(MIXPANEL_REGION_UPI_RETURN).map((k, i) => ({
+        label: k,
+        data: MIXPANEL_REGION_UPI_RETURN[k],
+        borderColor: palette[i],
+        backgroundColor: "transparent",
+        tension: 0.25,
+        pointRadius: 3
+      }))
+    },
+    options: {
+      ...chartDefaults,
+      scales: {
+        ...chartDefaults.scales,
+        y: { ...chartDefaults.scales.y, max: 100 }
+      }
+    }
+  });
+
+  const bbps = [
+    { region: "North", w1: 18 },
+    { region: "South", w1: 13 },
+    { region: "East", w1: 17 },
+    { region: "West", w1: 17 }
+  ];
+
+  new Chart(document.getElementById("chartBbps"), {
+    type: "bar",
+    data: {
+      labels: bbps.map((r) => r.region),
+      datasets: [{
+        label: "BBPS W+1 % of cohort",
+        data: bbps.map((r) => r.w1),
+        backgroundColor: "rgba(0, 73, 207, 0.65)",
+        borderColor: BRAND,
+        borderWidth: 1,
+        borderRadius: 6
+      }]
+    },
+    options: {
+      ...chartDefaults,
+      plugins: { ...chartDefaults.plugins, legend: { display: false } }
+    }
+  });
+
+  const goldPen = [
+    { region: "North", goldOt: 19.97 },
+    { region: "South", goldOt: 21.55 },
+    { region: "East", goldOt: 16.83 },
+    { region: "West", goldOt: 22.29 }
+  ];
+
+  new Chart(document.getElementById("chartGoldPen"), {
+    type: "bar",
+    data: {
+      labels: goldPen.map((r) => r.region),
+      datasets: [{
+        label: "Gold one-time penetration %",
+        data: goldPen.map((r) => r.goldOt),
+        backgroundColor: "rgba(0, 73, 207, 0.55)",
+        borderColor: BRAND,
+        borderWidth: 1,
+        borderRadius: 6
+      }]
+    },
+    options: {
+      ...chartDefaults,
+      plugins: { ...chartDefaults.plugins, legend: { display: false } }
+    }
+  });
+
+  const MP_BASE = "https://in.mixpanel.com/project/3987072/view/4482865/app/insights";
+  const MIXPANEL_REPORTS = [
+    { label: "UPI success → UPI success (weekly retention)", hash: "YQHXsxnUfN29" },
+    { label: "UPI success → BBPS bill pay", hash: "d3STiNnpYSdM" },
+    { label: "UPI success → voucher payment", hash: "fwVDC635agwo" },
+    { label: "UPI success → MF explore landed", hash: "77EaQuqsDPx7" },
+    { label: "Failed native UPI flow → later UPI success", hash: "H8WmDzVLYPBS" },
+    { label: "Wealth intent events by region (90d table)", hash: "L8shzwVdT4RD" }
+  ];
+  const linkRoot = document.getElementById("mpLinks");
+  MIXPANEL_REPORTS.forEach((r, i) => {
+    const a = document.createElement("a");
+    a.href = MP_BASE + "#" + r.hash;
+    a.textContent = r.label;
+    linkRoot.appendChild(a);
+    if (i < MIXPANEL_REPORTS.length - 1) {
+      linkRoot.appendChild(document.createTextNode(" · "));
+    }
+  });
+})();
+  </script>
+</body>
+</html>

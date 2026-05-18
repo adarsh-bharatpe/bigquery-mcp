@@ -6,7 +6,7 @@ This folder holds notes and reference material for **Metabase tables** (and rela
 
 | Folder | App |
 |--------|-----|
-| `bharatpe-consumer/` | BharatPe consumer |
+| `bharatpe-consumer/` | BharatPe consumer — includes **UPI cohort / retention canvas** (`upi-cohort-retention.canvas.tsx`) + SQL under `bharatpe-consumer/sql/` |
 | `invest-bharatpe/` | Invest BharatPe |
 | `bharatpe-merchant/` | BharatPe merchant |
 
