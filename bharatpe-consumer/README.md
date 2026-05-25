@@ -11,6 +11,7 @@ This folder holds **BigQuery + Mixpanel** analysis artifacts for the consumer ap
 | `sql/cohort_volume_retention.sql` | Reproducible BigQuery SQL for volume-segment retention & engagement (adjust date windows). |
 | `sql/upi-retention-queries.sql` | All retention SQL: **(a)–(o)** (volume, onboarding, TPV, pay-in, subType, MCC, QR, Zillion, platform, status, first-5, bank linkages, account type). |
 | `analyses/upi-retention-results.md` | All retention **results** for (a)–(o). |
+| `analyses/upi-retention-results.html` | HTML slide deck (PPT-style) for the retention analysis — open in browser, ←/→ to navigate. |
 | `upi-schema-reference.md` | Column reference for `upi_transactions`, `users`, `user_bank_accounts`. |
 
 ## Canvas preview in Cursor

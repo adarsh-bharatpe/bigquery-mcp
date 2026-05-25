@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="SuperMoney">
+  <rect width="128" height="128" rx="24" fill="#6C2BD9"/>
+  <circle cx="64" cy="52" r="22" fill="#FFD54F"/>
+  <text x="64" y="98" text-anchor="middle" fill="#fff" font-family="system-ui,sans-serif" font-size="18" font-weight="700">SuperMoney</text>
+</svg>

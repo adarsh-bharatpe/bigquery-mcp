@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UPI Engagement &amp; Retention Analysis</title>
+  <style>
+    :root {
+      --brand: #0049cf;
+      --brand-dark: #0036a3;
+      --takeaway-bg: linear-gradient(135deg, #dbeafe 0%, #eff6ff 55%, #fff7ed 100%);
+      --takeaway-accent: #c2410c;
+      --text: #0f172a;
+      --muted: #475569;
+      --bg: #0b1220;
+      --slide-bg: #ffffff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: clamp(14px, 1.65vmin, 20px); }
+    html, body { height: 100%; overflow: hidden; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: var(--text); background: var(--bg); }
+    .deck { height: 100vh; width: 100vw; position: relative; }
+    .slide {
+      display: none;
+      position: absolute;
+      inset: 0;
+      padding: clamp(10px, 1.8vh, 18px) clamp(14px, 2.5vw, 36px) clamp(52px, 6.5vh, 64px);
+      background: var(--slide-bg);
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .slide.active { display: flex; }
+    .slide-frame { display: flex; flex-direction: column; flex: 1; min-height: 0; height: 100%; }
+    .slide-header { flex-shrink: 0; }
+    .slide-body { flex: 1; min-height: 0; overflow: auto; -webkit-overflow-scrolling: touch; }
+    .takeaway {
+      flex-shrink: 0;
+      margin-top: clamp(6px, 1vh, 10px);
+      margin-bottom: clamp(8px, 1.2vh, 14px);
+      padding: clamp(10px, 1.4vh, 14px) clamp(12px, 1.8vw, 18px);
+      background: var(--takeaway-bg);
+      border-left: 6px solid var(--brand);
+      border-radius: 0 10px 10px 0;
+      font-weight: 700;
+      font-size: clamp(1.05rem, 2.15vmin, 1.45rem);
+      color: var(--brand-dark);
+      line-height: 1.35;
+    }
+    .takeaway .hl { color: var(--takeaway-accent); font-weight: 800; }
+    .slide.title-slide {
+      background: linear-gradient(135deg, var(--brand) 0%, #0066e6 60%, #1a7cff 100%);
+      color: #fff;
+      padding: clamp(24px, 5vh, 48px);
+    }
+    .slide.title-slide .slide-frame { justify-content: center; }
+    .slide.title-slide h1 { font-size: clamp(2.2rem, 5.5vmin, 3.8rem); font-weight: 800; line-height: 1.12; max-width: 20ch; }
+    .slide.title-slide .sub { margin-top: clamp(16px, 2.5vh, 28px); font-size: clamp(1.1rem, 2.4vmin, 1.5rem); opacity: 0.95; max-width: 56ch; line-height: 1.45; }
+    .slide.title-slide .meta { margin-top: clamp(20px, 3vh, 32px); font-size: clamp(0.95rem, 1.8vmin, 1.15rem); opacity: 0.85; }
+    .slide.title-slide .takeaway { background: rgba(255,255,255,0.18); border-left-color: #fde68a; color: #fff; }
+    .slide.title-slide .takeaway .hl { color: #fde68a; }
+    h2.slide-heading {
+      font-size: clamp(1.35rem, 3.2vmin, 2.35rem);
+      color: var(--brand);
+      font-weight: 800;
+      line-height: 1.2;
+      padding-bottom: clamp(6px, 1vh, 10px);
+      border-bottom: 3px solid rgba(0, 73, 207, 0.15);
+      margin-bottom: clamp(4px, 0.6vh, 8px);
+    }
+    h2.slide-heading span.num { color: var(--muted); }
+    h3 { font-size: clamp(1rem, 2vmin, 1.25rem); color: var(--brand-dark); margin: clamp(10px, 1.2vh, 14px) 0 6px; font-weight: 700; }
+    p, li { font-size: clamp(0.95rem, 1.85vmin, 1.2rem); line-height: 1.45; }
+    .muted, .def-line { color: var(--muted); font-size: clamp(0.85rem, 1.55vmin, 1.05rem); }
+    ul { margin: clamp(8px, 1vh, 12px) 0 0 1.2rem; }
+    li { margin-bottom: clamp(4px, 0.6vh, 8px); }
+    li.out-scope { font-style: italic; color: var(--muted); }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: clamp(12px, 2vw, 20px); margin-top: 10px; }
+    .card { background: rgba(0, 73, 207, 0.08); border: 1px solid rgba(0, 73, 207, 0.18); border-radius: 10px; padding: 14px; }
+    .card strong { display: block; color: var(--brand); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 6px; }
+    .card .val { font-size: clamp(1.1rem, 2.2vmin, 1.35rem); font-weight: 700; }
+    table.data { width: 100%; border-collapse: collapse; font-size: clamp(0.72rem, 1.45vmin, 1.05rem); margin-top: 8px; }
+    table.data th, table.data td { border: 1px solid #cbd5e1; padding: clamp(4px, 0.65vh, 7px) clamp(6px, 0.9vw, 9px); text-align: right; }
+    table.data th { background: var(--brand); color: #fff; font-weight: 700; position: sticky; top: 0; z-index: 1; }
+    table.data td:first-child, table.data th:first-child { text-align: left; }
+    table.data tr:nth-child(even) td { background: #f8fafc; }
+    .split-tables { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+    .lens-index { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-top: 10px; }
+    .lens-index button.lens-btn { width: 100%; text-align: left; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; font-size: clamp(0.82rem, 1.5vmin, 1rem); cursor: pointer; font-family: inherit; }
+    .lens-index button.lens-btn:hover { border-color: var(--brand); background: rgba(0,73,207,0.08); }
+    .lens-index .tag { font-weight: 800; color: var(--brand); }
+    .lens-index .hint { color: var(--takeaway-accent); font-weight: 700; font-size: 0.88em; }
+    .deck-links { display: flex; flex-direction: column; gap: clamp(12px, 2vh, 20px); margin-top: clamp(16px, 3vh, 28px); }
+    .nlm-link { display: inline-block; font-size: clamp(1.35rem, 3.2vmin, 2.1rem); font-weight: 800; color: var(--brand); text-decoration: underline; line-height: 1.25; }
+    .nlm-link-secondary { color: #0d9488; }
+    .btn-source {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--brand) 0%, #0066e6 100%);
+      color: #fff;
+      font-weight: 700;
+      font-size: clamp(0.78rem, 1.35vmin, 0.92rem);
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 4px 16px rgba(0, 73, 207, 0.45);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-source:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 8px 22px rgba(0, 73, 207, 0.5); }
+    .btn-source-fab {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      z-index: 102;
+      display: none;
+      align-items: center;
+      gap: 6px;
+    }
+    .slide.active .btn-source-fab { display: inline-flex; animation: fabPop 0.4s ease backwards; }
+    .fab-icon { font-family: ui-monospace, monospace; font-size: 0.95em; opacity: 0.9; }
+    .actions-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: clamp(12px, 1.8vw, 18px);
+      height: 100%;
+      min-height: min(420px, 55vh);
+    }
+    .action-box {
+      border: 1px solid rgba(0, 73, 207, 0.2);
+      border-radius: 14px;
+      padding: clamp(12px, 1.6vw, 18px);
+      background: linear-gradient(160deg, rgba(0, 73, 207, 0.06) 0%, #fff 55%);
+      box-shadow: 0 4px 14px rgba(0, 73, 207, 0.08);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .action-box:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0, 73, 207, 0.14); }
+    .action-box h3 { margin-top: 4px; font-size: clamp(0.95rem, 1.9vmin, 1.15rem); }
+    .action-box ul { margin-top: 6px; font-size: clamp(0.8rem, 1.45vmin, 0.95rem); }
+    .action-icon { font-size: clamp(1.6rem, 3vmin, 2rem); line-height: 1; }
+    @keyframes fabPop { from { opacity: 0; transform: scale(0.85) translateY(8px); } to { opacity: 1; transform: none; } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+    @keyframes slideReveal { from { opacity: 0; transform: translateX(18px); } to { opacity: 1; transform: none; } }
+    @keyframes floatOrb { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(12px, -18px) scale(1.05); } }
+    @keyframes pulseBar { 0%, 100% { opacity: 0.85; } 50% { opacity: 1; } }
+    @keyframes modalIn { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: none; } }
+    .slide.active { animation: slideReveal 0.42s cubic-bezier(0.22, 1, 0.36, 1); }
+    .slide.active .slide-header,
+    .slide.active .slide-body,
+    .slide.active .takeaway { animation: fadeUp 0.5s ease backwards; }
+    .slide.active .slide-body { animation-delay: 0.06s; }
+    .slide.active .takeaway { animation-delay: 0.12s; }
+    .slide.active .anim-card { animation: fadeUp 0.45s ease backwards; animation-delay: calc(0.05s + var(--i, 0) * 0.05s); }
+    .sql-modal.open .sql-modal-panel { animation: modalIn 0.28s ease; }
+    .deck-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+      background: var(--bg);
+    }
+    .deck-bg .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.45;
+      animation: floatOrb 8s ease-in-out infinite;
+    }
+    .deck-bg .orb-1 { width: 42vmin; height: 42vmin; background: rgba(0, 73, 207, 0.35); top: -8%; left: -6%; }
+    .deck-bg .orb-2 { width: 36vmin; height: 36vmin; background: rgba(194, 65, 12, 0.22); bottom: 10%; right: -4%; animation-delay: -3s; }
+    .deck-bg .orb-3 { width: 28vmin; height: 28vmin; background: rgba(13, 148, 136, 0.2); top: 40%; right: 20%; animation-delay: -5s; }
+    .deck { position: relative; z-index: 1; }
+    .slide { z-index: 1; }
+    .title-deco { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+    .title-deco .ring {
+      position: absolute;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      animation: floatOrb 10s ease-in-out infinite;
+    }
+    .title-deco .ring-1 { width: 280px; height: 280px; top: 8%; right: 8%; }
+    .title-deco .ring-2 { width: 160px; height: 160px; bottom: 18%; right: 22%; animation-delay: -2s; }
+    .title-deco .ring-3 { width: 100px; height: 100px; top: 30%; right: 35%; border-color: rgba(253, 230, 138, 0.35); }
+    .slide.title-slide .slide-frame { position: relative; }
+    .progress { animation: pulseBar 2.5s ease-in-out infinite; }
+    .comp-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    @media (max-width: 1100px) { .comp-grid { grid-template-columns: repeat(2, 1fr); } }
+    .comp-item { border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; background: #fafbfc; }
+    .comp-head { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; }
+    .comp-head-dual h4 { flex: 1 1 100%; margin-top: 4px; }
+    .comp-logo {
+      width: clamp(56px, 8vmin, 72px);
+      height: clamp(56px, 8vmin, 72px);
+      object-fit: contain;
+      background: #fff;
+      border-radius: 12px;
+      padding: 8px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      image-rendering: -webkit-optimize-contrast;
+    }
+    .comp-item { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+    .comp-item:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 73, 207, 0.12); }
+    .comp-item[data-brand="paytm"] .comp-logo { background: #00baf2; }
+    .comp-item[data-brand="phonepe"] .comp-logo { background: #5f259f; filter: none; }
+    .comp-item[data-brand="cred"] .comp-logo { background: transparent; border: none; box-shadow: none; padding: 0; }
+    .comp-item[data-brand="googlepay"] .comp-logo { background: #f1f5f9; }
+    img.comp-logo[data-brand="amazon"] { background: #ff9900; }
+    img.comp-logo[data-brand="flipkart"] { background: #2874f0; filter: brightness(0) invert(1); }
+    .comp-item h4 { color: var(--brand); font-size: clamp(1rem, 2vmin, 1.15rem); font-weight: 800; }
+    .comp-item ul { margin: 0 0 0 1rem; font-size: clamp(0.82rem, 1.45vmin, 0.98rem); }
+    .comp-item li { color: var(--muted); margin-bottom: 4px; }
+    .progress { position: fixed; bottom: 0; left: 0; height: 5px; background: var(--brand); z-index: 101; transition: width 0.2s; }
+    .slide-counter { position: fixed; top: 14px; right: 16px; z-index: 100; background: rgba(255,255,255,0.95); padding: 6px 12px; border-radius: 8px; border: 1px solid #e2e8f0; font-weight: 600; font-size: clamp(0.75rem, 1.4vmin, 0.9rem); color: var(--muted); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .sql-modal { display: none; position: fixed; inset: 0; z-index: 200; align-items: center; justify-content: center; padding: 24px; }
+    .sql-modal.open { display: flex; }
+    .sql-modal-backdrop { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.65); }
+    .sql-modal-panel {
+      position: relative;
+      z-index: 1;
+      width: min(960px, 96vw);
+      max-height: 88vh;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .sql-modal-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid #e2e8f0; background: #f8fafc; }
+    .sql-modal-head h3 { font-size: 1.1rem; color: var(--brand); font-weight: 800; }
+    .sql-modal-close { border: none; background: transparent; font-size: 1.5rem; line-height: 1; cursor: pointer; color: var(--muted); padding: 4px 8px; }
+    .sql-modal-close:hover { color: var(--text); }
+    .sql-modal-body { flex: 1; overflow: auto; padding: 0; }
+    .sql-modal-body pre { margin: 0; padding: 16px 18px; font-size: 0.72rem; line-height: 1.45; white-space: pre-wrap; word-break: break-word; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; background: #0f172a; color: #e2e8f0; }
+    .sql-modal-foot { padding: 10px 18px; font-size: 0.8rem; color: var(--muted); border-top: 1px solid #e2e8f0; }
+    .nav-hint { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); font-size: 0.7rem; color: rgba(15,23,42,0.45); z-index: 99; }
+    .nav-btn { position: fixed; top: 50%; transform: translateY(-50%); width: 48px; height: 48px; border: none; border-radius: 50%; background: rgba(0,73,207,0.9); color: #fff; font-size: 1.4rem; cursor: pointer; z-index: 100; opacity: 0.4; }
+    .nav-btn:hover { opacity: 1; }
+    .nav-btn.prev { left: 10px; }
+    .nav-btn.next { right: 10px; }
+    code { font-family: ui-monospace, monospace; font-size: 0.88em; background: rgba(0,73,207,0.1); padding: 0.1em 0.35em; border-radius: 4px; }
+    /* Dense / fill layouts — slides 2,3,5,7,9–11,13–20,24 */
+    .slide.slide-fill { padding-bottom: clamp(40px, 5vh, 52px); }
+    .slide-fill .slide-frame { gap: 2px; }
+    .slide-fill .slide-header { margin-bottom: 2px; }
+    .slide-fill h2.slide-heading {
+      font-size: clamp(1.15rem, 2.5vmin, 1.75rem);
+      padding-bottom: 4px;
+      margin-bottom: 2px;
+    }
+    .slide-fill .def-line,
+    .slide-fill .slide-header > .muted { font-size: clamp(0.78rem, 1.35vmin, 0.92rem); margin-bottom: 2px; line-height: 1.3; }
+    .slide-fill .slide-body {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      justify-content: stretch;
+    }
+    .slide-fill .takeaway {
+      font-size: clamp(0.92rem, 1.85vmin, 1.2rem);
+      padding: clamp(8px, 1vh, 11px) clamp(12px, 1.5vw, 16px);
+      margin-top: 4px;
+      margin-bottom: 4px;
+    }
+    .slide-fill table.data {
+      font-size: clamp(0.88rem, 1.75vmin, 1.15rem);
+      margin-top: 0;
+    }
+    .slide-fill table.data th,
+    .slide-fill table.data td {
+      padding: clamp(7px, 1.1vh, 12px) clamp(8px, 1vw, 11px);
+    }
+    .slide-fill table.data tbody tr { height: 1%; }
+    .slide-fill h3 { font-size: clamp(0.95rem, 1.85vmin, 1.15rem); margin: 4px 0 4px; }
+    .slide-fill p, .slide-fill li { font-size: clamp(0.95rem, 1.85vmin, 1.2rem); line-height: 1.38; }
+    .slide-fill .muted { font-size: clamp(0.82rem, 1.45vmin, 1rem); margin-top: 4px; flex-shrink: 0; }
+
+    .agenda-layout {
+      display: grid;
+      grid-template-columns: 1.35fr 0.9fr;
+      gap: clamp(14px, 2vw, 22px);
+      flex: 1;
+      min-height: 0;
+      align-items: stretch;
+    }
+    .agenda-layout .agenda-list {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin: 0;
+      padding-left: 1.35rem;
+      list-style: disc;
+    }
+    .agenda-layout .agenda-list li { margin-bottom: clamp(10px, 1.5vh, 16px); font-size: clamp(1.05rem, 2.1vmin, 1.4rem); }
+    .agenda-cards {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(12px, 1.8vh, 18px);
+      justify-content: center;
+    }
+    .slide-fill .card {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(16px, 2.5vh, 24px);
+      border-radius: 14px;
+    }
+    .slide-fill .card strong { font-size: clamp(0.85rem, 1.5vmin, 1rem); margin-bottom: 8px; }
+    .slide-fill .card .val { font-size: clamp(1.25rem, 2.6vmin, 1.65rem); }
+
+    .sources-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(14px, 2vw, 22px);
+      flex: 1;
+      min-height: 0;
+      align-items: stretch;
+    }
+    .sources-layout .source-panel {
+      display: flex;
+      flex-direction: column;
+      background: rgba(0, 73, 207, 0.05);
+      border: 1px solid rgba(0, 73, 207, 0.14);
+      border-radius: 12px;
+      padding: clamp(12px, 1.8vw, 18px);
+      min-height: 0;
+    }
+    .sources-layout .source-panel ul { flex: 1; margin-top: 6px; }
+    .sources-layout .source-panel table.data { flex: 1; }
+
+    .slide-lens-index .lens-index {
+      flex: 1;
+      min-height: 0;
+      grid-template-columns: repeat(5, 1fr);
+      gap: clamp(8px, 1.2vw, 12px);
+      margin-top: 4px;
+      align-content: stretch;
+    }
+    .slide-lens-index .lens-btn {
+      padding: clamp(10px, 1.4vh, 14px) clamp(10px, 1vw, 12px);
+      font-size: clamp(0.88rem, 1.55vmin, 1.05rem);
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .slide-lens-index .lens-btn .tag { font-size: clamp(0.95rem, 1.7vmin, 1.1rem); }
+    .slide-lens-index .lens-btn .hint { font-size: clamp(0.8rem, 1.4vmin, 0.95rem); margin-top: auto; }
+
+    .tables-fill {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(8px, 1vh, 10px);
+    }
+    .tables-row {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+      gap: clamp(10px, 1.5vw, 16px);
+      align-items: stretch;
+    }
+    .tables-row > .table-panel,
+    .tables-fill > .table-panel {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: clamp(8px, 1vw, 12px);
+    }
+    .table-panel h3 { flex-shrink: 0; }
+    .table-panel table.data { flex: 1; }
+    .split-tables-fill {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 1.55fr 1fr;
+      gap: clamp(12px, 1.8vw, 18px);
+    }
+    .split-tables-fill .col-stack {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(8px, 1vh, 10px);
+      min-height: 0;
+    }
+    .split-tables-fill .table-panel { flex: 1; min-height: 0; }
+
+    .table-single-fill {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 1fr minmax(200px, 28%);
+      gap: clamp(14px, 2vw, 20px);
+      align-items: stretch;
+    }
+    .table-single-fill.table-only { grid-template-columns: 1fr; }
+    .slide-fill .table-single-fill.table-only .table-panel table.data {
+      font-size: clamp(1rem, 2vmin, 1.3rem);
+    }
+    .slide-fill .table-single-fill.table-only .table-panel table.data tbody td {
+      padding: clamp(11px, 1.9vh, 20px) clamp(10px, 1.2vw, 14px);
+    }
+    .table-single-fill .table-panel {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: clamp(10px, 1.2vw, 14px);
+    }
+    .table-single-fill .table-panel table.data tbody td { font-size: clamp(0.95rem, 1.9vmin, 1.22rem); }
+    .table-single-fill .table-panel table.data tbody tr td:first-child { font-weight: 600; }
+    .metric-rail {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(10px, 1.4vh, 14px);
+      justify-content: center;
+    }
+    .metric-rail .metric-card {
+      background: linear-gradient(135deg, rgba(0, 73, 207, 0.1) 0%, rgba(0, 73, 207, 0.04) 100%);
+      border: 1px solid rgba(0, 73, 207, 0.2);
+      border-radius: 12px;
+      padding: clamp(12px, 1.8vh, 18px);
+      text-align: center;
+    }
+    .metric-rail .metric-card .lbl { font-size: clamp(0.75rem, 1.3vmin, 0.88rem); color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+    .metric-rail .metric-card .num { font-size: clamp(1.4rem, 3vmin, 2rem); font-weight: 800; color: var(--brand); line-height: 1.1; margin-top: 4px; }
+    .metric-rail .metric-card .sub { font-size: clamp(0.8rem, 1.4vmin, 0.95rem); color: var(--takeaway-accent); font-weight: 700; margin-top: 4px; }
+
+    .future-grid {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(4, minmax(0, 1fr));
+      gap: clamp(10px, 1.4vw, 14px);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .future-grid li {
+      margin: 0;
+      padding: clamp(12px, 1.6vh, 16px) clamp(14px, 1.5vw, 18px);
+      background: rgba(0, 73, 207, 0.06);
+      border: 1px solid rgba(0, 73, 207, 0.16);
+      border-radius: 12px;
+      font-size: clamp(0.92rem, 1.75vmin, 1.12rem);
+      line-height: 1.35;
+      display: flex;
+      align-items: center;
+    }
+    .slide-future .slide-body { gap: clamp(10px, 1.2vh, 14px); }
+    .slide-future .footer-note {
+      flex-shrink: 0;
+      font-size: clamp(0.88rem, 1.5vmin, 1.05rem);
+      color: var(--muted);
+      padding: 8px 12px;
+      background: #f1f5f9;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 1200px) {
+      .slide-lens-index .lens-index { grid-template-columns: repeat(4, 1fr); }
+      .agenda-layout { grid-template-columns: 1fr; }
+      .sources-layout { grid-template-columns: 1fr; }
+      .split-tables-fill { grid-template-columns: 1fr; }
+      .table-single-fill { grid-template-columns: 1fr; }
+      .metric-rail { flex-direction: row; flex-wrap: wrap; }
+      .metric-rail .metric-card { flex: 1 1 140px; }
+      .future-grid { grid-template-rows: auto; }
+    }
+
+    .slide-magnify-intro {
+      background: linear-gradient(160deg, #eff6ff 0%, #fff 45%, #fff7ed 100%);
+    }
+    .slide-magnify-intro .slide-frame {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+    }
+    .slide-magnify-intro .magnify-stage {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(16px, 3vh, 28px);
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .slide-magnify-intro .magnify-visual {
+      position: relative;
+      width: clamp(200px, 32vmin, 320px);
+      height: clamp(200px, 32vmin, 320px);
+    }
+    .slide-magnify-intro .magnify-glow {
+      position: absolute;
+      inset: -12%;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 73, 207, 0.22) 0%, transparent 70%);
+      animation: magnifyPulse 2.8s ease-in-out infinite;
+    }
+    .slide-magnify-intro .magnify-svg {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 12px 28px rgba(0, 73, 207, 0.25));
+      animation: magnifyFloat 4s ease-in-out infinite;
+    }
+    .slide-magnify-intro .magnify-svg .lens-glass {
+      transform-origin: 118px 118px;
+      animation: magnifyWiggle 3.5s ease-in-out infinite;
+    }
+    .slide-magnify-intro .scan-ring {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 42%;
+      height: 42%;
+      margin: -21% 0 0 -21%;
+      border: 3px dashed rgba(0, 73, 207, 0.35);
+      border-radius: 50%;
+      animation: magnifyScan 2.4s linear infinite;
+    }
+    .slide-magnify-intro .scan-dot {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--takeaway-accent);
+      box-shadow: 0 0 0 6px rgba(194, 65, 12, 0.2);
+      animation: magnifyDot 2.4s ease-in-out infinite;
+    }
+    .slide-magnify-intro .scan-dot-1 { left: 18%; top: 28%; animation-delay: 0s; }
+    .slide-magnify-intro .scan-dot-2 { right: 22%; top: 35%; animation-delay: 0.6s; }
+    .slide-magnify-intro .scan-dot-3 { left: 32%; bottom: 22%; animation-delay: 1.2s; }
+    .slide-magnify-intro h2.magnify-title {
+      font-size: clamp(1.6rem, 4vmin, 2.75rem);
+      font-weight: 800;
+      color: var(--brand);
+      line-height: 1.15;
+      max-width: 22ch;
+      border: none;
+      padding: 0;
+      margin: 0;
+    }
+    .slide-magnify-intro .magnify-sub {
+      font-size: clamp(1rem, 2vmin, 1.35rem);
+      color: var(--muted);
+      max-width: 48ch;
+      line-height: 1.4;
+    }
+    @keyframes magnifyPulse {
+      0%, 100% { opacity: 0.5; transform: scale(0.95); }
+      50% { opacity: 1; transform: scale(1.05); }
+    }
+    @keyframes magnifyFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes magnifyWiggle {
+      0%, 100% { transform: rotate(-6deg); }
+      50% { transform: rotate(8deg); }
+    }
+    @keyframes magnifyScan {
+      0% { transform: rotate(0deg) scale(0.85); opacity: 0.35; }
+      50% { opacity: 0.85; }
+      100% { transform: rotate(360deg) scale(1.1); opacity: 0.35; }
+    }
+    @keyframes magnifyDot {
+      0%, 100% { opacity: 0.2; transform: scale(0.6); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .slide.active, .slide.active .slide-header, .slide.active .slide-body, .slide.active .takeaway,
+      .slide.active .anim-card,       .slide.active .btn-source-fab, .deck-bg .orb, .title-deco .ring, .progress,
+      .slide-magnify-intro .magnify-glow, .slide-magnify-intro .magnify-svg,
+      .slide-magnify-intro .lens-glass, .slide-magnify-intro .scan-ring, .slide-magnify-intro .scan-dot { animation: none !important; }
+    }
+    @media print { .nav-btn, .nav-hint, .slide-counter, .progress, .sql-modal, .btn-source-fab, .deck-bg { display: none !important; } .slide { display: flex !important; page-break-after: always; min-height: 100vh; overflow: visible; animation: none !important; } }
+  </style>
+</head>
+<body>
+  <div class="deck-bg" aria-hidden="true">
+    <span class="orb orb-1"></span>
+    <span class="orb orb-2"></span>
+    <span class="orb orb-3"></span>
+  </div>
+  <div class="deck" id="deck">
+
+    <!-- Slide 1 -->
+    <section class="slide title-slide active" data-slide="1">
+      <div class="slide-frame">
+      <div class="title-deco" aria-hidden="true"><span class="ring ring-1"></span><span class="ring ring-2"></span><span class="ring ring-3"></span></div>
+      <h1>UPI Engagement &amp; Retention Analysis</h1>
+      <p class="sub">Payout-centric cohort retention, behavioural lenses, competitive hooks, and recommended actions — BharatPe consumer UPI.</p>
+      <footer class="takeaway">Key takeaway: <span class="hl">15 behavioural lenses</span> + VPA view define where to act on UPI retention.</footer>
+      <p class="meta">May 2026 · Source: <code>upi-retention-results.md</code> · BigQuery <code>bharatpe-analytics-prod.upi</code></p>
+      </div>
+    </section>
+
+    <!-- Slide 2 -->
+    <section class="slide slide-fill slide-agenda" data-slide="2">
+      <div class="slide-frame">
+        <div class="slide-header"><h2 class="slide-heading">Agenda</h2></div>
+        <div class="slide-body agenda-layout">
+          <ul class="agenda-list">
+            <li><strong>How today’s retention looks</strong> — VPA cohort M1–M6 + payout M+1 (5.1)</li>
+            <li><strong>Retention through various lenses</strong> — 5.1–5.15 (a–o), pooled Aug 2025–Jan 2026</li>
+            <li><strong>What should be done?</strong> — actions from data + competitors</li>
+            <li class="out-scope"><strong>How should it be done?</strong> — roadmap &amp; experiments (not today)</li>
+          </ul>
+          <div class="agenda-cards">
+            <div class="card"><strong>Today</strong><span class="val">Diagnosis &amp; segmentation</span></div>
+            <div class="card"><strong>Later</strong><span class="val">Execution &amp; measurement</span></div>
+          </div>
+        </div>
+        <footer class="takeaway">Key takeaway: Today = <span class="hl">where retention breaks</span> by cohort and behaviour; execution is a follow-up.</footer>
+      </div>
+    </section>
+
+    <!-- Slide 3 -->
+    <section class="slide slide-fill slide-sources" data-slide="3">
+      <div class="slide-frame">
+        <div class="slide-header"><h2 class="slide-heading">Data sources &amp; definitions</h2></div>
+        <div class="slide-body sources-layout">
+            <div class="source-panel">
+              <h3>Warehouse (primary)</h3>
+              <ul>
+                <li><strong>~3M UPI IDs</strong> · <strong>~60M txns</strong> · <strong>~₹10,000 Cr</strong> TPV</li>
+                <li><code>upi_transactions</code>, <code>users</code>, <code>user_bank_accounts</code></li>
+                <li><strong>Payout:</strong> <code>status=SUCCESS</code>, <code>subType ≠ RECEIVE_EXTERNAL</code></li>
+                <li><strong>Pay-in:</strong> <code>subType = RECEIVE_EXTERNAL</code></li>
+                <li><strong>Pool (5.2–5.15):</strong> first payout SUCCESS Aug 2025–Jan 2026 (~719,936 users)</li>
+              </ul>
+            </div>
+            <div class="source-panel">
+              <h3>Other inputs &amp; terms</h3>
+              <ul>
+                <li><strong>User calling</strong> — qualitative friction</li>
+                <li><strong>Competitor benchmarking</strong> — Slide 23</li>
+                <li><strong>Mixpanel / BBPS</strong> — Slide 22 LINK</li>
+              </ul>
+              <table class="data">
+                <thead><tr><th>Term</th><th>Rule</th></tr></thead>
+                <tbody>
+                  <tr><td>M+k</td><td>≥1 payout SUCCESS in cohort_month + k</td></tr>
+                  <tr><td>First 30d</td><td>Day 0 = first payout SUCCESS date</td></tr>
+                  <tr><td>Retention %</td><td>Active users ÷ cohort size × 100</td></tr>
+                </tbody>
+              </table>
+            </div>
+        </div>
+        <footer class="takeaway">Key takeaway: All lens slides use the <span class="hl">same payout definition</span> and BigQuery <code>upi</code> dataset — comparable across 5.1–5.15.</footer>
+      </div>
+    </section>
+
+    <!-- Slide 4 -->
+    <section class="slide" data-slide="4">
+      <div class="slide-frame">
+        <div class="slide-header">
+          <h2 class="slide-heading">Overall UPI retention (VPA cohort)</h2>
+          <p class="def-line">Cohort = VPA created month. M+k = % active in month k after creation.</p>
+        </div>
+        <div class="slide-body">
+          <table class="data">
+            <thead><tr><th>Month</th><th>VPA Created</th><th>M1 %</th><th>M2 %</th><th>M3 %</th><th>M4 %</th><th>M5 %</th><th>M6 %</th></tr></thead>
+            <tbody>
+              <tr><td>2026-05</td><td>220,748</td><td>31.29</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+              <tr><td>2026-04</td><td>255,951</td><td>31.55</td><td>11.47</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+              <tr><td>2026-03</td><td>286,398</td><td>35.51</td><td>13.03</td><td>7.45</td><td>0</td><td>0</td><td>0</td></tr>
+              <tr><td>2026-02</td><td>281,795</td><td>37.14</td><td>14.52</td><td>8.43</td><td>5.94</td><td>0</td><td>0</td></tr>
+              <tr><td>2026-01</td><td>254,955</td><td>34.56</td><td>13.70</td><td>8.42</td><td>6.29</td><td>4.78</td><td>0</td></tr>
+              <tr><td>2025-12</td><td>249,624</td><td>36.40</td><td>15.17</td><td>8.82</td><td>7.01</td><td>5.61</td><td>4.48</td></tr>
+              <tr><td>2025-11</td><td>255,728</td><td>39.41</td><td>16.54</td><td>10.45</td><td>7.71</td><td>6.47</td><td>5.37</td></tr>
+              <tr><td>2025-10</td><td>302,636</td><td>42.13</td><td>17.21</td><td>10.51</td><td>8.40</td><td>6.64</td><td>5.56</td></tr>
+              <tr><td>2025-09</td><td>286,567</td><td>46.97</td><td>13.19</td><td>7.80</td><td>6.38</td><td>5.44</td><td>4.53</td></tr>
+              <tr><td>2025-08</td><td>347,167</td><td>46.32</td><td>12.66</td><td>6.68</td><td>5.38</td><td>4.71</td><td>4.23</td></tr>
+              <tr><td>2025-07</td><td>313,681</td><td>43.03</td><td>11.47</td><td>5.81</td><td>4.61</td><td>4.12</td><td>3.64</td></tr>
+              <tr><td>2025-06</td><td>112,108</td><td>33.80</td><td>10.82</td><td>5.35</td><td>4.22</td><td>3.80</td><td>3.47</td></tr>
+              <tr><td>2025-05</td><td>174,249</td><td>34.65</td><td>6.73</td><td>3.93</td><td>3.23</td><td>2.91</td><td>2.67</td></tr>
+              <tr><td>2025-04</td><td>145,254</td><td>36.66</td><td>8.08</td><td>3.51</td><td>2.66</td><td>2.88</td><td>2.74</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <footer class="takeaway">Key takeaway: VPA <span class="hl">M1 ~35–47%</span> on recent cohorts; M2–M6 decay fast — month-1 habit is critical (vs payout M+1 ~22–33% in 5.1).</footer>
+      </div>
+    </section>
+
+    <!-- Slide 5 — lens section intro -->
+    <section class="slide slide-magnify-intro" data-slide="5">
+      <div class="slide-frame">
+        <div class="magnify-stage">
+          <div class="magnify-visual" aria-hidden="true">
+            <span class="magnify-glow"></span>
+            <span class="scan-ring"></span>
+            <span class="scan-dot scan-dot-1"></span>
+            <span class="scan-dot scan-dot-2"></span>
+            <span class="scan-dot scan-dot-3"></span>
+            <svg class="magnify-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Magnifying glass">
+              <g class="lens-glass">
+                <circle cx="85" cy="85" r="52" fill="rgba(219,234,254,0.95)" stroke="#0049cf" stroke-width="8"/>
+                <circle cx="85" cy="85" r="38" fill="rgba(255,255,255,0.55)" stroke="rgba(0,73,207,0.25)" stroke-width="2"/>
+                <path d="M118 118 L168 168" stroke="#0049cf" stroke-width="14" stroke-linecap="round"/>
+                <ellipse cx="72" cy="72" rx="18" ry="10" fill="rgba(255,255,255,0.65)" transform="rotate(-25 72 72)"/>
+              </g>
+            </svg>
+          </div>
+          <h2 class="magnify-title">UPI Retention through various other lens</h2>
+          <p class="magnify-sub">15 behavioural cuts on first-30d payout behaviour · pooled Aug 2025–Jan 2026 · press → or open the index on slide 22</p>
+        </div>
+        <footer class="takeaway">Key takeaway: Next slides zoom in on <span class="hl">who retains</span> — volume, rails, MCC, rewards, platform, and linked-account depth.</footer>
+      </div>
+    </section>
+
+    <!-- Slide 6 — 5.1 (a) -->
+    <section class="slide" data-slide="6">
+      <div class="slide-frame">
+        <div class="slide-header">
+          <h2 class="slide-heading"><span class="num">5.1 (a)</span> First payout SUCCESS month → M+1</h2>
+          <p class="def-line">M+1 = ≥1 payout SUCCESS in next calendar month. Cohort = first payout SUCCESS month.</p>
+        </div>
+        <div class="slide-body">
+          <table class="data">
+            <thead><tr><th>Cohort</th><th>Cohort users</th><th>M+1 active</th><th>M+1 %</th></tr></thead>
+            <tbody>
+              <tr><td>2025-03</td><td>89,560</td><td>18,776</td><td>20.96</td></tr>
+              <tr><td>2025-04</td><td>46,650</td><td>8,737</td><td>18.73</td></tr>
+              <tr><td>2025-05</td><td>53,342</td><td>9,163</td><td>17.18</td></tr>
+              <tr><td>2025-06</td><td>33,687</td><td>8,267</td><td>24.54</td></tr>
+              <tr><td>2025-07</td><td>118,467</td><td>23,312</td><td>19.68</td></tr>
+              <tr><td>2025-08</td><td>152,360</td><td>32,670</td><td>21.44</td></tr>
+              <tr><td>2025-09</td><td>131,904</td><td>29,070</td><td>22.04</td></tr>
+              <tr><td>2025-10</td><td>128,500</td><td>40,328</td><td>31.38</td></tr>
+              <tr><td>2025-11</td><td>109,520</td><td>35,988</td><td>32.86</td></tr>
+              <tr><td>2025-12</td><td>99,360</td><td>31,842</td><td>32.05</td></tr>
+              <tr><td>2026-01</td><td>94,433</td><td>29,106</td><td>30.82</td></tr>
+              <tr><td>2026-02</td><td>112,961</td><td>34,150</td><td>30.23</td></tr>
+              <tr><td>2026-03</td><td>108,799</td><td>30,612</td><td>28.14</td></tr>
+              <tr><td>2026-04</td><td>88,317</td><td>24,956</td><td>28.26</td></tr>
+            </tbody>
+          </table>
+        </div>
+                <button type="button" class="btn-source btn-source-fab" data-sql-slide="6" aria-label="View SQL source"><span class="fab-icon" aria-hidden="true">{ }</span> Source</button>
+        <footer class="takeaway">Key takeaway: Payout M+1 rose from <span class="hl">~17–24%</span> (Mar–Sep 2025) to <span class="hl">~28–33%</span> (Oct 2025+) — still below VPA M1 on Slide 4.</footer>
+      </div>
+    </section>
+
+    <!-- 5.2 (b) -->
+    <section class="slide slide-fill" data-slide="7">
+      <div class="slide-frame">
+        <div class="slide-header">
+          <h2 class="slide-heading"><span class="num">5.2 (b)</span> Payout volume — first 30d</h2>
+          <p class="def-line">Light=1, Medium=2–5, Heavy=6–20, Power=21+ payout SUCCESS txns. Pool: 729,803 users (Aug 2025–Jan 2026).</p>
+        </div>
+        <div class="slide-body split-tables-fill">
+            <div class="table-panel">
+              <h3>Pooled retention %</h3>
+              <table class="data">
+                <thead><tr><th>Segment</th><th>Users</th><th>M+0</th><th>M+1</th><th>M+2</th><th>M+3</th><th>M+4</th><th>M+5</th><th>M+6</th></tr></thead>
+                <tbody>
+                  <tr><td>Light</td><td>286,756</td><td>100</td><td>2.56</td><td>3.99</td><td>3.52</td><td>2.99</td><td>2.33</td><td>1.77</td></tr>
+                  <tr><td>Medium</td><td>239,635</td><td>100</td><td>22.92</td><td>10.34</td><td>8.18</td><td>6.65</td><td>4.77</td><td>3.41</td></tr>
+                  <tr><td>Heavy</td><td>125,309</td><td>100</td><td>57.68</td><td>29.36</td><td>21.80</td><td>17.15</td><td>12.21</td><td>8.40</td></tr>
+                  <tr><td>Power</td><td>78,103</td><td>100</td><td>88.27</td><td>61.25</td><td>46.39</td><td>37.26</td><td>26.70</td><td>18.43</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-stack">
+              <div class="table-panel">
+              <h3>M+1 active users (pool)</h3>
+              <table class="data">
+                <thead><tr><th>Segment</th><th>M+1 users</th></tr></thead>
+                <tbody>
+                  <tr><td>Light</td><td>7,340</td></tr>
+                  <tr><td>Medium</td><td>54,923</td></tr>
+                  <tr><td>Heavy</td><td>72,274</td></tr>
+                  <tr><td>Power</td><td>68,942</td></tr>
+                </tbody>
+              </table>
+              </div>
+              <div class="table-panel">
+              <h3>Sep 2025 cohort %</h3>
+              <table class="data">
+                <thead><tr><th>Segment</th><th>Users</th><th>M+1</th><th>M+6</th></tr></thead>
+                <tbody>
+                  <tr><td>Light</td><td>58,144</td><td>2.25</td><td>2.31</td></tr>
+                  <tr><td>Medium</td><td>45,503</td><td>19.10</td><td>4.42</td></tr>
+                  <tr><td>Heavy</td><td>20,200</td><td>52.59</td><td>11.50</td></tr>
+                  <tr><td>Power</td><td>10,764</td><td>86.41</td><td>26.98</td></tr>
+                </tbody>
+              </table>
+              </div>
+            </div>
+        </div>
+                <button type="button" class="btn-source btn-source-fab" data-sql-slide="7" aria-label="View SQL source"><span class="fab-icon" aria-hidden="true">{ }</span> Source</button>
+        <footer class="takeaway">Key takeaway: <span class="hl">Power ~88% M+1</span> vs <span class="hl">Light ~2.6%</span> — first-30d payout count is the strongest retention driver.</footer>
+      </div>
+    </section>
+
+    <!-- 5.3 (c) -->
+    <section class="slide" data-slide="8">
+      <div class="slide-frame">
+        <div class="slide-header"><h2 class="slide-heading"><span class="num">5.3</span> Onboarding month (`users.created_at`)</h2></div>
+        <div class="slide-body">
+          <p class="def-line">Onboarding month = <code>users.created_at</code>. M+0 = payout SUCCESS same month. Periods: M+0, M+1, M+2, M+3, M+6.</p>
+          <table class="data">
+            <thead><tr><th>Onboarding</th><th>Cohort</th><th>M+0</th><th>M+1</th><th>M+2</th><th>M+3</th><th>M+6</th></tr></thead>
+            <tbody>
+              <tr><td>2025-03</td><td>298,764</td><td>26.91</td><td>7.68</td><td>3.76</td><td>1.61</td><td>1.83</td></tr>
+              <tr><td>2025-04</td><td>145,252</td><td>26.09</td><td>6.69</td><td>3.00</td><td>2.26</td><td>2.14</td></tr>
+              <tr><td>2025-05</td><td>174,247</td><td>26.45</td><td>5.68</td><td>3.29</td><td>2.65</td><td>2.10</td></tr>
+              <tr><td>2025-06</td><td>112,109</td><td>25.54</td><td>9.03</td><td>4.43</td><td>3.49</td><td>2.77</td></tr>
+              <tr><td>2025-07</td><td>313,677</td><td>34.79</td><td>9.84</td><td>4.94</td><td>3.92</td><td>2.97</td></tr>
+              <tr><td>2025-08</td><td>347,187</td><td>38.36</td><td>11.01</td><td>5.75</td><td>4.64</td><td>3.27</td></tr>
+              <tr><td>2025-09</td><td>286,581</td><td>38.45</td><td>11.33</td><td>6.62</td><td>5.41</td><td>3.48</td></tr>
+              <tr><td>2025-10</td><td>302,642</td><td>35.00</td><td>15.09</td><td>9.16</td><td>7.27</td><td>4.16</td></tr>
+              <tr><td>2025-11</td><td>255,741</td><td>32.69</td><td>14.50</td><td>9.05</td><td>6.68</td><td>3.88</td></tr>
+              <tr><td>2025-12</td><td>249,631</td><td>30.16</td><td>13.23</td><td>7.63</td><td>6.11</td><td>—</td></tr>
+              <tr><td>2026-01</td><td>254,952</td><td>27.55</td><td>11.90</td><td>7.28</td><td>5.42</td><td>—</td></tr>
+              <tr><td>2026-02</td><td>281,793</td><td>31.67</td><td>12.96</td><td>7.41</td><td>5.29</td><td>—</td></tr>
+              <tr><td>2026-03</td><td>286,418</td><td>29.26</td><td>11.38</td><td>6.62</td><td>—</td><td>—</td></tr>
+              <tr><td>2026-04</td><td>255,950</td><td>25.32</td><td>10.18</td><td>—</td><td>—</td><td>—</td></tr>
+            </tbody>
+          </table>
+          <p class="muted">M+6 “—” = target month not yet complete (run date 2026-05-20).</p>
+        </div>
+                <button type="button" class="btn-source btn-source-fab" data-sql-slide="8" aria-label="View SQL source"><span class="fab-icon" aria-hidden="true">{ }</span> Source</button>
+        <footer class="takeaway">Key takeaway: <span class="hl">M+1 ~11–15%</span> (onboarding) vs <span class="hl">~22–33%</span> (first-payout cohort) — activate payout in signup month; M+0 only ~26–38%.</footer>
+      </div>
+    </section>
+
+    <!-- 5.4 (d) -->
+    <section class="slide slide-fill" data-slide="9">
+      <div class="slide-frame">
+        <div class="slide-header"><h2 class="slide-heading"><span class="num">5.4</span> Avg payout ticket (first 30d TPV)</h2><p class="def-line">Avg ticket = AVG(ABS(amount)) on payout SUCCESS in first 30d. Pool 719,936 users.</p></div>
+        <div class="slide-body tables-fill">
+          <div class="tables-row">
+            <div class="table-panel">
+          <table class="data">
+            <thead><tr><th>Bucket</th><th>Users</th><th>Mean avg ₹</th><th>Mean 30d TPV ₹</th><th>M+0</th><th>M+1</th><th>M+2</th><th>M+3</th><th>M+4</th><th>M+5</th><th>M+6</th></tr></thead>
+            <tbody>
+              <tr><td>&lt; ₹100</td><td>378,977</td><td>24</td><td>212</td><td>100</td><td>13.0</td><td>7.0</td><td>5.4</td><td>4.3</td><td>3.1</td><td>2.3</td></tr>
+              <tr><td>₹100–₹500</td><td>197,180</td><td>234</td><td>3,432</td><td>100</td><td>42.3</td><td>24.7</td><td>18.5</td><td>14.6</td><td>10.4</td><td>7.2</td></tr>
+              <tr><td>₹500–₹2k</td><td>106,014</td><td>953</td><td>13,729</td><td>100</td><td>48.0</td><td>30.5</td><td>24.0</td><td>19.8</td><td>14.5</td><td>9.9</td></tr>
+              <tr><td>≥ ₹2k</td><td>37,765</td><td>5,137</td><td>45,402</td><td>100</td><td>44.2</td><td>29.7</td><td>24.3</td><td>20.6</td><td>14.9</td><td>9.9</td></tr>
+            </tbody>
+          </table>
+            </div>
+            <div class="table-panel">
+              <h3>Active users by bucket</h3>
+          <table class="data">
+            <thead><tr><th>Bucket</th><th>M+1 active</th><th>M+2</th><th>M+3</th><th>M+6 active</th></tr></thead>
+            <tbody>
+              <tr><td>&lt; ₹100</td><td>49,314</td><td>26,509</td><td>20,470</td><td>8,787</td></tr>
+              <tr><td>₹100–₹500</td><td>83,415</td><td>48,755</td><td>36,370</td><td>14,223</td></tr>
+              <tr><td>₹500–₹2k</td><td>50,870</td><td>32,287</td><td>25,486</td><td>10,540</td></tr>
+              <tr><td>≥ ₹2k</td><td>16,684</td><td>11,231</td><td>9,172</td><td>3,753</td></tr>
+            </tbody>
+          </table>
+            </div>
+          </div>
+        </div>
+                <button type="button" class="btn-source btn-source-fab" data-sql-slide="9" aria-label="View SQL source"><span class="fab-icon" aria-hidden="true">{ }</span> Source</button>
+        <footer class="takeaway">Key takeaway: M+1 <span class="hl">~13% → ~48%</span> by avg ticket; &lt;₹100 is 53% of users — nudge meaningful ticket size early.</footer>
+      </div>
+    </section>
+<!-- 5.5 (e) -->
+    <section class="slide slide-fill" data-slide="10">
+      <div class="slide-frame">
+        <div class="slide-header"><h2 class="slide-heading"><span class="num">5.5 (e)</span> Pay-in volume — first 30d</h2><p class="def-line">Pay-in = RECEIVE_EXTERNAL SUCCESS. Light 0–4, Medium 5–20, Heavy 21–50, Power 51+. Pool 719,936.</p></div>
+        <div class="slide-body tables-fill">
+          <div class="tables-row">
+            <div class="table-panel">
+          <table class="data">
+            <thead><tr><th>Segment</th><th>Users</th><th>Mean pay-ins</th><th>M+0</th><th>M+1</th><th>M+2</th><th>M+3</th><th>M+4</th><th>M+5</th><th>M+6</th></tr></thead>
+            <tbody>
+              <tr><td>Light</td><td>543,651</td><td>0.54</td><td>100</td><td>22.4</td><td>13.0</td><td>10.2</td><td>8.3</td><td>6.1</td><td>4.4</td></tr>
+              <tr><td>Medium</td><td>128,950</td><td>10.2</td><td>100</td><td>43.2</td><td>26.3</td><td>19.8</td><td>15.7</td><td>11.0</td><td>7.5</td></tr>
+              <tr><td>Heavy</td><td>36,603</td><td>30.6</td><td>100</td><td>47.2</td><td>29.7</td><td>22.1</td><td>17.4</td><td>12.1</td><td>8.1</td></tr>
+              <tr><td>Power</td><td>10,732</td><td>98.1</td><td>100</td><td>51.6</td><td>32.9</td><td>25.3</td><td>19.8</td><td>14.2</td><td>9.2</td></tr>
+            </tbody>
+          </table>
+            </div>
+            <div class="table-panel">
+              <h3>Active users by segment</h3>
+          <table class="data">
+            <thead><tr><th>Segment</th><th>M+1 active</th><th>M+2</th><th>M+3</th><th>M+6 active</th></tr></thead>
+            <tbody>
+              <tr><td>Light</td><td>121,815</td><td>70,533</td><td>55,222</td><td>23,744</td></tr>
+              <tr><td>Medium</td><td>55,670</td><td>33,854</td><td>25,469</td><td>9,626</td></tr>
+              <tr><td>Heavy</td><td>17,261</td><td>10,860</td><td>8,087</td><td>2,951</td></tr>
+              <tr><td>Power</td><td>5,537</td><td>3,535</td><td>2,720</td><td>982</td></tr>
+            </tbody>
+          </table>
+            </div>
+          </div>
+        </div>
+                <button type="button" class="btn-source btn-source-fab" data-sql-slide="10" aria-label="View SQL source"><span class="fab-icon" aria-hidden="true">{ }</span> Source</button>
+        <footer class="takeaway">Key takeaway: Pay-in intensity drives payout M+1 <span class="hl">~22% → ~52%</span>; Light = 76% of pool at ~0.5 mean pay-ins.</footer>
+      </div>
+    </section>
+
+    <!-- 5.6 (f) -->
+    <section class="slide slide-fill" data-slide="11">
+      <div class="slide-frame">
+        <div class="slide-header"><h2 class="slide-heading"><span class="num">5.6 (f)</span> Exclusive payout subType</h2></div>
+        <div class="slide-body tables-fill">
+          <div class="tables-row">
+            <div class="table-panel">
+          <table class="data">
+            <thead><tr><th>Rail</th><th>Users</th><th>M+0</th><th>M+1</th><th>M+2</th><th>M+3</th><th>M+4</th><th>M+5</th><th>M+6</th></tr></thead>
+            <tbody>
+              <tr><td>Only QR</td><td>279,713</td><td>100</td><td>15.1</td><td>8.3</td><td>6.5</td><td>5.2</td><td>3.8</td><td>2.7</td></tr>
+              <tr><td>Only UPI_ID</td><td>90,990</td><td>100</td><td>8.9</td><td>6.9</td><td>5.9</td><td>4.9</td><td>4.0</td><td>2.8</td></tr>
+              <tr><td>Only CONTACT</td><td>41,192</td><td>100</td><td>2.3</td><td>2.8</td><td>2.5</td><td>2.2</td><td>1.8</td><td>1.8</td></tr>
+              <tr><td>Only INTENT</td><td>11,609</td><td>100</td><td>13.4</td><td>10.5</td><td>8.3</td><td>6.9</td><td>4.0</td><td>2.6</td></tr>
+              <tr><td>Mixture</td><td>268,615</td><td>100</td><td>54.3</td><td>31.7</td><td>24.0</td><td>19.3</td><td>13.8</td><td>9.5</td></tr>
+              <tr><td>Other only</td><td>27,817</td><td>100</td><td>6.0</td><td>—</td><td>—</td><td>—</td><td>—</td><td>2.0</td></tr>
+            </tbody>
+          </table>
+            </div>
+            <div class="table-panel">
+              <h3>Headline actives</h3>
+          <table class="data"><thead><tr><th>Rail</th><th>M+1 active</th><th>M+6 active</th></tr></thead>
+            <tbody><tr><td>Only QR</td><td>42,084</td><td>7,612</td></tr><tr><td>Only CONTACT</td><td>947</td><td>742</td></tr><tr><td>Mixture</td><td>145,977</td><td>25,538</td></tr></tbody></table>
+            <div class="metric-rail" style="margin-top:10px">
+              <div class="metric-card"><span class="lbl">Mixture M+1</span><span class="num">54.3%</span></div>
+              <div class="metric-card"><span class="lbl">Only CONTACT M+1</span><span class="num">2.3%</span></div>
+            </div>
+            </div>
+          </div>
+        </div>
+                <button type="button" class="btn-source btn-source-fab" data-sql-slide="11" aria-label="View SQL source"><span class="fab-icon" aria-hidden="true">{ }</span> Source</button>
+        <footer class="takeaway">Key takeaway: <span class="hl">Mixture ~54% M+1</span> vs Only CONTACT <span class="hl">~2.3%</span> — multi-rail discovery in week 1.</footer>
+      </div>
+    </section>
+    <!-- 5.7 (g) -->
+    <section class="slide" data-slide="12">
+      <div class="slide-frame">
+        <div class="slide-header"><h2 class="slide-heading"><span class="num">5.7 (g)</span> Dominant MCC (top 20)</h2></div>
+        <div class="slide-body">
+          <table class="data">
+            <thead><tr><th>MCC</th><th>Label</th><th>Users</th><th>M+1</th><th>M+2</th><th>M+3</th><th>M+6</th></tr></thead>
+            <tbody>
+              <tr><td>0000</td><td>Generic</td><td>443,567</td><td>26.9</td><td>16.1</td><td>12.4</td><td>5.2</td></tr>
+              <tr><td>5411</td><td>Grocery</td><td>103,390</td><td>34.8</td><td>19.3</td><td>14.5</td><td>5.8</td></tr>
+              <tr><td>OTHER</td><td>Outside top 20</td><td>53,111</td><td>20.2</td><td>12.8</td><td>10.2</td><td>4.0</td></tr>
+              <tr><td>4814</td><td>Telecom</td><td>32,099</td><td>35.2</td><td>22.2</td><td>17.5</td><td>6.2</td></tr>
+              <tr><td>5814</td><td>Fast food</td><td>23,642</td><td>27.1</td><td>15.5</td><td>11.9</td><td>4.6</td></tr>
+              <tr><td>5812</td><td>Restaurants</td><td>15,573</td><td>25.8</td><td>14.5</td><td>10.8</td><td>4.4</td></tr>
+              <tr><td>5541</td><td>Fuel</td><td>8,563</td><td>32.8</td><td>18.7</td><td>13.6</td><td>5.4</td></tr>
+              <tr><td>5993</td><td>Misc retail</td><td>7,420</td><td>23.1</td><td>13.0</td><td>9.5</td><td>4.0</td></tr>
+              <tr><td>7322</td><td>Debt/coll</td><td>4,541</td><td>34.5</td><td>24.5</td><td>19.3</td><td>6.9</td></tr>
+              <tr><td>4900</td><td>Utilities</td><td>3,748</td><td>28.0</td><td>18.6</td><td>14.5</td><td>6.6</td></tr>
+              <tr><td>5912</td><td>Pharmacy</td><td>3,488</td><td>21.8</td><td>13.9</td><td>11.1</td><td>4.8</td></tr>
+              <tr><td>5462</td><td>Bakery</td><td>3,262</td><td>21.8</td><td>12.1</td><td>9.1</td><td>4.2</td></tr>
+              <tr><td>5451</td><td>Dairy</td><td>2,873</td><td>25.0</td><td>15.5</td><td>12.0</td><td>4.8</td></tr>
+              <tr><td>7407</td><td>—</td><td>2,423</td><td>15.6</td><td>10.1</td><td>7.0</td><td>3.3</td></tr>
+              <tr><td>5651</td><td>Clothing</td><td>2,379</td><td>19.6</td><td>11.2</td><td>9.8</td><td>4.5</td></tr>
+              <tr><td>5732</td><td>Electronics</td><td>2,318</td><td>14.7</td><td>11.5</td><td>9.0</td><td>3.8</td></tr>
+              <tr><td>5921</td><td>Liquor</td><td>1,627</td><td>37.7</td><td>20.7</td><td>13.6</td><td>5.1</td></tr>
+              <tr><td>5441</td><td>Candy</td><td>1,620</td><td>17.0</td><td>10.9</td><td>8.7</td><td>3.6</td></tr>
+              <tr><td>7622</td><td>Repair</td><td>1,517</td><td>16.9</td><td>10.3</td><td>8.6</td><td>4.2</td></tr>
+              <tr><td>5422</td><td>Meat</td><td>1,494</td><td>16.3</td><td>10.0</td><td>6.9</td><td>2.8</td></tr>
+              <tr><td>5412</td><td>Convenience</td><td>1,281</td><td>47.2</td><td>33.7</td><td>27.3</td><td>12.0</td></tr>
+            </tbody>
+          </table>
+        </div>
+                <button type="button" class="btn-source btn-source-fab" data-sql-slide="12" aria-label="View SQL source"><span class="fab-icon" aria-hidden="true">{ }</span> Source</button>
+        <footer class="takeaway">Key takeaway: M+1 spans <span class="hl">~15%–47%</span> by MCC; 0000 = 62% of pool at ~27% M+1.</footer>
+      </div>
+    </section>
+
+    <section class="slide slide-fill" data-slide="13">
+      <div class="slide-frame">
+        <div class="slide-header"><h2 class="slide-heading"><span class="num">5.8 (h)</span> BharatPe QR exclusivity</h2></div>
+        <div class="slide-body tables-fill">
+          <div class="tables-row">
+            <div class="table-panel">
+          <table class="data">
+            <thead><tr><th>QR segment</th><th>Users</th><th>Mean share</th><th>M+0</th><th>M+1</th><th>M+2</th><th>M+3</th><th>M+6</th></tr></thead>
+            <tbody>
+              <tr><td>Only non-BP QR</td><td>589,891</td><td>0%</td><td>100</td><td>21.4</td><td>12.3</td><td>9.5</td><td>3.9</td></tr>
+              <tr><td>Mixed</td><td>109,936</td><td>20.3%</td><td>100</td><td>65.9</td><td>40.8</td><td>31.1</td><td>12.6</td></tr>
+              <tr><td>Only BP QR</td><td>20,109</td><td>100%</td><td>100</td><td>7.0</td><td>6.5</td><td>5.5</td><td>2.9</td></tr>
+            </tbody>
+          </table>
+            </div>
+            <div class="table-panel">
+          <table class="data"><thead><tr><th>Segment</th><th>M+1 active</th><th>M+6 active</th></tr></thead>
+            <tbody><tr><td>Non-BP</td><td>126,478</td><td>22,894</td></tr><tr><td>Mixed</td><td>72,393</td><td>13,833</td></tr><tr><td>Only BP</td><td>1,412</td><td>578</td></tr></tbody></table>
+            <div class="metric-rail" style="margin-top:12px">
+              <div class="metric-card"><span class="lbl">Mixed QR M+1</span><span class="num">65.9%</span></div>
+              <div class="metric-card"><span class="lbl">Only BP QR M+1</span><span class="num">7.0%</span></div>
+            </div>
+            </div>
+          </div>
+        </div>
+                <button type="button" class="btn-source btn-source-fab" data-sql-slide="13" aria-label="View SQL source"><span class="fab-icon" aria-hidden="true">{ }</span> Source</button>
+        <footer class="takeaway">Key takeaway: <span class="hl">Mixed QR ~66% M+1</span> vs Only BP QR ~7% — multi-surface power users, not QR-only lift.</footer>
+      </div>
+    </section>
+
+    <section class="slide slide-fill" data-slide="14">
+      <div class="slide-frame">
+        <div class="slide-header"><h2 class="slide-heading"><span class="num">5.9 (i)</span> Zillion redemption</h2></div>
+        <div class="slide-body table-single-fill">
+            <div class="table-panel">
+          <table class="data">
+            <thead><tr><th>Segment</th><th>Users</th><th>M+0</th><th>M+1</th><th>M+2</th><th>M+3</th><th>M+6</th></tr></thead>
+            <tbody>
+              <tr><td>Never redeemed</td><td>698,150</td><td>100</td><td>26.3</td><td>15.3</td><td>11.8</td><td>4.8</td></tr>
+              <tr><td>Ever redeemed</td><td>21,786</td><td>100</td><td>78.0</td><td>53.5</td><td>41.8</td><td>16.9</td></tr>
+            </tbody>
+          </table>
+            </div>
+            <div class="metric-rail">
+              <div class="metric-card"><span class="lbl">Ever redeem M+1</span><span class="num">78%</span><span class="sub">~3% of pool</span></div>
+              <div class="metric-card"><span class="lbl">Never M+1</span><span class="num">26.3%</span><span class="sub">697k users</span></div>
+              <div class="metric-card"><span class="lbl">M+1 actives (ever)</span><span class="num">17,002</span></div>
+            </div>
+        </div>
+                <button type="button" class="btn-source btn-source-fab" data-sql-slide="14" aria-label="View SQL source"><span class="fab-icon" aria-hidden="true">{ }</span> Source</button>
+        <footer class="takeaway">Key takeaway: <span class="hl">Ever redeem ~78% M+1</span> (3% of users) — strongest single-factor lift.</footer>
+      </div>
+    </section>
+
+    <section class="slide slide-fill" data-slide="15">
+      <div class="slide-frame">
+        <div class="slide-header"><h2 class="slide-heading"><span class="num">5.10 (j)</span> Zillion earn</h2></div>
+        <div class="slide-body table-single-fill">
+            <div class="table-panel">
+          <table class="data">
+            <thead><tr><th>Segment</th><th>Users</th><th>M+1</th><th>M+2</th><th>M+3</th><th>M+6</th></tr></thead>
+            <tbody>
+              <!-- <tr><td>Ever earned (type)</td><td>506,477</td><td>37.6</td><td>22.1</td><td>16.8</td><td>6.7</td></tr> -->
+              <!-- <tr><td>Never earned</td><td>213,459</td><td>4.7</td><td>3.3</td><td>2.9</td><td>1.6</td></tr> -->
+              <tr><td>Ever (payout only)</td><td>433,388</td><td>42.4</td><td>24.8</td><td>18.9</td><td>7.5</td></tr>
+              <tr><td>Never (payout only)</td><td>286,548</td><td>5.8</td><td>4.0</td><td>3.4</td><td>1.7</td></tr>
+            </tbody>
+          </table>
+            </div>
+            <div class="metric-rail">
+              <div class="metric-card"><span class="lbl">Payout-only earn</span><span class="num">42.4%</span><span class="sub">M+1</span></div>
+              <div class="metric-card"><span class="lbl">Payout-only never</span><span class="num">5.8%</span><span class="sub">M+1</span></div>
+            </div>
+        </div>
+                <button type="button" class="btn-source btn-source-fab" data-sql-slide="15" aria-label="View SQL source"><span class="fab-icon" aria-hidden="true">{ }</span> Source</button>
+        <footer class="takeaway">Key takeaway: Payout-only earn <span class="hl">~42% M+1</span> vs never earn <span class="hl">~5.8% M+1</span> — focus on payout-side Zillion earn.</footer>
+      </div>
+    </section>
+
+    <section class="slide slide-fill" data-slide="16">
+      <div class="slide-frame">
+        <div class="slide-header"><h2 class="slide-heading"><span class="num">5.11 (k)</span> Platform</h2></div>
+        <div class="slide-body table-single-fill">
+            <div class="table-panel">
+          <table class="data">
+            <thead><tr><th>Platform</th><th>Users</th><th>M+1</th><th>M+2</th><th>M+3</th><th>M+6</th></tr></thead>
+            <tbody>
+              <tr><td>Only Android</td><td>682,742</td><td>26.9</td><td>15.7</td><td>12.1</td><td>4.9</td></tr>
+              <tr><td>Only iOS</td><td>16,310</td><td>23.5</td><td>14.3</td><td>11.4</td><td>5.6</td></tr>
+              <tr><td>Mixed</td><td>752</td><td>72.7</td><td>46.4</td><td>37.0</td><td>15.2</td></tr>
+            </tbody>
+          </table>
+            </div>
+            <div class="metric-rail">
+              <div class="metric-card"><span class="lbl">Mixed platform M+1</span><span class="num">72.7%</span></div>
+              <div class="metric-card"><span class="lbl">Android / iOS M+1</span><span class="num">~24–27%</span></div>
+              <p class="muted" style="margin:0;text-align:center">Unknown platform: 20,132 users (~62% M+1) — omitted from table.</p>
+            </div>
+        </div>
+                <button type="button" class="btn-source btn-source-fab" data-sql-slide="16" aria-label="View SQL source"><span class="fab-icon" aria-hidden="true">{ }</span> Source</button>
+        <footer class="takeaway">Key takeaway: <span class="hl">Mixed platform ~73% M+1</span>; Android/iOS similar ~24–27% — behaviour buckets matter more.</footer>
+      </div>
+    </section>
+
+    <section class="slide slide-fill" data-slide="17">
+      <div class="slide-frame">
+        <div class="slide-header"><h2 class="slide-heading"><span class="num">5.12 (l)</span> First outward status</h2></div>
+        <div class="slide-body table-single-fill">
+            <div class="table-panel">
+          <table class="data">
+            <thead><tr><th>Status</th><th>Users</th><th>M+0</th><th>M+1</th><th>M+2</th><th>M+3</th><th>M+6</th></tr></thead>
+            <tbody>
+              <tr><td>SUCCESS</td><td>633,993</td><td>100</td><td>28.0</td><td>16.6</td><td>12.8</td><td>5.2</td></tr>
+              <tr><td>FAILED</td><td>185,570</td><td>37.7</td><td>13.4</td><td>7.8</td><td>6.1</td><td>2.6</td></tr>
+              <tr><td>INITIALIZED</td><td>408</td><td>31.4</td><td>20.8</td><td>9.1</td><td>9.3</td><td>1.0</td></tr>
+              <tr><td>OTHER</td><td>11,718</td><td>—</td><td>7.6</td><td>—</td><td>—</td><td>—</td></tr>
+            </tbody>
+          </table>
+            </div>
+            <div class="metric-rail">
+              <div class="metric-card"><span class="lbl">FAILED-first share</span><span class="num">~22%</span><span class="sub">185,570 users</span></div>
+              <div class="metric-card"><span class="lbl">SUCCESS-first M+1</span><span class="num">28.0%</span></div>
+              <div class="metric-card"><span class="lbl">FAILED-first M+0</span><span class="num">37.7%</span></div>
+            </div>
+        </div>
+                <button type="button" class="btn-source btn-source-fab" data-sql-slide="17" aria-label="View SQL source"><span class="fab-icon" aria-hidden="true">{ }</span> Source</button>
+        <footer class="takeaway">Key takeaway: <span class="hl">~22% fail first outward</span> — only 37.7% M+0 for FAILED-first; fix before growth spend.</footer>
+      </div>
+    </section>
+
+    <section class="slide slide-fill" data-slide="18">
+      <div class="slide-frame">
+        <div class="slide-header"><h2 class="slide-heading"><span class="num">5.13 (m)</span> First 5 payout SUCCESS count</h2></div>
+        <div class="slide-body table-single-fill table-only">
+            <div class="table-panel">
+          <table class="data">
+            <thead><tr><th>SUCCESS/5</th><th>Users</th><th>M+1</th><th>M+2</th><th>M+3</th><th>M+6</th></tr></thead>
+            <tbody>
+              <tr><td>5/5</td><td>183,540</td><td>64.0</td><td>40.6</td><td>31.3</td><td>12.8</td></tr>
+              <tr><td>4/5</td><td>60,600</td><td>57.0</td><td>35.5</td><td>27.6</td><td>11.6</td></tr>
+              <tr><td>3/5</td><td>30,221</td><td>49.8</td><td>30.8</td><td>24.1</td><td>10.0</td></tr>
+              <tr><td>2/5</td><td>16,114</td><td>38.8</td><td>23.8</td><td>19.0</td><td>8.3</td></tr>
+              <tr><td>1/5</td><td>10,337</td><td>24.5</td><td>15.4</td><td>12.8</td><td>5.3</td></tr>
+              <!-- <tr><td>0/5</td><td>3,143</td><td>32.6</td><td>21.1</td><td>17.1</td><td>6.3</td></tr> -->
+            </tbody>
+          </table>
+            </div>
+        </div>
+                <button type="button" class="btn-source btn-source-fab" data-sql-slide="18" aria-label="View SQL source"><span class="fab-icon" aria-hidden="true">{ }</span> Source</button>
+        <footer class="takeaway">Key takeaway: M+1 scales <span class="hl">~25% → ~64%</span> with early SUCCESS rate (1/5 through 5/5).</footer>
+      </div>
+    </section>
+
+    <section class="slide slide-fill" data-slide="19">
+      <div class="slide-frame">
+        <div class="slide-header"><h2 class="slide-heading"><span class="num">5.14 (n)</span> Linked bank accounts</h2></div>
+        <div class="slide-body table-single-fill">
+            <div class="table-panel">
+          <table class="data">
+            <thead><tr><th># Accounts</th><th>Users</th><th>M+1</th><th>M+2</th><th>M+3</th><th>M+6</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>596,426</td><td>25.4</td><td>14.9</td><td>11.5</td><td>4.7</td></tr>
+              <tr><td>2</td><td>89,297</td><td>36.9</td><td>22.1</td><td>16.9</td><td>6.9</td></tr>
+              <tr><td>3</td><td>20,581</td><td>44.5</td><td>28.1</td><td>21.9</td><td>9.1</td></tr>
+              <tr><td>4+</td><td>13,517</td><td>50.4</td><td>33.0</td><td>26.2</td><td>11.1</td></tr>
+              <!-- <tr><td>0</td><td>115</td><td>12.2</td><td>7.0</td><td>5.2</td><td>2.6</td></tr> -->
+            </tbody>
+          </table>
+            </div>
+            <div class="metric-rail">
+              <div class="metric-card"><span class="lbl">1 account (83%)</span><span class="num">25.4%</span><span class="sub">M+1</span></div>
+              <div class="metric-card"><span class="lbl">4+ accounts</span><span class="num">50.4%</span><span class="sub">M+1</span></div>
+            </div>
+        </div>
+                <button type="button" class="btn-source btn-source-fab" data-sql-slide="19" aria-label="View SQL source"><span class="fab-icon" aria-hidden="true">{ }</span> Source</button>
+        <footer class="takeaway">Key takeaway: Linked banks <span class="hl">~25% → ~50% M+1</span> (1 → 4+ accounts); 83% have 1 account.</footer>
+      </div>
+    </section>
+
+    <section class="slide slide-fill" data-slide="20">
+      <div class="slide-frame">
+        <div class="slide-header"><h2 class="slide-heading"><span class="num">5.15 (o)</span> Linked account type</h2></div>
+        <div class="slide-body table-single-fill">
+            <div class="table-panel">
+          <table class="data">
+            <thead><tr><th>Dominant type</th><th>Users</th><th>M+1</th><th>M+3</th><th>M+6</th></tr></thead>
+            <tbody>
+              <tr><td>SAVINGS</td><td>688,383</td><td>27.3</td><td>12.3</td><td>5.0</td></tr>
+              <tr><td>CREDIT</td><td>18,271</td><td>44.7</td><td>24.8</td><td>11.5</td></tr>
+              <tr><td>CURRENT</td><td>12,288</td><td>31.4</td><td>17.1</td><td>7.2</td></tr>
+              <tr><td>CREDITLINE</td><td>550</td><td>74.7</td><td>66.4</td><td>2.7</td></tr>
+              <tr><td>Mixed (exclusive)</td><td>31,068</td><td>46.4</td><td>25.6</td><td>10.9</td></tr>
+            </tbody>
+          </table>
+            </div>
+            <div class="metric-rail">
+              <div class="metric-card"><span class="lbl">CREDIT-dominant</span><span class="num">44.7%</span><span class="sub">M+1</span></div>
+              <div class="metric-card"><span class="lbl">Mixed exclusive</span><span class="num">46.4%</span><span class="sub">M+1</span></div>
+              <div class="metric-card"><span class="lbl">SAVINGS bulk</span><span class="num">688k</span><span class="sub">~27% M+1</span></div>
+            </div>
+        </div>
+                <button type="button" class="btn-source btn-source-fab" data-sql-slide="20" aria-label="View SQL source"><span class="fab-icon" aria-hidden="true">{ }</span> Source</button>
+        <footer class="takeaway">Key takeaway: <span class="hl">CREDIT-dominant ~45% M+1</span>; Mixed types ~46% — savings bulk at ~27%.</footer>
+      </div>
+    </section>
+
+    <!-- Slide 20 — lens index -->
+    <section class="slide slide-fill slide-lens-index" data-slide="21">
+      <div class="slide-frame">
+        <div class="slide-header">
+          <h2 class="slide-heading"><span class="num">5</span> Retention through various lenses</h2>
+          <p class="def-line">Label from first-30d after first payout SUCCESS → payout retention M+0…M+6 (unless noted).</p>
+        </div>
+        <div class="slide-body">
+          <div class="lens-index">
+            <button type="button" class="lens-btn" data-goto="6"><span class="tag">5.1</span> First payout M+1<span class="hint">~22–33% recent</span></button>
+            <button type="button" class="lens-btn" data-goto="7"><span class="tag">5.2</span> Volume Light→Power<span class="hint">M+1 2.6%→88%</span></button>
+            <button type="button" class="lens-btn" data-goto="8"><span class="tag">5.3</span> Onboarding month<span class="hint">M+1 ~11–15%</span></button>
+            <button type="button" class="lens-btn" data-goto="9"><span class="tag">5.4</span> Avg TPV bucket<span class="hint">M+1 13%→48%</span></button>
+            <button type="button" class="lens-btn" data-goto="10"><span class="tag">5.5</span> Pay-in volume<span class="hint">M+1 22%→52%</span></button>
+            <button type="button" class="lens-btn" data-goto="11"><span class="tag">5.6</span> Exclusive subType<span class="hint">Mixture 54%</span></button>
+            <button type="button" class="lens-btn" data-goto="12"><span class="tag">5.7</span> Dominant MCC<span class="hint">15%→47%</span></button>
+            <button type="button" class="lens-btn" data-goto="13"><span class="tag">5.8</span> BharatPe QR<span class="hint">Mixed 66%</span></button>
+            <button type="button" class="lens-btn" data-goto="14"><span class="tag">5.9</span> Zillion redeem<span class="hint">Ever 78%</span></button>
+            <button type="button" class="lens-btn" data-goto="15"><span class="tag">5.10</span> Zillion earn<span class="hint">42% vs 6% payout</span></button>
+            <button type="button" class="lens-btn" data-goto="16"><span class="tag">5.11</span> Platform<span class="hint">Mixed 73%</span></button>
+            <button type="button" class="lens-btn" data-goto="17"><span class="tag">5.12</span> First outward status<span class="hint">FAIL 13%</span></button>
+            <button type="button" class="lens-btn" data-goto="18"><span class="tag">5.13</span> First 5 SUCCESS<span class="hint">25%→64%</span></button>
+            <button type="button" class="lens-btn" data-goto="19"><span class="tag">5.14</span> Bank link count<span class="hint">25%→50%</span></button>
+            <button type="button" class="lens-btn" data-goto="20"><span class="tag">5.15</span> Account type<span class="hint">CREDIT 45%</span></button>
+          </div>
+        </div>
+        <footer class="takeaway">Key takeaway: <span class="hl">Intensity</span> (volume, pay-in, multi-rail) and <span class="hl">Zillion redeem</span> separate ~2% M+1 from ~80% M+1 — focus product on moving users up-tier in 30d.</footer>
+      </div>
+    </section>
+
+
+    <!-- Slide 21 — BBPS -->
+    <section class="slide" data-slide="22">
+      <div class="slide-frame">
+        <div class="slide-header">
+          <h2 class="slide-heading">UPI × BBPS analysis</h2>
+          <p class="def-line">NotebookLM artifact — velocity, retention, regional attach, playbook.</p>
+        </div>
+        <div class="slide-body">
+          <ul>
+            <li>BBPS: <strong>~2.7×</strong> txns/user vs Non-BBPS (Mar 2026)</li>
+            <li>Retention floor: <strong>~64–68%</strong> vs <strong>&lt;32%</strong> Non-BBPS</li>
+            <li><strong>~17%</strong> UPI → BBPS within 1 week</li>
+            <li>Scale: <strong>6</strong> (Jun 2024) → <strong>103,855</strong> (Mar 2026)</li>
+          </ul>
+          <div class="deck-links">
+            <a class="nlm-link" href="https://notebooklm.google.com/notebook/97402f98-76ca-4bee-8d04-a465663c06f7/artifact/cf6c33db-575e-4154-ba95-e5c044b3db9f?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener noreferrer">LINK — UPI × BBPS (NotebookLM)</a>
+            <a class="nlm-link nlm-link-secondary" href="https://docs.google.com/presentation/d/1DNfOjGuGCJtLpktIUO3yLg48wAlWLA2F/edit?slide=id.g3e14e016498_0_0#slide=id.g3e14e016498_0_0" target="_blank" rel="noopener noreferrer">LINK — Customer calling insights</a>
+          </div>
+        </div>
+        <footer class="takeaway">Key takeaway: Use <span class="hl">NotebookLM LINK</span> for BBPS depth and <span class="hl">Customer calling insights</span> for qualitative friction.</footer>
+      </div>
+    </section>
+
+    <!-- Slide 22 — competitors -->
+    <section class="slide" data-slide="23">
+      <div class="slide-frame">
+        <div class="slide-header">
+          <h2 class="slide-heading">What competitors do — UPI retention &amp; engagement hooks</h2>
+        </div>
+        <div class="slide-body">
+                    <div class="comp-grid">
+            <div class="comp-item anim-card" data-brand="paytm" style="--i:0">
+              <div class="comp-head"><img class="comp-logo" src="assets/logos/paytm.svg" alt="Paytm" width="72" height="72" decoding="async" /><h4>Paytm</h4></div>
+              <ul>
+                <li>Gold coins as cashback on payments &amp; tasks</li>
+                <li>Scratch cards, lucky draws post-txn</li>
+                <li>Paytm Postpaid / wallet float for repeat use</li>
+                <li>Merchant QR cashback &amp; festival campaigns</li>
+              </ul>
+            </div>
+            <div class="comp-item anim-card" data-brand="phonepe" style="--i:1">
+              <div class="comp-head"><img class="comp-logo" src="assets/logos/phonepe.svg" alt="PhonePe" width="72" height="72" decoding="async" /><h4>PhonePe</h4></div>
+              <ul>
+                <li>PhonePe Rewards / gift boxes after payments</li>
+                <li>Switch integration (apps, recharges, insurance)</li>
+                <li>Referral bonuses for first payment</li>
+                <li>UPI lite + autopay for low-friction repeat</li>
+              </ul>
+            </div>
+            <div class="comp-item anim-card" data-brand="cred" style="--i:2">
+              <div class="comp-head"><img class="comp-logo" src="assets/logos/cred.svg" alt="CRED" width="72" height="72" decoding="async" /><h4>CRED</h4></div>
+              <ul>
+                <li><strong>₹50 cashback</strong> on first 5 UPI payments (new users)</li>
+                <li>CRED coins → burn on catalogue / bill pay</li>
+                <li>Credit-card-first positioning; streaks &amp; milestones</li>
+              </ul>
+            </div>
+            <div class="comp-item anim-card" style="--i:3">
+              <div class="comp-head"><img class="comp-logo" src="assets/logos/navi.svg" alt="Navi" width="72" height="72" decoding="async" /><h4>Navi</h4></div>
+              <ul>
+                <li>Navi coins convertible to cash / discounts</li>
+                <li>UPI + lending cross-sell; bill pay nudges</li>
+              </ul>
+            </div>
+            <div class="comp-item anim-card" data-brand="googlepay" style="--i:4">
+              <div class="comp-head"><img class="comp-logo" src="assets/logos/googlepay.svg" alt="Google Pay" width="72" height="72" decoding="async" /><h4>Google Pay</h4></div>
+              <ul>
+                <li><strong>₹1 nudge</strong> to pay a contact / loved one</li>
+                <li>Scan QR, pay contact, mobile recharge prompts</li>
+                <li>Scratch cards, festival campaigns, “#Tez” style challenges</li>
+                <li>Deep linking from Search / Notifications</li>
+              </ul>
+            </div>
+            <div class="comp-item anim-card" style="--i:5">
+              <div class="comp-head"><img class="comp-logo" src="assets/logos/supermoney.svg" alt="SuperMoney" width="72" height="72" decoding="async" /><h4>SuperMoney</h4></div>
+              <ul>
+                <li><strong>Actual cashback</strong> credited to bank account</li>
+                <li>Transparent ₹-back vs coin abstraction</li>
+              </ul>
+            </div>
+            <div class="comp-item anim-card" style="--i:6">
+              <div class="comp-head comp-head-dual">
+                <img class="comp-logo" data-brand="amazon" src="assets/logos/amazon.svg" alt="Amazon Pay" width="72" height="72" decoding="async" />
+                <img class="comp-logo" data-brand="flipkart" src="assets/logos/flipkart.svg" alt="Flipkart" width="72" height="72" decoding="async" />
+                <h4>Amazon Pay / Flipkart UPI</h4>
+              </div>
+              <ul>
+                <li>E-commerce wallet cashback on UPI checkout</li>
+                <li>Loyalty points stack with platform orders</li>
+              </ul>
+            </div>
+            <div class="comp-item anim-card" style="--i:7">
+              <div class="comp-head"><img class="comp-logo" src="assets/logos/bhim.svg" alt="BHIM" width="72" height="72" decoding="async" /><h4>BHIM / bank apps</h4></div>
+              <ul>
+                <li>Rupay-linked offers, LPG subsidy rails</li>
+                <li>Government campaign cashback windows</li>
+              </ul>
+            </div>
+          </div>
+          <p class="muted">Pattern: immediate ₹ reward, 2nd txn in 7d, utility anchor, multi-rail habit.</p>
+        </div>
+        <footer class="takeaway">Key takeaway: Competitors win with <span class="hl">₹ cashback</span>, <span class="hl">2nd-txn nudges</span>, coins, and <span class="hl">utility anchors</span> — mirror on Power / Mixture / Zillion cohorts.</footer>
+      </div>
+    </section>
+
+    <!-- Slide 8 -->
+    <section class="slide" data-slide="24">
+      <div class="slide-frame">
+        <div class="slide-header">
+          <h2 class="slide-heading">What needs to be done?</h2>
+        </div>
+        <div class="slide-body">
+          <div class="actions-grid">
+            <div class="action-box anim-card" style="--i:0">
+              <div class="action-icon" aria-hidden="true">🎯</div>
+              <h3>Fix the funnel (week 0–1)</h3>
+              <ul>
+                <li>First outward <strong>SUCCESS</strong> — reduce FAILED-first (~22%); better error UX</li>
+                <li>Target <strong>2+ payout SUCCESS</strong> in 30d (escape Light ~2.6% M+1)</li>
+                <li>Multi-rail discovery: QR + UPI ID + recharge (not CONTACT-only ~2.3%)</li>
+              </ul>
+            </div>
+            <div class="action-box anim-card" style="--i:1">
+              <div class="action-icon" aria-hidden="true">🎁</div>
+              <h3>Rewards &amp; Zillion</h3>
+              <ul>
+                <li>Expand <strong>redemption</strong> in first 30d (~3% today, ~78% M+1 when redeemed)</li>
+                <li>Test <strong>₹ cashback</strong> on 2nd &amp; 5th txn (CRED / SuperMoney pattern)</li>
+              </ul>
+            </div>
+            <div class="action-box anim-card" style="--i:2">
+              <div class="action-icon" aria-hidden="true">⚡</div>
+              <h3>Cross-sell &amp; utility</h3>
+              <ul>
+                <li>Push <strong>BBPS</strong> after first UPI success (~17% W+1 — grow attach)</li>
+                <li>Telecom / grocery MCC journeys (~35% M+1) as template campaigns</li>
+              </ul>
+            </div>
+            <div class="action-box anim-card" style="--i:3">
+              <div class="action-icon" aria-hidden="true">💎</div>
+              <h3>High-LTV cohorts</h3>
+              <ul>
+                <li>Retain <strong>Power / Mixture / multi-account</strong> with priority support</li>
+                <li>Credit-dominant linkers (~45% M+1) — tailored credit-line UX</li>
+                <li>Measure payout-only Zillion earn; fix pay-in leakage</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <footer class="takeaway">Key takeaway: North star — lift <span class="hl">payout M+1</span> (~28–33%) toward <span class="hl">VPA M1</span> (~35–42%) via first-pay success, 2+ txns in 30d, Zillion redeem, and BBPS attach.</footer>
+      </div>
+    </section>
+
+    <!-- Slide 9 -->
+    <section class="slide slide-fill slide-future" data-slide="25">
+      <div class="slide-frame">
+        <div class="slide-header">
+          <h2 class="slide-heading">Future discussions — how can it be decided later?</h2>
+          <p class="muted">Out of scope today; topics for a follow-up working session</p>
+        </div>
+        <div class="slide-body">
+          <ul class="future-grid">
+        <li><strong>Experiment design</strong> — holdout sizes, metric trees (VPA M1 vs payout M1 vs BBPS retention)</li>
+        <li><strong>Incentive budget</strong> — ₹ cashback vs Zillion coins vs gold-coin analogue; CAC vs incremental M+2</li>
+        <li><strong>Roadmap sequencing</strong> — tech deps (first-pay success, BBPS default tab, redemption API)</li>
+        <li><strong>Regional playbook</strong> — South vs North BBPS attach (see linked BBPS deck)</li>
+        <li><strong>Causal validation</strong> — propensity scoring on observational lenses (5.9, 5.8)</li>
+        <li><strong>Ops &amp; resourcing</strong> — CRM, calling scripts, merchant MCC enrichment</li>
+        <li><strong>Governance</strong> — refresh cadence for <code>upi-retention-results.md</code> / warehouse cuts</li>
+        <li><strong>Stakeholder review</strong> — align product, growth, and data on priority lenses</li>
+      </ul>
+      <p class="footer-note">Full data &amp; SQL: <code>analyses/upi-retention-results.md</code> · <code>sql/upi-retention-queries.sql</code></p>
+        </div>
+        <footer class="takeaway">Key takeaway: Decide later: <span class="hl">experiment design</span>, incentive budget, roadmap, regional BBPS, causal validation, ops, and refresh cadence.</footer>
+      </div>
+    </section>
+
+  </div>
+
+
+  <div class="sql-modal" id="sql-modal" role="dialog" aria-modal="true" aria-labelledby="sql-modal-title" hidden>
+    <div class="sql-modal-backdrop" id="sql-modal-backdrop"></div>
+    <div class="sql-modal-panel">
+      <div class="sql-modal-head">
+        <h3 id="sql-modal-title">SQL source</h3>
+        <button type="button" class="sql-modal-close" id="sql-modal-close" aria-label="Close">×</button>
+      </div>
+      <div class="sql-modal-body"><pre id="sql-modal-pre"></pre></div>
+      <div class="sql-modal-foot" id="sql-modal-foot">bigquery-mcp/bharatpe-consumer/sql/upi-retention-queries.sql</div>
+    </div>
+  </div>
+
+  <div class="progress" id="progress"></div>
+  <div class="slide-counter" id="counter">1 / 24</div>
+  <p class="nav-hint">← → or click edges · Home/End</p>
+  <button type="button" class="nav-btn prev" id="prev" aria-label="Previous">‹</button>
+  <button type="button" class="nav-btn next" id="next" aria-label="Next">›</button>
+
+<script type="application/json" id="sql-sources-data">{"6": {"section": "a", "sql": "-- =============================================================================\n-- Payout: subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n-- Cohort month: calendar month of first payout SUCCESS per user\n-- M+1: \u22651 payout SUCCESS in the next calendar month\n-- Output: cohort_month, cohort_users, m1_active_users, m1_retention_pct\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 18 MONTH)\n),\nuser_first_payout AS (\n  SELECT\n    pid,\n    DATE_TRUNC(MIN(d), MONTH) AS cohort_month\n  FROM payout_txns\n  GROUP BY pid\n),\ncohorts AS (\n  SELECT cohort_month, COUNT(*) AS cohort_users\n  FROM user_first_payout\n  GROUP BY cohort_month\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_txns\n),\nm1 AS (\n  SELECT\n    f.cohort_month,\n    COUNT(DISTINCT f.pid) AS m1_active_users\n  FROM user_first_payout f\n  JOIN month_active m\n    ON f.pid = m.pid\n   AND DATE_DIFF(m.activity_month, f.cohort_month, MONTH) = 1\n  GROUP BY f.cohort_month\n)\nSELECT\n  c.cohort_month,\n  c.cohort_users,\n  IFNULL(m.m1_active_users, 0) AS m1_active_users,\n  ROUND(100 * IFNULL(m.m1_active_users, 0) / NULLIF(c.cohort_users, 0), 2) AS m1_retention_pct\nFROM cohorts c\nLEFT JOIN m1 m ON c.cohort_month = m.cohort_month\nWHERE c.cohort_month >= DATE_TRUNC(DATE_SUB(CURRENT_DATE(), INTERVAL 14 MONTH), MONTH)\n  AND c.cohort_month < DATE_TRUNC(CURRENT_DATE(), MONTH)\nORDER BY c.cohort_month;", "file": "sql/upi-retention-queries.sql"}, "7": {"section": "b", "sql": "-- =============================================================================\n-- Payout: subType IS DISTINCT FROM 'RECEIVE_EXTERNAL' (same as section a).\n-- After first qualifying PAYOUT SUCCESS, count further PAYOUT SUCCESS txns in the\n-- next 30 days (inclusive of first-payout day). Bucket \u2192 Light / Medium / Heavy / Power.\n-- Cohort month = month of first PAYOUT SUCCESS. Retention M+k = share with \u22651 PAYOUT\n-- SUCCESS in calendar month cohort_month + k months.\n--\n-- Buckets:\n--   Light:  1 payout SUCCESS in first 30d\n--   Medium: 2\u20135\n--   Heavy:  6\u201320\n--   Power:  21+\n--\n-- Adjust pool window in user_dim WHERE (default Aug 2025\u2013Jan 2026).\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    created_at,\n    DATE(created_at) AS d\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 14 MONTH)\n),\nuser_first AS (\n  SELECT\n    pid,\n    DATE_TRUNC(MIN(d), MONTH) AS cohort_month,\n    MIN(created_at) AS first_ts\n  FROM payout_txns\n  GROUP BY pid\n),\nfirst_30d AS (\n  SELECT s.pid, COUNT(*) AS txns_first_30d\n  FROM payout_txns s\n  JOIN user_first f ON s.pid = f.pid\n    AND s.d BETWEEN DATE(f.first_ts) AND DATE_ADD(DATE(f.first_ts), INTERVAL 30 DAY)\n  GROUP BY s.pid\n),\nuser_dim AS (\n  SELECT\n    f.pid,\n    f.cohort_month,\n    CASE\n      WHEN IFNULL(t30.txns_first_30d, 0) <= 1 THEN 'Light'\n      WHEN t30.txns_first_30d BETWEEN 2 AND 5 THEN 'Medium'\n      WHEN t30.txns_first_30d BETWEEN 6 AND 20 THEN 'Heavy'\n      ELSE 'Power'\n    END AS volume_segment\n  FROM user_first f\n  LEFT JOIN first_30d t30 ON f.pid = t30.pid\n  WHERE f.cohort_month >= DATE('2025-08-01')\n    AND f.cohort_month < DATE('2026-02-01')\n),\nmonthly_active AS (\n  SELECT DISTINCT pid, DATE_TRUNC(d, MONTH) AS activity_month\n  FROM payout_txns\n),\nretention AS (\n  SELECT\n    u.volume_segment,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_dim u\n  JOIN monthly_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT volume_segment, COUNT(*) AS cohort_users\n  FROM user_dim\n  GROUP BY 1\n)\nSELECT\n  r.volume_segment,\n  r.period_n,\n  cs.cohort_users,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.volume_segment = cs.volume_segment\nORDER BY\n  CASE r.volume_segment\n    WHEN 'Light' THEN 1 WHEN 'Medium' THEN 2 WHEN 'Heavy' THEN 3 WHEN 'Power' THEN 4\n  END,\n  r.period_n;", "file": "sql/upi-retention-queries.sql"}, "8": {"section": "c", "sql": "-- =============================================================================\n-- Onboarding month: calendar month of upi.users.created_at (profile_id cohort).\n-- Activity: payout SUCCESS on upi_transactions (subType not RECEIVE_EXTERNAL).\n-- Join: users.profile_id = upi_transactions.user_profile_id\n-- Periods: M+0 (same month as onboarding), M+1, M+2, M+3, M+6\n-- Retention %: users with \u22651 payout SUCCESS in that calendar month \u00f7 cohort size\n--\n-- Note: Later periods are blank/incomplete until that calendar month has elapsed\n-- (e.g. M+6 for Dec 2025 needs activity in Jun 2026).\n\nWITH users_dim AS (\n  SELECT\n    profile_id AS pid,\n    DATE_TRUNC(DATE(created_at), MONTH) AS onboarding_month\n  FROM `bharatpe-analytics-prod.upi.users`\n  WHERE IFNULL(__deleted, 'false') = 'false'\n    AND profile_id IS NOT NULL AND profile_id != ''\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 18 MONTH)\n),\npayout_months AS (\n  SELECT DISTINCT\n    user_profile_id AS pid,\n    DATE_TRUNC(DATE(created_at), MONTH) AS activity_month\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 18 MONTH)\n),\ncohort_sizes AS (\n  SELECT onboarding_month, COUNT(*) AS cohort_users\n  FROM users_dim\n  GROUP BY 1\n),\nretention AS (\n  SELECT\n    u.onboarding_month,\n    DATE_DIFF(p.activity_month, u.onboarding_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM users_dim u\n  JOIN payout_months p ON u.pid = p.pid\n  WHERE DATE_DIFF(p.activity_month, u.onboarding_month, MONTH) IN (0, 1, 2, 3, 6)\n  GROUP BY 1, 2\n)\nSELECT\n  c.onboarding_month,\n  c.cohort_users,\n  per AS period_n,\n  IFNULL(r.active_users, 0) AS active_users,\n  ROUND(100 * IFNULL(r.active_users, 0) / c.cohort_users, 2) AS retention_pct\nFROM cohort_sizes c\nCROSS JOIN UNNEST([0, 1, 2, 3, 6]) AS per\nLEFT JOIN retention r\n  ON c.onboarding_month = r.onboarding_month AND per = r.period_n\nWHERE c.onboarding_month >= DATE_TRUNC(DATE_SUB(CURRENT_DATE(), INTERVAL 14 MONTH), MONTH)\n  AND c.onboarding_month < DATE_TRUNC(CURRENT_DATE(), MONTH)\nORDER BY c.onboarding_month, per;", "file": "sql/upi-retention-queries.sql"}, "9": {"section": "d", "sql": "-- =============================================================================\n-- Bucket = AVG(ABS(amount)) on payout SUCCESS txns in [first_payout_day, +30d].\n-- Cohort month = month of first payout SUCCESS. Retention M+0..M+6 on payout activity.\n-- TPV buckets: avg_lt_100 | avg_100_500 | avg_500_2000 | avg_ge_2000\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym,\n    ABS(SAFE_CAST(amount AS FLOAT64)) AS amt\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst_payout AS (\n  SELECT pid, MIN(d) AS fd\n  FROM payout_txns\n  GROUP BY pid\n),\navg30 AS (\n  SELECT\n    o.pid,\n    AVG(o.amt) AS avg_payout_amt,\n    SUM(o.amt) AS tpv_30d,\n    COUNT(*) AS txn_cnt_30d\n  FROM payout_txns o\n  JOIN first_payout f ON o.pid = f.pid\n  WHERE o.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)\n  GROUP BY o.pid\n),\nuser_cohort AS (\n  SELECT\n    f.pid,\n    DATE_TRUNC(f.fd, MONTH) AS cohort_month,\n    CASE\n      WHEN a.avg_payout_amt < 100 THEN 'avg_lt_100'\n      WHEN a.avg_payout_amt < 500 THEN 'avg_100_500'\n      WHEN a.avg_payout_amt < 2000 THEN 'avg_500_2000'\n      ELSE 'avg_ge_2000'\n    END AS tpv_bucket,\n    a.avg_payout_amt,\n    a.tpv_30d\n  FROM first_payout f\n  JOIN avg30 a ON f.pid = a.pid\n  WHERE f.fd >= DATE('2025-08-01')\n    AND f.fd < DATE('2026-02-01')\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_txns\n),\nretention AS (\n  SELECT\n    u.tpv_bucket,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT\n    tpv_bucket,\n    COUNT(*) AS cohort_users,\n    ROUND(AVG(avg_payout_amt), 2) AS mean_avg_amt,\n    ROUND(AVG(tpv_30d), 2) AS mean_tpv_30d\n  FROM user_cohort\n  GROUP BY 1\n)\nSELECT\n  r.tpv_bucket,\n  r.period_n,\n  cs.cohort_users,\n  cs.mean_avg_amt,\n  cs.mean_tpv_30d,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.tpv_bucket = cs.tpv_bucket\nORDER BY\n  CASE r.tpv_bucket\n    WHEN 'avg_lt_100' THEN 1\n    WHEN 'avg_100_500' THEN 2\n    WHEN 'avg_500_2000' THEN 3\n    ELSE 4\n  END,\n  r.period_n;", "file": "sql/upi-retention-queries.sql"}, "10": {"section": "e", "sql": "-- =============================================================================\n-- Pay-in: subType = 'RECEIVE_EXTERNAL' SUCCESS in [first_payout_day, +30d].\n-- Bucket on pay-in count; cohort month = month of first payout SUCCESS.\n-- Retention M+0..M+6 = payout activity (subType IS DISTINCT FROM 'RECEIVE_EXTERNAL').\n-- Pay-in buckets: Light <5 | Medium 5-20 | Heavy 21-50 | Power 51+\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nall_succ AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    subType AS st\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst_payout AS (\n  SELECT pid, MIN(d) AS fd\n  FROM payout_txns\n  GROUP BY pid\n),\npayin_30d AS (\n  SELECT\n    f.pid,\n    f.fd,\n    COUNTIF(\n      s.st = 'RECEIVE_EXTERNAL'\n      AND s.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)\n    ) AS payin_n\n  FROM first_payout f\n  INNER JOIN all_succ s ON f.pid = s.pid\n  GROUP BY f.pid, f.fd\n),\nuser_cohort AS (\n  SELECT\n    p.pid,\n    DATE_TRUNC(p.fd, MONTH) AS cohort_month,\n    p.payin_n,\n    CASE\n      WHEN p.payin_n < 5 THEN 'Light'\n      WHEN p.payin_n BETWEEN 5 AND 20 THEN 'Medium'\n      WHEN p.payin_n BETWEEN 21 AND 50 THEN 'Heavy'\n      ELSE 'Power'\n    END AS payin_segment\n  FROM payin_30d p\n  WHERE p.fd >= DATE('2025-08-01')\n    AND p.fd < DATE('2026-02-01')\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_txns\n),\nretention AS (\n  SELECT\n    u.payin_segment,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT\n    payin_segment,\n    COUNT(*) AS cohort_users,\n    ROUND(AVG(payin_n), 2) AS mean_payin\n  FROM user_cohort\n  GROUP BY 1\n)\nSELECT\n  r.payin_segment,\n  r.period_n,\n  cs.cohort_users,\n  cs.mean_payin,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.payin_segment = cs.payin_segment\nORDER BY\n  CASE r.payin_segment\n    WHEN 'Light' THEN 1\n    WHEN 'Medium' THEN 2\n    WHEN 'Heavy' THEN 3\n    ELSE 4\n  END,\n  r.period_n;", "file": "sql/upi-retention-queries.sql"}, "11": {"section": "f", "sql": "-- =============================================================================\n-- After first payout SUCCESS, label users by distinct payout subTypes in [fd, +30d]:\n--   Only QR | Only UPI_ID | Only CONTACT | Only INTENT | Mixture (2+ distinct)\n--   Other only = single subType not in the four rails (excluded from POOLED SELECT)\n-- Retention M+0..M+6 = payout activity. NULL subType stored as 'NULL'.\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym,\n    subType AS st\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst_payout AS (\n  SELECT pid, MIN(d) AS fd\n  FROM payout_txns\n  GROUP BY pid\n),\nwin AS (\n  SELECT\n    o.pid,\n    IFNULL(o.st, 'NULL') AS st\n  FROM payout_txns o\n  JOIN first_payout f ON o.pid = f.pid\n  WHERE o.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)\n),\nsubtype_agg AS (\n  SELECT\n    pid,\n    COUNT(DISTINCT st) AS n_distinct_st,\n    ARRAY_AGG(DISTINCT st ORDER BY st) AS sts\n  FROM win\n  GROUP BY pid\n),\nuser_cohort AS (\n  SELECT\n    a.pid,\n    DATE_TRUNC(f.fd, MONTH) AS cohort_month,\n    CASE\n      WHEN a.n_distinct_st = 1 AND a.sts[OFFSET(0)] = 'QR' THEN 'Only QR'\n      WHEN a.n_distinct_st = 1 AND a.sts[OFFSET(0)] = 'UPI_ID' THEN 'Only UPI_ID'\n      WHEN a.n_distinct_st = 1 AND a.sts[OFFSET(0)] = 'CONTACT' THEN 'Only CONTACT'\n      WHEN a.n_distinct_st = 1 AND a.sts[OFFSET(0)] = 'INTENT' THEN 'Only INTENT'\n      WHEN a.n_distinct_st >= 2 THEN 'Mixture'\n      ELSE 'Other only'\n    END AS rail_segment\n  FROM subtype_agg a\n  JOIN first_payout f ON a.pid = f.pid\n  WHERE f.fd >= DATE('2025-08-01')\n    AND f.fd < DATE('2026-02-01')\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_txns\n),\nretention AS (\n  SELECT\n    u.rail_segment,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT rail_segment, COUNT(*) AS cohort_users\n  FROM user_cohort\n  GROUP BY 1\n)\nSELECT\n  r.rail_segment,\n  r.period_n,\n  cs.cohort_users,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.rail_segment = cs.rail_segment\nWHERE r.rail_segment != 'Other only'\nORDER BY\n  CASE r.rail_segment\n    WHEN 'Only QR' THEN 1\n    WHEN 'Only UPI_ID' THEN 2\n    WHEN 'Only CONTACT' THEN 3\n    WHEN 'Only INTENT' THEN 4\n    WHEN 'Mixture' THEN 5\n    ELSE 6\n  END,\n  r.period_n;", "file": "sql/upi-retention-queries.sql"}, "12": {"section": "g", "sql": "-- =============================================================================\n-- Top 20 MCCs = highest payout SUCCESS txn count in 16-month scan window.\n-- Per user: dominant MCC = max txn count in [first_payout_day, +30d]; ties by mcc.\n-- Retention M+0..M+6 on payout activity. See retention_by_top20_mcc.sql (legacy).\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym,\n    mcc\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst_payout AS (\n  SELECT pid, MIN(d) AS fd\n  FROM payout_txns\n  GROUP BY pid\n),\ntop20_mcc AS (\n  SELECT mcc\n  FROM (\n    SELECT mcc, COUNT(*) AS cnt\n    FROM payout_txns\n    GROUP BY mcc\n  )\n  QUALIFY ROW_NUMBER() OVER (ORDER BY cnt DESC) <= 20\n),\nmcc_counts AS (\n  SELECT\n    o.pid,\n    o.mcc,\n    COUNT(*) AS n\n  FROM payout_txns o\n  JOIN first_payout f ON o.pid = f.pid\n  WHERE o.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)\n  GROUP BY o.pid, o.mcc\n),\ndominant AS (\n  SELECT pid, mcc AS dom_mcc\n  FROM (\n    SELECT\n      pid,\n      mcc,\n      ROW_NUMBER() OVER (\n        PARTITION BY pid\n        ORDER BY n DESC, COALESCE(CAST(mcc AS STRING), '')\n      ) AS rn\n    FROM mcc_counts\n  )\n  WHERE rn = 1\n),\nuser_cohort AS (\n  SELECT\n    d.pid,\n    DATE_TRUNC(f.fd, MONTH) AS cohort_month,\n    CASE\n      WHEN t.mcc IS NOT NULL THEN COALESCE(CAST(d.dom_mcc AS STRING), 'NULL')\n      ELSE 'OTHER'\n    END AS mcc_seg\n  FROM dominant d\n  JOIN first_payout f ON d.pid = f.pid\n  LEFT JOIN top20_mcc t ON d.dom_mcc IS NOT DISTINCT FROM t.mcc\n  WHERE f.fd >= DATE('2025-08-01')\n    AND f.fd < DATE('2026-02-01')\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_txns\n),\nretention AS (\n  SELECT\n    u.mcc_seg,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT mcc_seg, COUNT(*) AS cohort_users\n  FROM user_cohort\n  GROUP BY 1\n)\nSELECT\n  r.mcc_seg,\n  r.period_n,\n  cs.cohort_users,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.mcc_seg = cs.mcc_seg\nORDER BY cs.cohort_users DESC, r.mcc_seg, r.period_n;", "file": "sql/upi-retention-queries.sql"}, "13": {"section": "h", "sql": "-- =============================================================================\n-- is_bharatpe_qr: IFNULL(..., 0). Segments:\n--   Only BharatPe QR (all txns = 1) | Only non-BharatPe QR (all = 0) | Mixed (both)\n-- Retention M+0..M+6 on payout activity. See retention_by_bharatpe_qr_share.sql (share buckets).\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym,\n    IFNULL(is_bharatpe_qr, 0) AS bp_qr\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst_payout AS (\n  SELECT pid, MIN(d) AS fd\n  FROM payout_txns\n  GROUP BY pid\n),\nqr_30d AS (\n  SELECT\n    o.pid,\n    COUNT(*) AS n_txn,\n    COUNTIF(o.bp_qr = 1) AS n_bp,\n    COUNTIF(o.bp_qr = 0) AS n_non_bp\n  FROM payout_txns o\n  JOIN first_payout f ON o.pid = f.pid\n  WHERE o.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)\n  GROUP BY o.pid\n),\nuser_cohort AS (\n  SELECT\n    q.pid,\n    DATE_TRUNC(f.fd, MONTH) AS cohort_month,\n    CASE\n      WHEN q.n_bp = q.n_txn AND q.n_txn > 0 THEN 'Only BharatPe QR'\n      WHEN q.n_non_bp = q.n_txn AND q.n_txn > 0 THEN 'Only non-BharatPe QR'\n      WHEN q.n_bp > 0 AND q.n_non_bp > 0 THEN 'Mixed'\n      ELSE 'No payout in window'\n    END AS qr_segment\n  FROM qr_30d q\n  JOIN first_payout f ON q.pid = f.pid\n  WHERE f.fd >= DATE('2025-08-01')\n    AND f.fd < DATE('2026-02-01')\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_txns\n),\nretention AS (\n  SELECT\n    u.qr_segment,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n    AND u.qr_segment IN ('Only BharatPe QR', 'Only non-BharatPe QR', 'Mixed')\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT qr_segment, COUNT(*) AS cohort_users\n  FROM user_cohort\n  WHERE qr_segment IN ('Only BharatPe QR', 'Only non-BharatPe QR', 'Mixed')\n  GROUP BY 1\n)\nSELECT\n  r.qr_segment,\n  r.period_n,\n  cs.cohort_users,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.qr_segment = cs.qr_segment\nORDER BY\n  CASE r.qr_segment\n    WHEN 'Only non-BharatPe QR' THEN 1\n    WHEN 'Mixed' THEN 2\n    ELSE 3\n  END,\n  r.period_n;", "file": "sql/upi-retention-queries.sql"}, "14": {"section": "i", "sql": "-- =============================================================================\n-- Ever redeemed = >=1 payout SUCCESS in [first_payout_day, +30d] with reward_amount > 0\n-- Never redeemed = no such txn in window. Retention M+0..M+6 on payout activity.\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym,\n    SAFE_CAST(reward_amount AS FLOAT64) AS reward_amt\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst_payout AS (\n  SELECT pid, MIN(d) AS fd\n  FROM payout_txns\n  GROUP BY pid\n),\nreward_30d AS (\n  SELECT\n    o.pid,\n    COUNTIF(o.reward_amt > 0) AS n_redeem\n  FROM payout_txns o\n  JOIN first_payout f ON o.pid = f.pid\n  WHERE o.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)\n  GROUP BY o.pid\n),\nuser_cohort AS (\n  SELECT\n    q.pid,\n    DATE_TRUNC(f.fd, MONTH) AS cohort_month,\n    CASE\n      WHEN q.n_redeem > 0 THEN 'Ever redeemed'\n      ELSE 'Never redeemed'\n    END AS reward_segment\n  FROM reward_30d q\n  JOIN first_payout f ON q.pid = f.pid\n  WHERE f.fd >= DATE('2025-08-01')\n    AND f.fd < DATE('2026-02-01')\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_txns\n),\nretention AS (\n  SELECT\n    u.reward_segment,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT reward_segment, COUNT(*) AS cohort_users\n  FROM user_cohort\n  GROUP BY 1\n)\nSELECT\n  r.reward_segment,\n  r.period_n,\n  cs.cohort_users,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.reward_segment = cs.reward_segment\nORDER BY\n  CASE r.reward_segment WHEN 'Never redeemed' THEN 1 ELSE 2 END,\n  r.period_n;", "file": "sql/upi-retention-queries.sql"}, "15": {"section": "j", "sql": "-- =============================================================================\n-- Earn in first 30d after first payout: user-specified type rule on ALL SUCCESS txns.\n-- Cohort anchor: first payout (subType not RECEIVE_EXTERNAL). Retention on payout M+0..M+6.\n-- See upi-schema-reference.md: type never = RECEIVE_EXTERNAL; pay-ins can satisfy type rule.\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nall_succ AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    type,\n    SAFE_CAST(amount AS FLOAT64) AS amt\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst_payout AS (\n  SELECT pid, MIN(d) AS fd\n  FROM payout_txns\n  GROUP BY pid\n),\nearn_30d AS (\n  SELECT\n    f.pid,\n    COUNTIF(s.type IS DISTINCT FROM 'RECEIVE_EXTERNAL' AND s.amt > 50) AS n_earn\n  FROM first_payout f\n  JOIN all_succ s\n    ON f.pid = s.pid\n   AND s.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)\n  GROUP BY f.pid\n),\nuser_cohort AS (\n  SELECT\n    e.pid,\n    DATE_TRUNC(f.fd, MONTH) AS cohort_month,\n    CASE\n      WHEN e.n_earn > 0 THEN 'Ever earned'\n      ELSE 'Never earned'\n    END AS earn_segment\n  FROM earn_30d e\n  JOIN first_payout f ON e.pid = f.pid\n  WHERE f.fd >= DATE('2025-08-01')\n    AND f.fd < DATE('2026-02-01')\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_txns\n),\nretention AS (\n  SELECT\n    u.earn_segment,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT earn_segment, COUNT(*) AS cohort_users\n  FROM user_cohort\n  GROUP BY 1\n)\nSELECT\n  r.earn_segment,\n  r.period_n,\n  cs.cohort_users,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.earn_segment = cs.earn_segment\nORDER BY CASE r.earn_segment WHEN 'Never earned' THEN 1 ELSE 2 END, r.period_n;\n\n-- Appendix: payout-only earn\n\n-- =============================================================================\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym,\n    SAFE_CAST(amount AS FLOAT64) AS amt\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst_payout AS (\n  SELECT pid, MIN(d) AS fd\n  FROM payout_txns\n  GROUP BY pid\n),\nearn_30d AS (\n  SELECT\n    o.pid,\n    COUNTIF(o.amt > 50) AS n_earn\n  FROM payout_txns o\n  JOIN first_payout f ON o.pid = f.pid\n  WHERE o.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)\n  GROUP BY o.pid\n),\nuser_cohort AS (\n  SELECT\n    e.pid,\n    DATE_TRUNC(f.fd, MONTH) AS cohort_month,\n    CASE\n      WHEN e.n_earn > 0 THEN 'Ever earned (payout only)'\n      ELSE 'Never earned (payout only)'\n    END AS earn_segment\n  FROM earn_30d e\n  JOIN first_payout f ON e.pid = f.pid\n  WHERE f.fd >= DATE('2025-08-01')\n    AND f.fd < DATE('2026-02-01')\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_txns\n),\nretention AS (\n  SELECT\n    u.earn_segment,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT earn_segment, COUNT(*) AS cohort_users\n  FROM user_cohort\n  GROUP BY 1\n)\nSELECT\n  r.earn_segment,\n  r.period_n,\n  cs.cohort_users,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.earn_segment = cs.earn_segment\nORDER BY r.earn_segment, r.period_n;", "file": "sql/upi-retention-queries.sql"}, "16": {"section": "k", "sql": "-- =============================================================================\n-- Platform = JSON_VALUE(attributes, '$.platform') on payout SUCCESS in first 30d.\n-- Segments: Only Android | Only iOS (Ios) | Mixed (both) | Unknown (excluded from POOLED)\n-- Retention M+0..M+6 on payout activity.\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym,\n    JSON_VALUE(attributes, '$.platform') AS platform\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst_payout AS (\n  SELECT pid, MIN(d) AS fd\n  FROM payout_txns\n  GROUP BY pid\n),\nwin AS (\n  SELECT\n    o.pid,\n    o.platform\n  FROM payout_txns o\n  JOIN first_payout f ON o.pid = f.pid\n  WHERE o.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)\n),\nplatform_agg AS (\n  SELECT\n    pid,\n    COUNTIF(platform = 'Android') AS n_android,\n    COUNTIF(platform = 'Ios') AS n_ios,\n    COUNT(*) AS n_txn\n  FROM win\n  GROUP BY pid\n),\nuser_cohort AS (\n  SELECT\n    a.pid,\n    DATE_TRUNC(f.fd, MONTH) AS cohort_month,\n    CASE\n      WHEN a.n_android = a.n_txn AND a.n_txn > 0 THEN 'Only Android'\n      WHEN a.n_ios = a.n_txn AND a.n_txn > 0 THEN 'Only iOS'\n      WHEN a.n_android > 0 AND a.n_ios > 0 THEN 'Mixed (Android + iOS)'\n      ELSE 'Unknown / other platform'\n    END AS platform_segment\n  FROM platform_agg a\n  JOIN first_payout f ON a.pid = f.pid\n  WHERE f.fd >= DATE('2025-08-01')\n    AND f.fd < DATE('2026-02-01')\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_txns\n),\nretention AS (\n  SELECT\n    u.platform_segment,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n    AND u.platform_segment IN ('Only Android', 'Only iOS', 'Mixed (Android + iOS)')\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT platform_segment, COUNT(*) AS cohort_users\n  FROM user_cohort\n  WHERE platform_segment IN ('Only Android', 'Only iOS', 'Mixed (Android + iOS)')\n  GROUP BY 1\n)\nSELECT\n  r.platform_segment,\n  r.period_n,\n  cs.cohort_users,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.platform_segment = cs.platform_segment\nORDER BY\n  CASE r.platform_segment\n    WHEN 'Only Android' THEN 1\n    WHEN 'Only iOS' THEN 2\n    ELSE 3\n  END,\n  r.period_n;", "file": "sql/upi-retention-queries.sql"}, "17": {"section": "l", "sql": "-- =============================================================================\n-- First outward row = earliest payout-direction txn per user (subType not RECEIVE_EXTERNAL).\n-- Cohort month = month of that first attempt. Segments: SUCCESS | FAILED | INITIALIZED\n--   (INITIALIZED = INITIALIZED, PENDING, AUTH_PENDING). Retention = payout SUCCESS M+0..M+6.\n\nWITH out_tx AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym,\n    status,\n    id,\n    created_at\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst_out AS (\n  SELECT\n    pid,\n    d AS fd,\n    status AS first_status\n  FROM out_tx\n  QUALIFY ROW_NUMBER() OVER (PARTITION BY pid ORDER BY created_at, id) = 1\n),\nuser_cohort AS (\n  SELECT\n    f.pid,\n    DATE_TRUNC(f.fd, MONTH) AS cohort_month,\n    CASE\n      WHEN f.first_status = 'SUCCESS' THEN 'SUCCESS'\n      WHEN f.first_status = 'FAILED' THEN 'FAILED'\n      WHEN f.first_status IN ('INITIALIZED', 'PENDING', 'AUTH_PENDING') THEN 'INITIALIZED'\n      ELSE 'OTHER'\n    END AS status_segment\n  FROM first_out f\n  WHERE f.fd >= DATE('2025-08-01')\n    AND f.fd < DATE('2026-02-01')\n),\npayout_succ AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_succ\n),\nretention AS (\n  SELECT\n    u.status_segment,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n    AND u.status_segment IN ('SUCCESS', 'FAILED', 'INITIALIZED')\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT status_segment, COUNT(*) AS cohort_users\n  FROM user_cohort\n  WHERE status_segment IN ('SUCCESS', 'FAILED', 'INITIALIZED')\n  GROUP BY 1\n)\nSELECT\n  r.status_segment,\n  r.period_n,\n  cs.cohort_users,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.status_segment = cs.status_segment\nORDER BY\n  CASE r.status_segment\n    WHEN 'SUCCESS' THEN 1\n    WHEN 'FAILED' THEN 2\n    ELSE 3\n  END,\n  r.period_n;", "file": "sql/upi-retention-queries.sql"}, "18": {"section": "m", "sql": "-- =============================================================================\n-- First 5 outward attempts per user (any status); bucket = count SUCCESS in those 5.\n-- Requires exactly 5 attempts. Cohort month = first payout SUCCESS month.\n-- Retention M+0..M+6 on payout SUCCESS activity. Buckets 0\u20135.\n\nWITH out_tx AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    status,\n    id,\n    created_at\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst5_ranked AS (\n  SELECT\n    pid,\n    status\n  FROM out_tx\n  QUALIFY ROW_NUMBER() OVER (PARTITION BY pid ORDER BY created_at, id) <= 5\n),\nfirst5 AS (\n  SELECT\n    pid,\n    COUNTIF(status = 'SUCCESS') AS succ_in_first5\n  FROM first5_ranked\n  GROUP BY pid\n  HAVING COUNT(*) = 5\n),\nfirst_payout_succ AS (\n  SELECT\n    pid,\n    MIN(d) AS fd\n  FROM out_tx\n  WHERE status = 'SUCCESS'\n  GROUP BY pid\n),\nuser_cohort AS (\n  SELECT\n    f.pid,\n    DATE_TRUNC(p.fd, MONTH) AS cohort_month,\n    CAST(f.succ_in_first5 AS INT64) AS success_bucket\n  FROM first5 f\n  JOIN first_payout_succ p ON f.pid = p.pid\n  WHERE p.fd >= DATE('2025-08-01')\n    AND p.fd < DATE('2026-02-01')\n    AND f.succ_in_first5 BETWEEN 0 AND 5\n),\npayout_succ AS (\n  SELECT\n    pid,\n    DATE_TRUNC(d, MONTH) AS ym\n  FROM out_tx\n  WHERE status = 'SUCCESS'\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_succ\n),\nretention AS (\n  SELECT\n    u.success_bucket,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT success_bucket, COUNT(*) AS cohort_users\n  FROM user_cohort\n  GROUP BY 1\n)\nSELECT\n  r.success_bucket,\n  r.period_n,\n  cs.cohort_users,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.success_bucket = cs.success_bucket\nORDER BY r.success_bucket DESC, r.period_n;", "file": "sql/upi-retention-queries.sql"}, "19": {"section": "n", "sql": "-- =============================================================================\n-- Linkage count = DISTINCT user_bank_accounts.id for user, linked by end of first 30d\n-- after first payout SUCCESS. Join: transactions.user_profile_id -> users.profile_id\n--   -> user_bank_accounts.user_id = users.id\n-- Segments: 1 | 2 | 3 | 4+ accounts. Retention M+0..M+6 on payout SUCCESS.\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst_payout AS (\n  SELECT pid, MIN(d) AS fd\n  FROM payout_txns\n  GROUP BY pid\n),\nlinkages AS (\n  SELECT\n    u.profile_id AS pid,\n    COUNT(DISTINCT b.id) AS n_linked\n  FROM `bharatpe-analytics-prod.upi.user_bank_accounts` b\n  JOIN `bharatpe-analytics-prod.upi.users` u\n    ON b.user_id = u.id\n  JOIN first_payout f\n    ON u.profile_id = f.pid\n  WHERE IFNULL(b.__deleted, 'false') = 'false'\n    AND IFNULL(u.__deleted, 'false') = 'false'\n    AND DATE(b.created_at) <= DATE_ADD(f.fd, INTERVAL 30 DAY)\n  GROUP BY u.profile_id\n),\nuser_cohort AS (\n  SELECT\n    f.pid,\n    DATE_TRUNC(f.fd, MONTH) AS cohort_month,\n    COALESCE(l.n_linked, 0) AS n_linked,\n    CASE\n      WHEN COALESCE(l.n_linked, 0) = 1 THEN '1 account'\n      WHEN COALESCE(l.n_linked, 0) = 2 THEN '2 accounts'\n      WHEN COALESCE(l.n_linked, 0) = 3 THEN '3 accounts'\n      WHEN COALESCE(l.n_linked, 0) >= 4 THEN '4+ accounts'\n      ELSE '0 accounts'\n    END AS linkage_segment\n  FROM first_payout f\n  LEFT JOIN linkages l ON f.pid = l.pid\n  WHERE f.fd >= DATE('2025-08-01')\n    AND f.fd < DATE('2026-02-01')\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_txns\n),\nretention AS (\n  SELECT\n    u.linkage_segment,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n    AND u.linkage_segment IN ('1 account', '2 accounts', '3 accounts', '4+ accounts')\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT linkage_segment, COUNT(*) AS cohort_users, ROUND(AVG(n_linked), 2) AS mean_linked\n  FROM user_cohort\n  WHERE linkage_segment IN ('1 account', '2 accounts', '3 accounts', '4+ accounts')\n  GROUP BY 1\n)\nSELECT\n  r.linkage_segment,\n  r.period_n,\n  cs.cohort_users,\n  cs.mean_linked,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.linkage_segment = cs.linkage_segment\nORDER BY cs.mean_linked, r.period_n;", "file": "sql/upi-retention-queries.sql"}, "20": {"section": "o", "sql": "-- =============================================================================\n-- Dominant account_type = type with most linked account rows by end of first 30d\n-- after first payout SUCCESS (tie-break: account_type ASC).\n-- Segments: SAVINGS | CURRENT | CREDIT | CREDITLINE | OTHER dominant | No linked.\n-- Retention M+0..M+6 on payout SUCCESS. Pool: first-payout SUCCESS 2025-08..2026-01.\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst_payout AS (\n  SELECT pid, MIN(d) AS fd\n  FROM payout_txns\n  GROUP BY pid\n),\nlinked AS (\n  SELECT\n    u.profile_id AS pid,\n    COALESCE(b.account_type, 'UNKNOWN') AS account_type\n  FROM `bharatpe-analytics-prod.upi.user_bank_accounts` b\n  JOIN `bharatpe-analytics-prod.upi.users` u\n    ON b.user_id = u.id\n  JOIN first_payout f\n    ON u.profile_id = f.pid\n  WHERE IFNULL(b.__deleted, 'false') = 'false'\n    AND IFNULL(u.__deleted, 'false') = 'false'\n    AND DATE(b.created_at) <= DATE_ADD(f.fd, INTERVAL 30 DAY)\n),\ntype_counts AS (\n  SELECT pid, account_type, COUNT(*) AS n\n  FROM linked\n  GROUP BY 1, 2\n),\ndominant AS (\n  SELECT pid, account_type AS dominant_account_type\n  FROM type_counts\n  QUALIFY ROW_NUMBER() OVER (PARTITION BY pid ORDER BY n DESC, account_type) = 1\n),\nuser_cohort AS (\n  SELECT\n    f.pid,\n    DATE_TRUNC(f.fd, MONTH) AS cohort_month,\n    CASE\n      WHEN d.dominant_account_type IN ('SAVINGS', 'CURRENT', 'CREDIT', 'CREDITLINE')\n        THEN d.dominant_account_type\n      WHEN d.pid IS NULL THEN 'No linked account (30d)'\n      ELSE 'OTHER dominant'\n    END AS dominant_type\n  FROM first_payout f\n  LEFT JOIN dominant d ON f.pid = d.pid\n  WHERE f.fd >= DATE('2025-08-01')\n    AND f.fd < DATE('2026-02-01')\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_txns\n),\nretention AS (\n  SELECT\n    u.dominant_type,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT dominant_type, COUNT(*) AS cohort_users\n  FROM user_cohort\n  GROUP BY 1\n)\nSELECT\n  r.dominant_type,\n  r.period_n,\n  cs.cohort_users,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.dominant_type = cs.dominant_type\nORDER BY cs.cohort_users DESC, r.period_n;\n\n-- Appendix: exclusive single type\n\n-- =============================================================================\n-- Users with exactly one distinct account_type among linked rows in window.\n-- \"Mixed account types\" = 2+ distinct types. Retention M+0..M+6.\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst_payout AS (\n  SELECT pid, MIN(d) AS fd\n  FROM payout_txns\n  GROUP BY pid\n),\nlinked AS (\n  SELECT\n    u.profile_id AS pid,\n    COALESCE(b.account_type, 'UNKNOWN') AS account_type\n  FROM `bharatpe-analytics-prod.upi.user_bank_accounts` b\n  JOIN `bharatpe-analytics-prod.upi.users` u\n    ON b.user_id = u.id\n  JOIN first_payout f\n    ON u.profile_id = f.pid\n  WHERE IFNULL(b.__deleted, 'false') = 'false'\n    AND IFNULL(u.__deleted, 'false') = 'false'\n    AND DATE(b.created_at) <= DATE_ADD(f.fd, INTERVAL 30 DAY)\n),\ntype_counts AS (\n  SELECT pid, account_type, COUNT(*) AS n\n  FROM linked\n  GROUP BY 1, 2\n),\nuser_agg AS (\n  SELECT pid, COUNT(DISTINCT account_type) AS n_distinct_types\n  FROM type_counts\n  GROUP BY pid\n),\nonly_type AS (\n  SELECT t.pid, t.account_type\n  FROM type_counts t\n  JOIN user_agg u ON t.pid = u.pid AND u.n_distinct_types = 1\n),\nmixed AS (\n  SELECT pid FROM user_agg WHERE n_distinct_types >= 2\n),\nuser_cohort AS (\n  SELECT\n    f.pid,\n    DATE_TRUNC(f.fd, MONTH) AS cohort_month,\n    CASE\n      WHEN m.pid IS NOT NULL THEN 'Mixed account types'\n      WHEN o.account_type = 'SAVINGS' THEN 'SAVINGS only'\n      WHEN o.account_type = 'CURRENT' THEN 'CURRENT only'\n      WHEN o.pid IS NOT NULL THEN 'Other type only'\n      ELSE 'No linked account (30d)'\n    END AS account_type_segment\n  FROM first_payout f\n  LEFT JOIN only_type o ON f.pid = o.pid\n  LEFT JOIN mixed m ON f.pid = m.pid\n  WHERE f.fd >= DATE('2025-08-01')\n    AND f.fd < DATE('2026-02-01')\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_txns\n),\nretention AS (\n  SELECT\n    u.account_type_segment,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n    AND u.account_type_segment IN (\n      'SAVINGS only', 'CURRENT only', 'Mixed account types', 'Other type only'\n    )\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT account_type_segment, COUNT(*) AS cohort_users\n  FROM user_cohort\n  WHERE account_type_segment IN (\n    'SAVINGS only', 'CURRENT only', 'Mixed account types', 'Other type only'\n  )\n  GROUP BY 1\n)\nSELECT\n  r.account_type_segment,\n  r.period_n,\n  cs.cohort_users,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.account_type_segment = cs.account_type_segment\nORDER BY cs.cohort_users DESC, r.period_n;", "file": "sql/upi-retention-queries.sql"}}</script>
+  <script>
+    (function () {
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const total = slides.length;
+      let idx = 0;
+
+      const progress = document.getElementById("progress");
+      const counter = document.getElementById("counter");
+
+      function show(i) {
+        idx = Math.max(0, Math.min(total - 1, i));
+        slides.forEach((s, n) => s.classList.toggle("active", n === idx));
+        progress.style.width = ((idx + 1) / total * 100) + "%";
+        counter.textContent = (idx + 1) + " / " + total;
+        history.replaceState(null, "", "#slide-" + (idx + 1));
+      }
+
+      function next() { show(idx + 1); }
+      function prev() { show(idx - 1); }
+
+      document.getElementById("next").addEventListener("click", next);
+      document.getElementById("prev").addEventListener("click", prev);
+
+      document.querySelectorAll("[data-goto]").forEach((el) => {
+        el.addEventListener("click", () => show(parseInt(el.getAttribute("data-goto"), 10) - 1));
+      });
+
+
+      // SQL source modal (slides 6–21)
+      const sqlSourcesEl = document.getElementById("sql-sources-data");
+      const sqlSources = sqlSourcesEl ? JSON.parse(sqlSourcesEl.textContent) : {};
+      const sqlModal = document.getElementById("sql-modal");
+      const sqlPre = document.getElementById("sql-modal-pre");
+      const sqlTitle = document.getElementById("sql-modal-title");
+      const sqlFoot = document.getElementById("sql-modal-foot");
+
+      function openSqlModal(slideId) {
+        const entry = sqlSources[String(slideId)];
+        if (!entry) return;
+        sqlTitle.textContent = "SQL source — section (" + entry.section + ")";
+        sqlPre.textContent = entry.sql;
+        sqlFoot.textContent = "bharatpe-consumer/" + (entry.file || "sql/upi-retention-queries.sql");
+        sqlModal.classList.add("open");
+        sqlModal.removeAttribute("hidden");
+      }
+      function closeSqlModal() {
+        sqlModal.classList.remove("open");
+        sqlModal.setAttribute("hidden", "");
+      }
+      document.querySelectorAll(".btn-source").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          openSqlModal(btn.getAttribute("data-sql-slide"));
+        });
+      });
+      document.getElementById("sql-modal-close").addEventListener("click", closeSqlModal);
+      document.getElementById("sql-modal-backdrop").addEventListener("click", closeSqlModal);
+
+      document.addEventListener("keydown", (e) => {
+        if (sqlModal.classList.contains("open")) {
+          if (e.key === "Escape") { e.preventDefault(); closeSqlModal(); }
+          return;
+        }
+        if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") { e.preventDefault(); next(); }
+        if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); prev(); }
+        if (e.key === "Home") { e.preventDefault(); show(0); }
+        if (e.key === "End") { e.preventDefault(); show(total - 1); }
+      });
+
+      const hash = location.hash.match(/^#slide-(\d+)$/);
+      if (hash) show(parseInt(hash[1], 10) - 1);
+      else show(0);
+    })();
+  </script>
+</body>
+</html>

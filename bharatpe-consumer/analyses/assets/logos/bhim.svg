@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="BHIM">
+  <rect width="128" height="128" rx="24" fill="#097939"/>
+  <text x="64" y="72" text-anchor="middle" fill="#fff" font-family="system-ui,sans-serif" font-size="40" font-weight="800">BHIM</text>
+  <text x="64" y="98" text-anchor="middle" fill="#C8E6C9" font-family="system-ui,sans-serif" font-size="14" font-weight="600">UPI</text>
+</svg>
