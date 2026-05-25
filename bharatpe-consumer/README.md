@@ -9,6 +9,9 @@ This folder holds **BigQuery + Mixpanel** analysis artifacts for the consumer ap
 | `upi-cohort-retention.canvas.tsx` | Cursor **Canvas** presentation: warehouse volume cohorts, acquisition M+1, engagement tables, Mixpanel weekly benchmarks, regional BBPS & wealth intent, playbook, links. |
 | `upi-cohort-retention.html` | Standalone **web page** version of the deck (brand `#0049CF`, Chart.js charts). Open in any browser; no build step. |
 | `sql/cohort_volume_retention.sql` | Reproducible BigQuery SQL for volume-segment retention & engagement (adjust date windows). |
+| `sql/upi-retention-queries.sql` | All retention SQL: **(a)–(o)** (volume, onboarding, TPV, pay-in, subType, MCC, QR, Zillion, platform, status, first-5, bank linkages, account type). |
+| `analyses/upi-retention-results.md` | All retention **results** for (a)–(o). |
+| `upi-schema-reference.md` | Column reference for `upi_transactions`, `users`, `user_bank_accounts`. |
 
 ## Canvas preview in Cursor
 
