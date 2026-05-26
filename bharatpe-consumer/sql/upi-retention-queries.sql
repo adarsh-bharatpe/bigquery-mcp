@@ -2841,3 +2841,317 @@ SELECT
 FROM retention r
 JOIN cohort_sizes cs ON r.account_type_segment = cs.account_type_segment
 ORDER BY cs.cohort_users DESC, r.period_n;
+
+
+-- =============================================================================
+-- (p) Retention lens — installed apps (consumer_psp.appDetails × upi.users)
+-- =============================================================================
+-- Join: CAST(upi.users.client_reference_id AS INT64) = consumer_psp.customerId
+-- PSP row: latest per customerId (ORDER BY updatedAt DESC), non-empty appDetails
+-- Partition: DATE(consumer_psp.createdAt) >= '2024-01-01' (required)
+-- Cohort: first payout SUCCESS 2025-08-01 .. 2026-01-31 (same pool as b–o)
+-- Retention: payout SUCCESS M+0..M+6; segments below are PSP-matched users only.
+--
+-- UPI wallet count uses DISTINCT core payment brands (not raw package IDs, not
+-- BNPL/lending/broking apps). See brand CASE in upi_brand CTE below.
+-- Category flags: ecommerce / quick-commerce / travel / food-delivery allowlists.
+
+
+-- -----------------------------------------------------------------------------
+-- (p) UPI wallet count on device — POOLED
+-- Segments: Single UPI app | 2-4 UPI apps | 5+ UPI apps
+-- -----------------------------------------------------------------------------
+
+WITH payout_txns AS (
+  SELECT
+    user_profile_id AS pid,
+    DATE(created_at) AS d,
+    DATE_TRUNC(DATE(created_at), MONTH) AS ym
+  FROM `bharatpe-analytics-prod.upi.upi_transactions`
+  WHERE status = 'SUCCESS'
+    AND user_profile_id IS NOT NULL AND user_profile_id != ''
+    AND IFNULL(__deleted, 'false') = 'false'
+    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)
+),
+user_first AS (
+  SELECT
+    pid,
+    DATE_TRUNC(MIN(d), MONTH) AS cohort_month,
+    MIN(d) AS fd
+  FROM payout_txns
+  GROUP BY pid
+),
+psp AS (
+  SELECT
+    customerId,
+    appDetails,
+    ROW_NUMBER() OVER (PARTITION BY customerId ORDER BY updatedAt DESC) AS rn
+  FROM `bharatpe-analytics-prod.bharatpe_mongo_data.consumer_psp`
+  WHERE IFNULL(__deleted, 'false') = 'false'
+    AND appDetails IS NOT NULL AND appDetails != ''
+    AND DATE(createdAt) >= DATE('2024-01-01')
+),
+user_base AS (
+  SELECT
+    f.pid,
+    f.cohort_month,
+    p.appDetails
+  FROM user_first f
+  JOIN `bharatpe-analytics-prod.upi.users` u
+    ON f.pid = u.profile_id
+   AND IFNULL(u.__deleted, 'false') = 'false'
+  INNER JOIN psp p
+    ON CAST(u.client_reference_id AS INT64) = p.customerId
+   AND p.rn = 1
+  WHERE f.fd >= DATE('2025-08-01')
+    AND f.fd < DATE('2026-02-01')
+),
+apps AS (
+  SELECT
+    b.pid,
+    LOWER(TRIM(COALESCE(
+      JSON_VALUE(elem, '$.name'),
+      TRIM(JSON_VALUE(elem, '$'), '"')
+    ))) AS app_name
+  FROM user_base b,
+  UNNEST(JSON_QUERY_ARRAY(b.appDetails)) AS elem
+),
+upi_brand AS (
+  SELECT DISTINCT
+    pid,
+    CASE
+      WHEN app_name IN ('paytm', 'paytm payments bank') THEN 'paytm'
+      WHEN app_name = 'phonepe'
+        OR REGEXP_CONTAINS(app_name, r'^com\.phonepe') THEN 'phonepe'
+      WHEN app_name IN ('google pay', 'gpay')
+        OR REGEXP_CONTAINS(app_name, r'nbu\.paisa') THEN 'gpay'
+      WHEN app_name = 'bhim'
+        OR REGEXP_CONTAINS(app_name, r'bhim\.upi|npci\.bhim') THEN 'bhim'
+      WHEN app_name = 'cred'
+        OR REGEXP_CONTAINS(app_name, r'dreamplug') THEN 'cred'
+      WHEN app_name = 'navi'
+        OR REGEXP_CONTAINS(app_name, r'^com\.navi') THEN 'navi'
+      WHEN app_name IN ('super.money', 'supermoney', 'super money')
+        OR REGEXP_CONTAINS(app_name, r'super\.money|money\.super') THEN 'supermoney'
+      WHEN app_name = 'mobikwik'
+        OR REGEXP_CONTAINS(app_name, r'mobikwik') THEN 'mobikwik'
+      WHEN app_name = 'amazon pay' THEN 'amazonpay'
+      WHEN app_name = 'whatsapp' THEN 'whatsapp'
+      WHEN app_name = 'slice' THEN 'slice'
+      WHEN app_name = 'jupiter' THEN 'jupiter'
+      WHEN app_name = 'fi money' THEN 'fi'
+      WHEN app_name = 'freecharge' THEN 'freecharge'
+      WHEN app_name IN ('payzapp', 'hdfc payzapp') THEN 'payzapp'
+      WHEN app_name = 'yono sbi' THEN 'yono'
+      WHEN app_name = 'icici imobile' THEN 'icici'
+      WHEN app_name = 'axis pay' THEN 'axis'
+      WHEN app_name = 'kotak 811' THEN 'kotak'
+      WHEN app_name IN ('bharatpe', 'bharatpe for business') THEN 'bharatpe'
+      WHEN app_name IN (
+        'postpe', 'lazy pay', 'simpl', 'airtel thanks',
+        'jiofinance', 'jio payments bank', 'yespay', 'popclub', 'twid'
+      ) THEN 'other_wallet'
+      ELSE NULL
+    END AS upi_brand
+  FROM apps
+),
+user_upi AS (
+  SELECT
+    b.pid,
+    b.cohort_month,
+    COUNT(DISTINCT ub.upi_brand) AS upi_n
+  FROM user_base b
+  LEFT JOIN upi_brand ub ON b.pid = ub.pid
+  GROUP BY 1, 2
+),
+user_cohort AS (
+  SELECT
+    pid,
+    cohort_month,
+    CASE
+      WHEN upi_n = 1 THEN 'Single UPI app'
+      WHEN upi_n BETWEEN 2 AND 4 THEN '2-4 UPI apps'
+      WHEN upi_n >= 5 THEN '5+ UPI apps'
+      ELSE 'No core UPI wallet detected'
+    END AS upi_segment
+  FROM user_upi
+),
+month_active AS (
+  SELECT DISTINCT pid, ym AS activity_month
+  FROM payout_txns
+),
+retention AS (
+  SELECT
+    u.upi_segment,
+    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,
+    COUNT(DISTINCT u.pid) AS active_users
+  FROM user_cohort u
+  JOIN month_active m
+    ON u.pid = m.pid
+   AND m.activity_month >= u.cohort_month
+  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6
+    AND u.upi_segment IN ('Single UPI app', '2-4 UPI apps', '5+ UPI apps')
+  GROUP BY 1, 2
+),
+cohort_sizes AS (
+  SELECT upi_segment, COUNT(*) AS cohort_users
+  FROM user_cohort
+  WHERE upi_segment IN ('Single UPI app', '2-4 UPI apps', '5+ UPI apps')
+  GROUP BY 1
+)
+SELECT
+  r.upi_segment,
+  r.period_n,
+  cs.cohort_users,
+  r.active_users,
+  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct
+FROM retention r
+JOIN cohort_sizes cs ON r.upi_segment = cs.upi_segment
+ORDER BY
+  CASE r.upi_segment
+    WHEN 'Single UPI app' THEN 1
+    WHEN '2-4 UPI apps' THEN 2
+    ELSE 3
+  END,
+  r.period_n;
+
+
+-- -----------------------------------------------------------------------------
+-- (p) Installed app category flags — POOLED (Has / No per category)
+-- -----------------------------------------------------------------------------
+
+WITH payout_txns AS (
+  SELECT
+    user_profile_id AS pid,
+    DATE(created_at) AS d,
+    DATE_TRUNC(DATE(created_at), MONTH) AS ym
+  FROM `bharatpe-analytics-prod.upi.upi_transactions`
+  WHERE status = 'SUCCESS'
+    AND user_profile_id IS NOT NULL AND user_profile_id != ''
+    AND IFNULL(__deleted, 'false') = 'false'
+    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)
+),
+user_first AS (
+  SELECT
+    pid,
+    DATE_TRUNC(MIN(d), MONTH) AS cohort_month,
+    MIN(d) AS fd
+  FROM payout_txns
+  GROUP BY pid
+),
+psp AS (
+  SELECT
+    customerId,
+    appDetails,
+    ROW_NUMBER() OVER (PARTITION BY customerId ORDER BY updatedAt DESC) AS rn
+  FROM `bharatpe-analytics-prod.bharatpe_mongo_data.consumer_psp`
+  WHERE IFNULL(__deleted, 'false') = 'false'
+    AND appDetails IS NOT NULL AND appDetails != ''
+    AND DATE(createdAt) >= DATE('2024-01-01')
+),
+user_base AS (
+  SELECT
+    f.pid,
+    f.cohort_month,
+    p.appDetails
+  FROM user_first f
+  JOIN `bharatpe-analytics-prod.upi.users` u
+    ON f.pid = u.profile_id
+   AND IFNULL(u.__deleted, 'false') = 'false'
+  INNER JOIN psp p
+    ON CAST(u.client_reference_id AS INT64) = p.customerId
+   AND p.rn = 1
+  WHERE f.fd >= DATE('2025-08-01')
+    AND f.fd < DATE('2026-02-01')
+),
+apps AS (
+  SELECT
+    b.pid,
+    LOWER(TRIM(COALESCE(
+      JSON_VALUE(elem, '$.name'),
+      TRIM(JSON_VALUE(elem, '$'), '"')
+    ))) AS app_name
+  FROM user_base b,
+  UNNEST(JSON_QUERY_ARRAY(b.appDetails)) AS elem
+),
+flags AS (
+  SELECT
+    b.pid,
+    b.cohort_month,
+    LOGICAL_OR(REGEXP_CONTAINS(
+      a.app_name,
+      r'^(flipkart|amazon|myntra|meesho|ajio|nykaa)$'
+    )) AS has_ecommerce,
+    LOGICAL_OR(REGEXP_CONTAINS(
+      a.app_name,
+      r'^(blinkit|zepto|bigbasket|jiomart)$'
+    )) AS has_qcommerce,
+    LOGICAL_OR(REGEXP_CONTAINS(
+      a.app_name,
+      r'^(uber|ola|rapido|makemytrip|goibibo|irctc rail connect|redbus|ixigo|yatra)$'
+    )) AS has_travel,
+    LOGICAL_OR(REGEXP_CONTAINS(
+      a.app_name,
+      r'^(swiggy|zomato)$'
+    )) AS has_food
+  FROM user_base b
+  LEFT JOIN apps a ON b.pid = a.pid
+  GROUP BY 1, 2
+),
+segments AS (
+  SELECT pid, cohort_month, 'Has ecommerce app' AS app_segment
+  FROM flags WHERE has_ecommerce
+  UNION ALL
+  SELECT pid, cohort_month, 'No ecommerce app'
+  FROM flags WHERE NOT has_ecommerce
+  UNION ALL
+  SELECT pid, cohort_month, 'Has quick-commerce app'
+  FROM flags WHERE has_qcommerce
+  UNION ALL
+  SELECT pid, cohort_month, 'No quick-commerce app'
+  FROM flags WHERE NOT has_qcommerce
+  UNION ALL
+  SELECT pid, cohort_month, 'Has travel app'
+  FROM flags WHERE has_travel
+  UNION ALL
+  SELECT pid, cohort_month, 'No travel app'
+  FROM flags WHERE NOT has_travel
+  UNION ALL
+  SELECT pid, cohort_month, 'Has food-delivery app'
+  FROM flags WHERE has_food
+  UNION ALL
+  SELECT pid, cohort_month, 'No food-delivery app'
+  FROM flags WHERE NOT has_food
+),
+month_active AS (
+  SELECT DISTINCT pid, ym AS activity_month
+  FROM payout_txns
+),
+retention AS (
+  SELECT
+    s.app_segment,
+    DATE_DIFF(m.activity_month, s.cohort_month, MONTH) AS period_n,
+    COUNT(DISTINCT s.pid) AS active_users
+  FROM segments s
+  JOIN month_active m
+    ON s.pid = m.pid
+   AND m.activity_month >= s.cohort_month
+  WHERE DATE_DIFF(m.activity_month, s.cohort_month, MONTH) BETWEEN 0 AND 6
+  GROUP BY 1, 2
+),
+cohort_sizes AS (
+  SELECT app_segment, COUNT(DISTINCT pid) AS cohort_users
+  FROM segments
+  GROUP BY 1
+)
+SELECT
+  r.app_segment,
+  r.period_n,
+  cs.cohort_users,
+  r.active_users,
+  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct
+FROM retention r
+JOIN cohort_sizes cs ON r.app_segment = cs.app_segment
+ORDER BY r.app_segment, r.period_n;

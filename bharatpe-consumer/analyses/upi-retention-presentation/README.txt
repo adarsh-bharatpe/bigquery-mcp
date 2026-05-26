@@ -5,7 +5,7 @@ This folder is the only copy of the deck (no duplicate HTML elsewhere).
 
 Files
 -----
-  upi-retention-results.html   Presentation (30 slides; CSS, JS, SQL all inline)
+  upi-retention-results.html   Presentation (31 slides; CSS, JS, SQL all inline)
   assets/logos/*.svg           Competitor logos (paths: assets/logos/…)
   serve.py                     Optional local server (recommended)
   start.sh / start.bat         Launch server + browser
@@ -18,7 +18,9 @@ Run
 
 Offline: double-click upi-retention-results.html (keep assets/ beside it).
 
-Navigation: ← → Space · Home/End · lens buttons on slide 21 · Source on slides 6–20.
+Navigation: ← → Space · Home/End · lens buttons on slide 22 · Source on slides 6–21.
+
+SQL sources JSON (canonical): ../sql-sources.json (synced into HTML #sql-sources-data).
 
 Rebuild zip (from parent analyses/ folder):
   ./pack-presentation.sh

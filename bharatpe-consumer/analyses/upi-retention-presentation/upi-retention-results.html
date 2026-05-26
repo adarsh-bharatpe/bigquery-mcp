@@ -1540,10 +1540,10 @@
         <div class="title-deco" aria-hidden="true"><span class="ring ring-1"></span><span class="ring ring-2"></span><span class="ring ring-3"></span></div>
         <p class="title-eyebrow">May 2026</p>
         <h1><span class="title-brand">BharatPe UPI</span> — Engagement &amp; Retention Analysis</h1>
-        <p class="sub">Diagnose payout retention in our data, benchmark Paytm → Super.money &amp; Reddit, then land product &amp; growth actions — <strong>30-slide</strong> readout.</p>
+        <p class="sub">Diagnose payout retention in our data, benchmark Paytm → Super.money &amp; Reddit, then land product &amp; growth actions — <strong>31-slide</strong> readout.</p>
         <div class="title-chips" aria-label="Deck highlights">
-          <span class="title-chip title-chip-accent">30 slides</span>
-          <span class="title-chip">15 lenses (5.1–5.15)</span>
+          <span class="title-chip title-chip-accent">31 slides</span>
+          <span class="title-chip">16 lenses (5.1–5.16)</span>
           <span class="title-chip">~720k user pool</span>
           <span class="title-chip">Competitors + r/UPI</span>
           <span class="title-chip">BBPS cross-sell</span>
@@ -1551,14 +1551,14 @@
         <div class="title-parts">
           <div class="title-part">
             <strong>Part A — Our data</strong>
-            Definitions, VPA baseline, 15 behavioural lenses, lens index, UPI × BBPS
-            <span style="opacity:0.85"> · slides 3–23</span>
+            Definitions, VPA baseline, 16 behavioural lenses, lens index, UPI × BBPS
+            <span style="opacity:0.85"> · slides 3–24</span>
           </div>
           <span class="title-part-arrow" aria-hidden="true">→</span>
           <div class="title-part">
             <strong>Part B — Market &amp; actions</strong>
             Competitor playbooks, community sentiment, 6 emerging patterns, what to do next
-            <span style="opacity:0.85"> · slides 24–29</span>
+            <span style="opacity:0.85"> · slides 25–30</span>
           </div>
         </div>
       </div>
@@ -1572,20 +1572,20 @@
           <ul class="agenda-list">
             <li><strong>Data &amp; definitions</strong> — BigQuery <code>upi</code> tables, cohort rules <span class="agenda-slides">(3)</span></li>
             <li><strong>Baseline retention</strong> — VPA created month, M1–M6 <span class="agenda-slides">(4)</span></li>
-            <li><strong>15 payout lenses</strong> — 5.1–5.15 (a–o), first-30d behaviour → M+0…M+6; pool Aug 2025–Jan 2026 <span class="agenda-slides">(5–21)</span></li>
-            <li><strong>Story bridge</strong> — from 15 lenses → BBPS ecosystem <span class="agenda-slides">(22)</span></li>
-            <li><strong>UPI × BBPS</strong> — attach, retention lift, NotebookLM + calling links <span class="agenda-slides">(23)</span></li>
-            <li><strong>Competitor &amp; community</strong> — traditional + new-age playbooks; Reddit; 6 emerging patterns <span class="agenda-slides">(24–27)</span></li>
-            <li><strong>Story bridge</strong> — from patterns → product actions <span class="agenda-slides">(28)</span></li>
-            <li><strong>What should be done?</strong> — funnel, rewards, BBPS, high-LTV actions <span class="agenda-slides">(29)</span></li>
-            <li class="out-scope"><strong>Future (not today)</strong> — experiments, incentive budget, roadmap, governance <span class="agenda-slides">(30)</span></li>
+            <li><strong>16 payout lenses</strong> — 5.1–5.16 (a–p), first-30d behaviour → M+0…M+6; pool Aug 2025–Jan 2026 <span class="agenda-slides">(5–22)</span></li>
+            <li><strong>Story bridge</strong> — from 16 lenses → BBPS ecosystem <span class="agenda-slides">(23)</span></li>
+            <li><strong>UPI × BBPS</strong> — attach, retention lift, NotebookLM + calling links <span class="agenda-slides">(24)</span></li>
+            <li><strong>Competitor &amp; community</strong> — traditional + new-age playbooks; Reddit; 6 emerging patterns <span class="agenda-slides">(25–28)</span></li>
+            <li><strong>Story bridge</strong> — from patterns → product actions <span class="agenda-slides">(29)</span></li>
+            <li><strong>What should be done?</strong> — funnel, rewards, BBPS, high-LTV actions <span class="agenda-slides">(30)</span></li>
+            <li class="out-scope"><strong>Future (not today)</strong> — experiments, incentive budget, roadmap, governance <span class="agenda-slides">(31)</span></li>
           </ul>
           <div class="agenda-cards">
-            <div class="card"><strong>Part A — Our data</strong><span class="val">Slides 3–23</span><span class="card-sub">Cohorts, lenses, BBPS</span></div>
-            <div class="card"><strong>Part B — Market</strong><span class="val">Slides 24–29</span><span class="card-sub">Competitors, patterns, actions</span></div>
+            <div class="card"><strong>Part A — Our data</strong><span class="val">Slides 3–24</span><span class="card-sub">Cohorts, lenses, BBPS</span></div>
+            <div class="card"><strong>Part B — Market</strong><span class="val">Slides 25–30</span><span class="card-sub">Competitors, patterns, actions</span></div>
           </div>
         </div>
-        <footer class="takeaway">Key takeaway: <span class="hl">30 slides</span> — diagnose retention in data (3–23), benchmark competitors &amp; community (24–27), then recommend actions (29).</footer>
+        <footer class="takeaway">Key takeaway: <span class="hl">31 slides</span> — diagnose retention in data (3–24), benchmark competitors &amp; community (25–28), then recommend actions (30).</footer>
       </div>
     </section>
 
@@ -1599,17 +1599,18 @@
               <ul>
                 <li><strong>~3M UPI IDs</strong> · <strong>~60M txns</strong> · <strong>~₹10,000 Cr</strong> TPV</li>
                 <li><code>upi_transactions</code>, <code>users</code>, <code>user_bank_accounts</code></li>
+                <li><strong>Installed apps (5.15):</strong> <code>bharatpe_mongo_data.consumer_psp</code> · <code>appDetails</code></li>
                 <li><strong>Payout:</strong> <code>status=SUCCESS</code>, <code>subType ≠ RECEIVE_EXTERNAL</code></li>
                 <li><strong>Pay-in:</strong> <code>subType = RECEIVE_EXTERNAL</code></li>
-                <li><strong>Pool (5.2–5.15):</strong> first payout SUCCESS Aug 2025–Jan 2026 (~719,936 users)</li>
+                <li><strong>Pool (5.2–5.16):</strong> first payout SUCCESS Aug 2025–Jan 2026 (~719,936 users)</li>
               </ul>
             </div>
             <div class="source-panel">
               <h3>Other inputs &amp; terms</h3>
               <ul>
                 <li><strong>User calling</strong> — qualitative friction</li>
-                <li><strong>Competitor benchmarking</strong> — Slides 25–26 · <strong>Community / patterns</strong> — Slide 27</li>
-                <li><strong>Mixpanel / BBPS</strong> — Slide 23 LINK</li>
+                <li><strong>Competitor benchmarking</strong> — Slides 26–27 · <strong>Community / patterns</strong> — Slide 27</li>
+                <li><strong>Mixpanel / BBPS</strong> — Slide 24 LINK</li>
               </ul>
               <table class="data">
                 <thead><tr><th>Term</th><th>Rule</th></tr></thead>
@@ -1621,7 +1622,7 @@
               </table>
             </div>
         </div>
-        <footer class="takeaway">Key takeaway: All lens slides use the <span class="hl">same payout definition</span> and BigQuery <code>upi</code> dataset — comparable across 5.1–5.15.</footer>
+        <footer class="takeaway">Key takeaway: All lens slides use the <span class="hl">same payout definition</span> and BigQuery <code>upi</code> dataset — comparable across 5.1–5.16.</footer>
       </div>
     </section>
 
@@ -1913,7 +1914,7 @@
           <table class="data">
             <thead><tr><th>MCC</th><th>Label</th><th>Users</th><th>M+1</th><th>M+2</th><th>M+3</th><th>M+6</th></tr></thead>
             <tbody>
-              <tr><td>0000</td><td>Generic</td><td>443,567</td><td>26.9</td><td>16.1</td><td>12.4</td><td>5.2</td></tr>
+              <tr><td>0000</td><td>P2P</td><td>443,567</td><td>26.9</td><td>16.1</td><td>12.4</td><td>5.2</td></tr>
               <tr><td>5411</td><td>Grocery</td><td>103,390</td><td>34.8</td><td>19.3</td><td>14.5</td><td>5.8</td></tr>
               <tr><td>OTHER</td><td>Outside top 20</td><td>53,111</td><td>20.2</td><td>12.8</td><td>10.2</td><td>4.0</td></tr>
               <tr><td>4814</td><td>Telecom</td><td>32,099</td><td>35.2</td><td>22.2</td><td>17.5</td><td>6.2</td></tr>
@@ -2119,9 +2120,45 @@
       </div>
     </section>
 
+
     <section class="slide slide-fill" data-slide="20">
       <div class="slide-frame">
-        <div class="slide-header"><h2 class="slide-heading"><span class="num">5.15 (o)</span> Linked account type</h2></div>
+        <div class="slide-header">
+          <h2 class="slide-heading"><span class="num">5.15 (p)</span> Installed apps on device</h2>
+          <p class="def-line">PSP snapshot via <code>consumer_psp.appDetails</code> · join <code>users.client_reference_id</code> = <code>customerId</code> · pool 646,496 with install data (89.7% of cohort).</p>
+        </div>
+        <div class="slide-body table-single-fill">
+            <div class="table-panel">
+          <table class="data">
+            <thead><tr><th>Segment</th><th>Users</th><th>M+1</th><th>M+3</th><th>M+6</th></tr></thead>
+            <tbody>
+              <tr><td colspan="5" style="font-weight:700;background:#f8fafc">UPI wallet count (core brands)</td></tr>
+              <tr><td>Single UPI app</td><td>493</td><td>12.4</td><td>6.1</td><td>1.4</td></tr>
+              <tr><td>2–4 UPI apps</td><td>123,406</td><td>21.3</td><td>8.6</td><td>3.2</td></tr>
+              <tr><td>5+ UPI apps</td><td>520,559</td><td>29.0</td><td>13.4</td><td>5.5</td></tr>
+              <tr><td colspan="5" style="font-weight:700;background:#f8fafc">Lifestyle flags (M+1)</td></tr>
+              <tr><td>Has ecommerce</td><td>564,207</td><td>28.9</td><td>13.4</td><td>5.4</td></tr>
+              <tr><td>No ecommerce</td><td>80,289</td><td>17.8</td><td>6.2</td><td>2.1</td></tr>
+              <tr><td>Has quick-commerce</td><td>174,735</td><td>36.1</td><td>18.9</td><td>8.2</td></tr>
+              <tr><td>Has travel</td><td>232,532</td><td>34.4</td><td>17.3</td><td>7.4</td></tr>
+              <tr><td>Has food delivery</td><td>140,893</td><td>34.6</td><td>17.7</td><td>7.7</td></tr>
+            </tbody>
+          </table>
+            </div>
+            <div class="metric-rail">
+              <div class="metric-card"><span class="lbl">5+ UPI wallets</span><span class="num">29.0%</span><span class="sub">M+1 · 81% of PSP users</span></div>
+              <div class="metric-card"><span class="lbl">Quick-commerce</span><span class="num">36.1%</span><span class="sub">M+1 vs 24% without</span></div>
+              <div class="metric-card"><span class="lbl">More wallets</span><span class="num">12→29%</span><span class="sub">M+1 gradient</span></div>
+            </div>
+        </div>
+                <button type="button" class="btn-source btn-source-fab" data-sql-slide="20" aria-label="View SQL source"><span class="fab-icon" aria-hidden="true">{ }</span> Source</button>
+        <footer class="takeaway">Key takeaway: <span class="hl">More UPI wallets on device → higher retention</span> (M+1 ~12% → ~29%); quick-commerce &amp; travel apps flag stickier payers (~34–36% M+1).</footer>
+      </div>
+    </section>
+
+    <section class="slide slide-fill" data-slide="21">
+      <div class="slide-frame">
+        <div class="slide-header"><h2 class="slide-heading"><span class="num">5.16 (o)</span> Linked account type</h2></div>
         <div class="slide-body table-single-fill">
             <div class="table-panel">
           <table class="data">
@@ -2141,13 +2178,13 @@
               <div class="metric-card"><span class="lbl">SAVINGS bulk</span><span class="num">688k</span><span class="sub">~27% M+1</span></div>
             </div>
         </div>
-                <button type="button" class="btn-source btn-source-fab" data-sql-slide="20" aria-label="View SQL source"><span class="fab-icon" aria-hidden="true">{ }</span> Source</button>
+                <button type="button" class="btn-source btn-source-fab" data-sql-slide="21" aria-label="View SQL source"><span class="fab-icon" aria-hidden="true">{ }</span> Source</button>
         <footer class="takeaway">Key takeaway: <span class="hl">CREDIT-dominant ~45% M+1</span>; Mixed types ~46% — savings bulk at ~27%.</footer>
       </div>
     </section>
 
     <!-- Slide 20 — lens index -->
-    <section class="slide slide-fill slide-lens-index" data-slide="21">
+    <section class="slide slide-fill slide-lens-index" data-slide="22">
       <div class="slide-frame">
         <div class="slide-header">
           <h2 class="slide-heading"><span class="num">5</span> Retention through various lenses</h2>
@@ -2169,7 +2206,8 @@
             <button type="button" class="lens-btn" data-goto="17"><span class="tag">5.12</span> First outward status<span class="hint">FAIL 13%</span></button>
             <button type="button" class="lens-btn" data-goto="18"><span class="tag">5.13</span> First 5 SUCCESS<span class="hint">25%→64%</span></button>
             <button type="button" class="lens-btn" data-goto="19"><span class="tag">5.14</span> Bank link count<span class="hint">25%→50%</span></button>
-            <button type="button" class="lens-btn" data-goto="20"><span class="tag">5.15</span> Account type<span class="hint">CREDIT 45%</span></button>
+            <button type="button" class="lens-btn" data-goto="20"><span class="tag">5.15</span> Installed apps<span class="hint">12%→29%</span></button>
+            <button type="button" class="lens-btn" data-goto="21"><span class="tag">5.16</span> Account type<span class="hint">CREDIT 45%</span></button>
           </div>
         </div>
         <footer class="takeaway">Key takeaway: <span class="hl">Intensity</span> (volume, pay-in, multi-rail) and <span class="hl">Zillion redeem</span> separate ~2% M+1 from ~80% M+1 — focus product on moving users up-tier in 30d.</footer>
@@ -2177,12 +2215,12 @@
     </section>
 
     <!-- Story bridge — segmentation → ecosystem -->
-    <section class="slide slide-story-bridge" data-slide="22">
+    <section class="slide slide-story-bridge" data-slide="23">
       <div class="slide-frame">
         <div class="story-bridge-stage">
           <p class="story-chapter">Chapter II · Connect the dots</p>
           <div class="story-path-visual" aria-hidden="true">
-            <span class="path-node path-done"><span class="node-icon">🔍</span><span>15 lenses</span></span>
+            <span class="path-node path-done"><span class="node-icon">🔍</span><span>16 lenses</span></span>
             <span class="path-line"></span>
             <span class="path-node path-active"><span class="node-icon">⚡</span><span>BBPS attach</span></span>
             <span class="path-line path-line-delay"></span>
@@ -2198,7 +2236,7 @@
 
 
     <!-- Slide 21 — BBPS -->
-    <section class="slide" data-slide="23">
+    <section class="slide" data-slide="24">
       <div class="slide-frame">
         <div class="slide-header">
           <h2 class="slide-heading">UPI × BBPS analysis</h2>
@@ -2221,7 +2259,7 @@
     </section>
 
     <!-- Slide 23 — competitor / community / patterns intro -->
-    <section class="slide slide-comp-intro" data-slide="24">
+    <section class="slide slide-comp-intro" data-slide="25">
       <div class="slide-frame">
         <div class="comp-intro-stage">
           <div class="comp-intro-visual" aria-hidden="true">
@@ -2270,7 +2308,7 @@
     </section>
 
     <!-- Slide 24 — competitor insights (traditional) -->
-    <section class="slide slide-fill slide-comp-insights" data-slide="25">
+    <section class="slide slide-fill slide-comp-insights" data-slide="26">
       <div class="slide-frame">
         <div class="slide-header">
           <h2 class="slide-heading">Competitor insights — traditional apps</h2>
@@ -2297,7 +2335,7 @@
     </section>
 
     <!-- Slide 25 — competitor insights (new players) -->
-    <section class="slide slide-fill slide-comp-insights" data-slide="26">
+    <section class="slide slide-fill slide-comp-insights" data-slide="27">
       <div class="slide-frame">
         <div class="slide-header">
           <h2 class="slide-heading">Competitor insights — new-age players</h2>
@@ -2334,7 +2372,7 @@
     </section>
 
     <!-- Slide 26 — emerging patterns & community -->
-    <section class="slide slide-fill slide-emerging" data-slide="27">
+    <section class="slide slide-fill slide-emerging" data-slide="28">
       <div class="slide-frame">
         <div class="slide-header">
           <h2 class="slide-heading">Emerging patterns — Reddit &amp; community insights</h2>
@@ -2448,7 +2486,7 @@
     <!-- Slide 8 -->
     
     <!-- Story bridge — patterns → action -->
-    <section class="slide slide-story-bridge" data-slide="28">
+    <section class="slide slide-story-bridge" data-slide="29">
       <div class="slide-frame">
         <div class="story-bridge-stage">
           <p class="story-chapter">Chapter IV · Land the plane</p>
@@ -2466,17 +2504,17 @@
       </div>
     </section>
 
-    <section class="slide slide-fill slide-actions" data-slide="29">
+    <section class="slide slide-fill slide-actions" data-slide="30">
       <div class="slide-frame">
         <div class="slide-header">
           <h2 class="slide-heading">What needs to be done?</h2>
-          <p class="muted">Synthesised from <strong>15 lenses (slide 21)</strong>, <strong>UPI × BBPS (slide 23)</strong>, and <strong>emerging patterns (slide 27)</strong></p>
+          <p class="muted">Synthesised from <strong>16 lenses (slide 22)</strong>, <strong>UPI × BBPS (slide 24)</strong>, and <strong>emerging patterns (slide 28)</strong></p>
         </div>
         <div class="slide-body">
           <p class="actions-intro"><strong>North star:</strong> Lift payout <strong>M+1</strong> (~28–33%) toward VPA M1 (~35–42%) by fixing week-0–1 friction, moving users up intensity tiers, anchoring monthly utility via BBPS, and matching market UX/reward patterns users already reward on Reddit.</p>
           <div class="actions-grid">
             <div class="action-box anim-card" style="--i:0">
-              <span class="action-source">Slide 21 · Lenses 5.12–5.13, 5.2</span>
+              <span class="action-source">Slide 22 · Lenses 5.12–5.13, 5.2</span>
               <div class="action-icon" aria-hidden="true">🎯</div>
               <h3>Fix week 0–1 payout funnel</h3>
               <ul>
@@ -2486,7 +2524,7 @@
               </ul>
             </div>
             <div class="action-box anim-card" style="--i:1">
-              <span class="action-source">Slide 21 · Lenses 5.9–5.10, 5.6, 5.5</span>
+              <span class="action-source">Slide 22 · Lenses 5.9–5.10, 5.6, 5.5</span>
               <div class="action-icon" aria-hidden="true">🎁</div>
               <h3>Zillion, rails &amp; pay-in intensity</h3>
               <ul>
@@ -2497,7 +2535,7 @@
               </ul>
             </div>
             <div class="action-box anim-card" style="--i:2">
-              <span class="action-source">Slide 23 · UPI × BBPS</span>
+              <span class="action-source">Slide 24 · UPI × BBPS</span>
               <div class="action-icon" aria-hidden="true">⚡</div>
               <h3>BBPS attach &amp; monthly utility loop</h3>
               <ul>
@@ -2508,7 +2546,7 @@
               </ul>
             </div>
             <div class="action-box anim-card" style="--i:3">
-              <span class="action-source">Slide 27 · Patterns 1, 3 + Reddit</span>
+              <span class="action-source">Slide 28 · Patterns 1, 3 + Reddit</span>
               <div class="action-icon" aria-hidden="true">📱</div>
               <h3>Speed, QR &amp; home-screen presence</h3>
               <ul>
@@ -2519,7 +2557,7 @@
               </ul>
             </div>
             <div class="action-box anim-card" style="--i:4">
-              <span class="action-source">Slide 27 · Patterns 2, 5, 6</span>
+              <span class="action-source">Slide 28 · Patterns 2, 5, 6</span>
               <div class="action-icon" aria-hidden="true">💰</div>
               <h3>Usable rewards &amp; contextual offers</h3>
               <ul>
@@ -2530,24 +2568,25 @@
               </ul>
             </div>
             <div class="action-box anim-card" style="--i:5">
-              <span class="action-source">Slide 21 · Lenses 5.2, 5.8, 5.14–5.15</span>
+              <span class="action-source">Slide 22 · Lenses 5.2, 5.8, 5.14–5.16</span>
               <div class="action-icon" aria-hidden="true">💎</div>
               <h3>Protect &amp; grow high-LTV cohorts</h3>
               <ul>
                 <li><strong>Power / Heavy / Mixture</strong> — priority support, fewer failure touchpoints; don’t over-incentivise Light-only users</li>
                 <li><strong>BharatPe QR Mixed</strong> ~<strong>66% M+1</strong> — expand merchant QR attach; template campaigns for top MCCs (<strong>15% → 47%</strong> M+1 by dominance)</li>
                 <li><strong>4+ linked accounts</strong> ~<strong>50% M+1</strong>; <strong>CREDIT-dominant</strong> ~<strong>45%</strong> — credit-line UX &amp; bank-link nudges for credit-ready users</li>
+                <li><strong>5+ UPI wallets on device</strong> ~<strong>29% M+1</strong> (lens 5.15) — target multi-app payers; quick-commerce/travel installers ~<strong>34–36% M+1</strong></li>
                 <li>Track TPV tiers: avg ticket <strong>13% → 48%</strong> M+1 (lens 5.4) — tailor limits &amp; offers by bucket</li>
               </ul>
             </div>
           </div>
         </div>
-        <footer class="takeaway">Key takeaway: Execute in three lanes — <span class="hl">data-led intensity</span> (slide 21), <span class="hl">BBPS utility anchor</span> (slide 23), and <span class="hl">market-matched UX + rewards</span> (slide 27) — to close the gap to VPA M1 retention.</footer>
+        <footer class="takeaway">Key takeaway: Execute in three lanes — <span class="hl">data-led intensity</span> (slide 22), <span class="hl">BBPS utility anchor</span> (slide 24), and <span class="hl">market-matched UX + rewards</span> (slide 28) — to close the gap to VPA M1 retention.</footer>
       </div>
     </section>
 
     <!-- Slide 9 -->
-    <section class="slide slide-fill slide-future" data-slide="30">
+    <section class="slide slide-fill slide-future" data-slide="31">
       <div class="slide-frame">
         <div class="slide-header">
           <h2 class="slide-heading">Future discussions — how can it be decided later?</h2>
@@ -2591,7 +2630,1877 @@
   <button type="button" class="nav-btn prev" id="prev" aria-label="Previous">‹</button>
   <button type="button" class="nav-btn next" id="next" aria-label="Next">›</button>
 
-<script type="application/json" id="sql-sources-data">{"6": {"section": "a", "sql": "-- =============================================================================\n-- Payout: subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n-- Cohort month: calendar month of first payout SUCCESS per user\n-- M+1: \u22651 payout SUCCESS in the next calendar month\n-- Output: cohort_month, cohort_users, m1_active_users, m1_retention_pct\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 18 MONTH)\n),\nuser_first_payout AS (\n  SELECT\n    pid,\n    DATE_TRUNC(MIN(d), MONTH) AS cohort_month\n  FROM payout_txns\n  GROUP BY pid\n),\ncohorts AS (\n  SELECT cohort_month, COUNT(*) AS cohort_users\n  FROM user_first_payout\n  GROUP BY cohort_month\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_txns\n),\nm1 AS (\n  SELECT\n    f.cohort_month,\n    COUNT(DISTINCT f.pid) AS m1_active_users\n  FROM user_first_payout f\n  JOIN month_active m\n    ON f.pid = m.pid\n   AND DATE_DIFF(m.activity_month, f.cohort_month, MONTH) = 1\n  GROUP BY f.cohort_month\n)\nSELECT\n  c.cohort_month,\n  c.cohort_users,\n  IFNULL(m.m1_active_users, 0) AS m1_active_users,\n  ROUND(100 * IFNULL(m.m1_active_users, 0) / NULLIF(c.cohort_users, 0), 2) AS m1_retention_pct\nFROM cohorts c\nLEFT JOIN m1 m ON c.cohort_month = m.cohort_month\nWHERE c.cohort_month >= DATE_TRUNC(DATE_SUB(CURRENT_DATE(), INTERVAL 14 MONTH), MONTH)\n  AND c.cohort_month < DATE_TRUNC(CURRENT_DATE(), MONTH)\nORDER BY c.cohort_month;", "file": "sql/upi-retention-queries.sql"}, "7": {"section": "b", "sql": "-- =============================================================================\n-- Payout: subType IS DISTINCT FROM 'RECEIVE_EXTERNAL' (same as section a).\n-- After first qualifying PAYOUT SUCCESS, count further PAYOUT SUCCESS txns in the\n-- next 30 days (inclusive of first-payout day). Bucket \u2192 Light / Medium / Heavy / Power.\n-- Cohort month = month of first PAYOUT SUCCESS. Retention M+k = share with \u22651 PAYOUT\n-- SUCCESS in calendar month cohort_month + k months.\n--\n-- Buckets:\n--   Light:  1 payout SUCCESS in first 30d\n--   Medium: 2\u20135\n--   Heavy:  6\u201320\n--   Power:  21+\n--\n-- Adjust pool window in user_dim WHERE (default Aug 2025\u2013Jan 2026).\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    created_at,\n    DATE(created_at) AS d\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 14 MONTH)\n),\nuser_first AS (\n  SELECT\n    pid,\n    DATE_TRUNC(MIN(d), MONTH) AS cohort_month,\n    MIN(created_at) AS first_ts\n  FROM payout_txns\n  GROUP BY pid\n),\nfirst_30d AS (\n  SELECT s.pid, COUNT(*) AS txns_first_30d\n  FROM payout_txns s\n  JOIN user_first f ON s.pid = f.pid\n    AND s.d BETWEEN DATE(f.first_ts) AND DATE_ADD(DATE(f.first_ts), INTERVAL 30 DAY)\n  GROUP BY s.pid\n),\nuser_dim AS (\n  SELECT\n    f.pid,\n    f.cohort_month,\n    CASE\n      WHEN IFNULL(t30.txns_first_30d, 0) <= 1 THEN 'Light'\n      WHEN t30.txns_first_30d BETWEEN 2 AND 5 THEN 'Medium'\n      WHEN t30.txns_first_30d BETWEEN 6 AND 20 THEN 'Heavy'\n      ELSE 'Power'\n    END AS volume_segment\n  FROM user_first f\n  LEFT JOIN first_30d t30 ON f.pid = t30.pid\n  WHERE f.cohort_month >= DATE('2025-08-01')\n    AND f.cohort_month < DATE('2026-02-01')\n),\nmonthly_active AS (\n  SELECT DISTINCT pid, DATE_TRUNC(d, MONTH) AS activity_month\n  FROM payout_txns\n),\nretention AS (\n  SELECT\n    u.volume_segment,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_dim u\n  JOIN monthly_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT volume_segment, COUNT(*) AS cohort_users\n  FROM user_dim\n  GROUP BY 1\n)\nSELECT\n  r.volume_segment,\n  r.period_n,\n  cs.cohort_users,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.volume_segment = cs.volume_segment\nORDER BY\n  CASE r.volume_segment\n    WHEN 'Light' THEN 1 WHEN 'Medium' THEN 2 WHEN 'Heavy' THEN 3 WHEN 'Power' THEN 4\n  END,\n  r.period_n;", "file": "sql/upi-retention-queries.sql"}, "8": {"section": "c", "sql": "-- =============================================================================\n-- Onboarding month: calendar month of upi.users.created_at (profile_id cohort).\n-- Activity: payout SUCCESS on upi_transactions (subType not RECEIVE_EXTERNAL).\n-- Join: users.profile_id = upi_transactions.user_profile_id\n-- Periods: M+0 (same month as onboarding), M+1, M+2, M+3, M+6\n-- Retention %: users with \u22651 payout SUCCESS in that calendar month \u00f7 cohort size\n--\n-- Note: Later periods are blank/incomplete until that calendar month has elapsed\n-- (e.g. M+6 for Dec 2025 needs activity in Jun 2026).\n\nWITH users_dim AS (\n  SELECT\n    profile_id AS pid,\n    DATE_TRUNC(DATE(created_at), MONTH) AS onboarding_month\n  FROM `bharatpe-analytics-prod.upi.users`\n  WHERE IFNULL(__deleted, 'false') = 'false'\n    AND profile_id IS NOT NULL AND profile_id != ''\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 18 MONTH)\n),\npayout_months AS (\n  SELECT DISTINCT\n    user_profile_id AS pid,\n    DATE_TRUNC(DATE(created_at), MONTH) AS activity_month\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 18 MONTH)\n),\ncohort_sizes AS (\n  SELECT onboarding_month, COUNT(*) AS cohort_users\n  FROM users_dim\n  GROUP BY 1\n),\nretention AS (\n  SELECT\n    u.onboarding_month,\n    DATE_DIFF(p.activity_month, u.onboarding_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM users_dim u\n  JOIN payout_months p ON u.pid = p.pid\n  WHERE DATE_DIFF(p.activity_month, u.onboarding_month, MONTH) IN (0, 1, 2, 3, 6)\n  GROUP BY 1, 2\n)\nSELECT\n  c.onboarding_month,\n  c.cohort_users,\n  per AS period_n,\n  IFNULL(r.active_users, 0) AS active_users,\n  ROUND(100 * IFNULL(r.active_users, 0) / c.cohort_users, 2) AS retention_pct\nFROM cohort_sizes c\nCROSS JOIN UNNEST([0, 1, 2, 3, 6]) AS per\nLEFT JOIN retention r\n  ON c.onboarding_month = r.onboarding_month AND per = r.period_n\nWHERE c.onboarding_month >= DATE_TRUNC(DATE_SUB(CURRENT_DATE(), INTERVAL 14 MONTH), MONTH)\n  AND c.onboarding_month < DATE_TRUNC(CURRENT_DATE(), MONTH)\nORDER BY c.onboarding_month, per;", "file": "sql/upi-retention-queries.sql"}, "9": {"section": "d", "sql": "-- =============================================================================\n-- Bucket = AVG(ABS(amount)) on payout SUCCESS txns in [first_payout_day, +30d].\n-- Cohort month = month of first payout SUCCESS. Retention M+0..M+6 on payout activity.\n-- TPV buckets: avg_lt_100 | avg_100_500 | avg_500_2000 | avg_ge_2000\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym,\n    ABS(SAFE_CAST(amount AS FLOAT64)) AS amt\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst_payout AS (\n  SELECT pid, MIN(d) AS fd\n  FROM payout_txns\n  GROUP BY pid\n),\navg30 AS (\n  SELECT\n    o.pid,\n    AVG(o.amt) AS avg_payout_amt,\n    SUM(o.amt) AS tpv_30d,\n    COUNT(*) AS txn_cnt_30d\n  FROM payout_txns o\n  JOIN first_payout f ON o.pid = f.pid\n  WHERE o.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)\n  GROUP BY o.pid\n),\nuser_cohort AS (\n  SELECT\n    f.pid,\n    DATE_TRUNC(f.fd, MONTH) AS cohort_month,\n    CASE\n      WHEN a.avg_payout_amt < 100 THEN 'avg_lt_100'\n      WHEN a.avg_payout_amt < 500 THEN 'avg_100_500'\n      WHEN a.avg_payout_amt < 2000 THEN 'avg_500_2000'\n      ELSE 'avg_ge_2000'\n    END AS tpv_bucket,\n    a.avg_payout_amt,\n    a.tpv_30d\n  FROM first_payout f\n  JOIN avg30 a ON f.pid = a.pid\n  WHERE f.fd >= DATE('2025-08-01')\n    AND f.fd < DATE('2026-02-01')\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_txns\n),\nretention AS (\n  SELECT\n    u.tpv_bucket,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT\n    tpv_bucket,\n    COUNT(*) AS cohort_users,\n    ROUND(AVG(avg_payout_amt), 2) AS mean_avg_amt,\n    ROUND(AVG(tpv_30d), 2) AS mean_tpv_30d\n  FROM user_cohort\n  GROUP BY 1\n)\nSELECT\n  r.tpv_bucket,\n  r.period_n,\n  cs.cohort_users,\n  cs.mean_avg_amt,\n  cs.mean_tpv_30d,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.tpv_bucket = cs.tpv_bucket\nORDER BY\n  CASE r.tpv_bucket\n    WHEN 'avg_lt_100' THEN 1\n    WHEN 'avg_100_500' THEN 2\n    WHEN 'avg_500_2000' THEN 3\n    ELSE 4\n  END,\n  r.period_n;", "file": "sql/upi-retention-queries.sql"}, "10": {"section": "e", "sql": "-- =============================================================================\n-- Pay-in: subType = 'RECEIVE_EXTERNAL' SUCCESS in [first_payout_day, +30d].\n-- Bucket on pay-in count; cohort month = month of first payout SUCCESS.\n-- Retention M+0..M+6 = payout activity (subType IS DISTINCT FROM 'RECEIVE_EXTERNAL').\n-- Pay-in buckets: Light <5 | Medium 5-20 | Heavy 21-50 | Power 51+\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nall_succ AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    subType AS st\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst_payout AS (\n  SELECT pid, MIN(d) AS fd\n  FROM payout_txns\n  GROUP BY pid\n),\npayin_30d AS (\n  SELECT\n    f.pid,\n    f.fd,\n    COUNTIF(\n      s.st = 'RECEIVE_EXTERNAL'\n      AND s.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)\n    ) AS payin_n\n  FROM first_payout f\n  INNER JOIN all_succ s ON f.pid = s.pid\n  GROUP BY f.pid, f.fd\n),\nuser_cohort AS (\n  SELECT\n    p.pid,\n    DATE_TRUNC(p.fd, MONTH) AS cohort_month,\n    p.payin_n,\n    CASE\n      WHEN p.payin_n < 5 THEN 'Light'\n      WHEN p.payin_n BETWEEN 5 AND 20 THEN 'Medium'\n      WHEN p.payin_n BETWEEN 21 AND 50 THEN 'Heavy'\n      ELSE 'Power'\n    END AS payin_segment\n  FROM payin_30d p\n  WHERE p.fd >= DATE('2025-08-01')\n    AND p.fd < DATE('2026-02-01')\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_txns\n),\nretention AS (\n  SELECT\n    u.payin_segment,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT\n    payin_segment,\n    COUNT(*) AS cohort_users,\n    ROUND(AVG(payin_n), 2) AS mean_payin\n  FROM user_cohort\n  GROUP BY 1\n)\nSELECT\n  r.payin_segment,\n  r.period_n,\n  cs.cohort_users,\n  cs.mean_payin,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.payin_segment = cs.payin_segment\nORDER BY\n  CASE r.payin_segment\n    WHEN 'Light' THEN 1\n    WHEN 'Medium' THEN 2\n    WHEN 'Heavy' THEN 3\n    ELSE 4\n  END,\n  r.period_n;", "file": "sql/upi-retention-queries.sql"}, "11": {"section": "f", "sql": "-- =============================================================================\n-- After first payout SUCCESS, label users by distinct payout subTypes in [fd, +30d]:\n--   Only QR | Only UPI_ID | Only CONTACT | Only INTENT | Mixture (2+ distinct)\n--   Other only = single subType not in the four rails (excluded from POOLED SELECT)\n-- Retention M+0..M+6 = payout activity. NULL subType stored as 'NULL'.\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym,\n    subType AS st\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst_payout AS (\n  SELECT pid, MIN(d) AS fd\n  FROM payout_txns\n  GROUP BY pid\n),\nwin AS (\n  SELECT\n    o.pid,\n    IFNULL(o.st, 'NULL') AS st\n  FROM payout_txns o\n  JOIN first_payout f ON o.pid = f.pid\n  WHERE o.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)\n),\nsubtype_agg AS (\n  SELECT\n    pid,\n    COUNT(DISTINCT st) AS n_distinct_st,\n    ARRAY_AGG(DISTINCT st ORDER BY st) AS sts\n  FROM win\n  GROUP BY pid\n),\nuser_cohort AS (\n  SELECT\n    a.pid,\n    DATE_TRUNC(f.fd, MONTH) AS cohort_month,\n    CASE\n      WHEN a.n_distinct_st = 1 AND a.sts[OFFSET(0)] = 'QR' THEN 'Only QR'\n      WHEN a.n_distinct_st = 1 AND a.sts[OFFSET(0)] = 'UPI_ID' THEN 'Only UPI_ID'\n      WHEN a.n_distinct_st = 1 AND a.sts[OFFSET(0)] = 'CONTACT' THEN 'Only CONTACT'\n      WHEN a.n_distinct_st = 1 AND a.sts[OFFSET(0)] = 'INTENT' THEN 'Only INTENT'\n      WHEN a.n_distinct_st >= 2 THEN 'Mixture'\n      ELSE 'Other only'\n    END AS rail_segment\n  FROM subtype_agg a\n  JOIN first_payout f ON a.pid = f.pid\n  WHERE f.fd >= DATE('2025-08-01')\n    AND f.fd < DATE('2026-02-01')\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_txns\n),\nretention AS (\n  SELECT\n    u.rail_segment,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT rail_segment, COUNT(*) AS cohort_users\n  FROM user_cohort\n  GROUP BY 1\n)\nSELECT\n  r.rail_segment,\n  r.period_n,\n  cs.cohort_users,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.rail_segment = cs.rail_segment\nWHERE r.rail_segment != 'Other only'\nORDER BY\n  CASE r.rail_segment\n    WHEN 'Only QR' THEN 1\n    WHEN 'Only UPI_ID' THEN 2\n    WHEN 'Only CONTACT' THEN 3\n    WHEN 'Only INTENT' THEN 4\n    WHEN 'Mixture' THEN 5\n    ELSE 6\n  END,\n  r.period_n;", "file": "sql/upi-retention-queries.sql"}, "12": {"section": "g", "sql": "-- =============================================================================\n-- Top 20 MCCs = highest payout SUCCESS txn count in 16-month scan window.\n-- Per user: dominant MCC = max txn count in [first_payout_day, +30d]; ties by mcc.\n-- Retention M+0..M+6 on payout activity. See retention_by_top20_mcc.sql (legacy).\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym,\n    mcc\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst_payout AS (\n  SELECT pid, MIN(d) AS fd\n  FROM payout_txns\n  GROUP BY pid\n),\ntop20_mcc AS (\n  SELECT mcc\n  FROM (\n    SELECT mcc, COUNT(*) AS cnt\n    FROM payout_txns\n    GROUP BY mcc\n  )\n  QUALIFY ROW_NUMBER() OVER (ORDER BY cnt DESC) <= 20\n),\nmcc_counts AS (\n  SELECT\n    o.pid,\n    o.mcc,\n    COUNT(*) AS n\n  FROM payout_txns o\n  JOIN first_payout f ON o.pid = f.pid\n  WHERE o.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)\n  GROUP BY o.pid, o.mcc\n),\ndominant AS (\n  SELECT pid, mcc AS dom_mcc\n  FROM (\n    SELECT\n      pid,\n      mcc,\n      ROW_NUMBER() OVER (\n        PARTITION BY pid\n        ORDER BY n DESC, COALESCE(CAST(mcc AS STRING), '')\n      ) AS rn\n    FROM mcc_counts\n  )\n  WHERE rn = 1\n),\nuser_cohort AS (\n  SELECT\n    d.pid,\n    DATE_TRUNC(f.fd, MONTH) AS cohort_month,\n    CASE\n      WHEN t.mcc IS NOT NULL THEN COALESCE(CAST(d.dom_mcc AS STRING), 'NULL')\n      ELSE 'OTHER'\n    END AS mcc_seg\n  FROM dominant d\n  JOIN first_payout f ON d.pid = f.pid\n  LEFT JOIN top20_mcc t ON d.dom_mcc IS NOT DISTINCT FROM t.mcc\n  WHERE f.fd >= DATE('2025-08-01')\n    AND f.fd < DATE('2026-02-01')\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_txns\n),\nretention AS (\n  SELECT\n    u.mcc_seg,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT mcc_seg, COUNT(*) AS cohort_users\n  FROM user_cohort\n  GROUP BY 1\n)\nSELECT\n  r.mcc_seg,\n  r.period_n,\n  cs.cohort_users,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.mcc_seg = cs.mcc_seg\nORDER BY cs.cohort_users DESC, r.mcc_seg, r.period_n;", "file": "sql/upi-retention-queries.sql"}, "13": {"section": "h", "sql": "-- =============================================================================\n-- is_bharatpe_qr: IFNULL(..., 0). Segments:\n--   Only BharatPe QR (all txns = 1) | Only non-BharatPe QR (all = 0) | Mixed (both)\n-- Retention M+0..M+6 on payout activity. See retention_by_bharatpe_qr_share.sql (share buckets).\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym,\n    IFNULL(is_bharatpe_qr, 0) AS bp_qr\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst_payout AS (\n  SELECT pid, MIN(d) AS fd\n  FROM payout_txns\n  GROUP BY pid\n),\nqr_30d AS (\n  SELECT\n    o.pid,\n    COUNT(*) AS n_txn,\n    COUNTIF(o.bp_qr = 1) AS n_bp,\n    COUNTIF(o.bp_qr = 0) AS n_non_bp\n  FROM payout_txns o\n  JOIN first_payout f ON o.pid = f.pid\n  WHERE o.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)\n  GROUP BY o.pid\n),\nuser_cohort AS (\n  SELECT\n    q.pid,\n    DATE_TRUNC(f.fd, MONTH) AS cohort_month,\n    CASE\n      WHEN q.n_bp = q.n_txn AND q.n_txn > 0 THEN 'Only BharatPe QR'\n      WHEN q.n_non_bp = q.n_txn AND q.n_txn > 0 THEN 'Only non-BharatPe QR'\n      WHEN q.n_bp > 0 AND q.n_non_bp > 0 THEN 'Mixed'\n      ELSE 'No payout in window'\n    END AS qr_segment\n  FROM qr_30d q\n  JOIN first_payout f ON q.pid = f.pid\n  WHERE f.fd >= DATE('2025-08-01')\n    AND f.fd < DATE('2026-02-01')\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_txns\n),\nretention AS (\n  SELECT\n    u.qr_segment,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n    AND u.qr_segment IN ('Only BharatPe QR', 'Only non-BharatPe QR', 'Mixed')\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT qr_segment, COUNT(*) AS cohort_users\n  FROM user_cohort\n  WHERE qr_segment IN ('Only BharatPe QR', 'Only non-BharatPe QR', 'Mixed')\n  GROUP BY 1\n)\nSELECT\n  r.qr_segment,\n  r.period_n,\n  cs.cohort_users,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.qr_segment = cs.qr_segment\nORDER BY\n  CASE r.qr_segment\n    WHEN 'Only non-BharatPe QR' THEN 1\n    WHEN 'Mixed' THEN 2\n    ELSE 3\n  END,\n  r.period_n;", "file": "sql/upi-retention-queries.sql"}, "14": {"section": "i", "sql": "-- =============================================================================\n-- Ever redeemed = >=1 payout SUCCESS in [first_payout_day, +30d] with reward_amount > 0\n-- Never redeemed = no such txn in window. Retention M+0..M+6 on payout activity.\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym,\n    SAFE_CAST(reward_amount AS FLOAT64) AS reward_amt\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst_payout AS (\n  SELECT pid, MIN(d) AS fd\n  FROM payout_txns\n  GROUP BY pid\n),\nreward_30d AS (\n  SELECT\n    o.pid,\n    COUNTIF(o.reward_amt > 0) AS n_redeem\n  FROM payout_txns o\n  JOIN first_payout f ON o.pid = f.pid\n  WHERE o.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)\n  GROUP BY o.pid\n),\nuser_cohort AS (\n  SELECT\n    q.pid,\n    DATE_TRUNC(f.fd, MONTH) AS cohort_month,\n    CASE\n      WHEN q.n_redeem > 0 THEN 'Ever redeemed'\n      ELSE 'Never redeemed'\n    END AS reward_segment\n  FROM reward_30d q\n  JOIN first_payout f ON q.pid = f.pid\n  WHERE f.fd >= DATE('2025-08-01')\n    AND f.fd < DATE('2026-02-01')\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_txns\n),\nretention AS (\n  SELECT\n    u.reward_segment,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT reward_segment, COUNT(*) AS cohort_users\n  FROM user_cohort\n  GROUP BY 1\n)\nSELECT\n  r.reward_segment,\n  r.period_n,\n  cs.cohort_users,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.reward_segment = cs.reward_segment\nORDER BY\n  CASE r.reward_segment WHEN 'Never redeemed' THEN 1 ELSE 2 END,\n  r.period_n;", "file": "sql/upi-retention-queries.sql"}, "15": {"section": "j", "sql": "-- =============================================================================\n-- Earn in first 30d after first payout: user-specified type rule on ALL SUCCESS txns.\n-- Cohort anchor: first payout (subType not RECEIVE_EXTERNAL). Retention on payout M+0..M+6.\n-- See upi-schema-reference.md: type never = RECEIVE_EXTERNAL; pay-ins can satisfy type rule.\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nall_succ AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    type,\n    SAFE_CAST(amount AS FLOAT64) AS amt\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst_payout AS (\n  SELECT pid, MIN(d) AS fd\n  FROM payout_txns\n  GROUP BY pid\n),\nearn_30d AS (\n  SELECT\n    f.pid,\n    COUNTIF(s.type IS DISTINCT FROM 'RECEIVE_EXTERNAL' AND s.amt > 50) AS n_earn\n  FROM first_payout f\n  JOIN all_succ s\n    ON f.pid = s.pid\n   AND s.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)\n  GROUP BY f.pid\n),\nuser_cohort AS (\n  SELECT\n    e.pid,\n    DATE_TRUNC(f.fd, MONTH) AS cohort_month,\n    CASE\n      WHEN e.n_earn > 0 THEN 'Ever earned'\n      ELSE 'Never earned'\n    END AS earn_segment\n  FROM earn_30d e\n  JOIN first_payout f ON e.pid = f.pid\n  WHERE f.fd >= DATE('2025-08-01')\n    AND f.fd < DATE('2026-02-01')\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_txns\n),\nretention AS (\n  SELECT\n    u.earn_segment,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT earn_segment, COUNT(*) AS cohort_users\n  FROM user_cohort\n  GROUP BY 1\n)\nSELECT\n  r.earn_segment,\n  r.period_n,\n  cs.cohort_users,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.earn_segment = cs.earn_segment\nORDER BY CASE r.earn_segment WHEN 'Never earned' THEN 1 ELSE 2 END, r.period_n;\n\n-- Appendix: payout-only earn\n\n-- =============================================================================\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym,\n    SAFE_CAST(amount AS FLOAT64) AS amt\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst_payout AS (\n  SELECT pid, MIN(d) AS fd\n  FROM payout_txns\n  GROUP BY pid\n),\nearn_30d AS (\n  SELECT\n    o.pid,\n    COUNTIF(o.amt > 50) AS n_earn\n  FROM payout_txns o\n  JOIN first_payout f ON o.pid = f.pid\n  WHERE o.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)\n  GROUP BY o.pid\n),\nuser_cohort AS (\n  SELECT\n    e.pid,\n    DATE_TRUNC(f.fd, MONTH) AS cohort_month,\n    CASE\n      WHEN e.n_earn > 0 THEN 'Ever earned (payout only)'\n      ELSE 'Never earned (payout only)'\n    END AS earn_segment\n  FROM earn_30d e\n  JOIN first_payout f ON e.pid = f.pid\n  WHERE f.fd >= DATE('2025-08-01')\n    AND f.fd < DATE('2026-02-01')\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_txns\n),\nretention AS (\n  SELECT\n    u.earn_segment,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT earn_segment, COUNT(*) AS cohort_users\n  FROM user_cohort\n  GROUP BY 1\n)\nSELECT\n  r.earn_segment,\n  r.period_n,\n  cs.cohort_users,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.earn_segment = cs.earn_segment\nORDER BY r.earn_segment, r.period_n;", "file": "sql/upi-retention-queries.sql"}, "16": {"section": "k", "sql": "-- =============================================================================\n-- Platform = JSON_VALUE(attributes, '$.platform') on payout SUCCESS in first 30d.\n-- Segments: Only Android | Only iOS (Ios) | Mixed (both) | Unknown (excluded from POOLED)\n-- Retention M+0..M+6 on payout activity.\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym,\n    JSON_VALUE(attributes, '$.platform') AS platform\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst_payout AS (\n  SELECT pid, MIN(d) AS fd\n  FROM payout_txns\n  GROUP BY pid\n),\nwin AS (\n  SELECT\n    o.pid,\n    o.platform\n  FROM payout_txns o\n  JOIN first_payout f ON o.pid = f.pid\n  WHERE o.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)\n),\nplatform_agg AS (\n  SELECT\n    pid,\n    COUNTIF(platform = 'Android') AS n_android,\n    COUNTIF(platform = 'Ios') AS n_ios,\n    COUNT(*) AS n_txn\n  FROM win\n  GROUP BY pid\n),\nuser_cohort AS (\n  SELECT\n    a.pid,\n    DATE_TRUNC(f.fd, MONTH) AS cohort_month,\n    CASE\n      WHEN a.n_android = a.n_txn AND a.n_txn > 0 THEN 'Only Android'\n      WHEN a.n_ios = a.n_txn AND a.n_txn > 0 THEN 'Only iOS'\n      WHEN a.n_android > 0 AND a.n_ios > 0 THEN 'Mixed (Android + iOS)'\n      ELSE 'Unknown / other platform'\n    END AS platform_segment\n  FROM platform_agg a\n  JOIN first_payout f ON a.pid = f.pid\n  WHERE f.fd >= DATE('2025-08-01')\n    AND f.fd < DATE('2026-02-01')\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_txns\n),\nretention AS (\n  SELECT\n    u.platform_segment,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n    AND u.platform_segment IN ('Only Android', 'Only iOS', 'Mixed (Android + iOS)')\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT platform_segment, COUNT(*) AS cohort_users\n  FROM user_cohort\n  WHERE platform_segment IN ('Only Android', 'Only iOS', 'Mixed (Android + iOS)')\n  GROUP BY 1\n)\nSELECT\n  r.platform_segment,\n  r.period_n,\n  cs.cohort_users,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.platform_segment = cs.platform_segment\nORDER BY\n  CASE r.platform_segment\n    WHEN 'Only Android' THEN 1\n    WHEN 'Only iOS' THEN 2\n    ELSE 3\n  END,\n  r.period_n;", "file": "sql/upi-retention-queries.sql"}, "17": {"section": "l", "sql": "-- =============================================================================\n-- First outward row = earliest payout-direction txn per user (subType not RECEIVE_EXTERNAL).\n-- Cohort month = month of that first attempt. Segments: SUCCESS | FAILED | INITIALIZED\n--   (INITIALIZED = INITIALIZED, PENDING, AUTH_PENDING). Retention = payout SUCCESS M+0..M+6.\n\nWITH out_tx AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym,\n    status,\n    id,\n    created_at\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst_out AS (\n  SELECT\n    pid,\n    d AS fd,\n    status AS first_status\n  FROM out_tx\n  QUALIFY ROW_NUMBER() OVER (PARTITION BY pid ORDER BY created_at, id) = 1\n),\nuser_cohort AS (\n  SELECT\n    f.pid,\n    DATE_TRUNC(f.fd, MONTH) AS cohort_month,\n    CASE\n      WHEN f.first_status = 'SUCCESS' THEN 'SUCCESS'\n      WHEN f.first_status = 'FAILED' THEN 'FAILED'\n      WHEN f.first_status IN ('INITIALIZED', 'PENDING', 'AUTH_PENDING') THEN 'INITIALIZED'\n      ELSE 'OTHER'\n    END AS status_segment\n  FROM first_out f\n  WHERE f.fd >= DATE('2025-08-01')\n    AND f.fd < DATE('2026-02-01')\n),\npayout_succ AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_succ\n),\nretention AS (\n  SELECT\n    u.status_segment,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n    AND u.status_segment IN ('SUCCESS', 'FAILED', 'INITIALIZED')\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT status_segment, COUNT(*) AS cohort_users\n  FROM user_cohort\n  WHERE status_segment IN ('SUCCESS', 'FAILED', 'INITIALIZED')\n  GROUP BY 1\n)\nSELECT\n  r.status_segment,\n  r.period_n,\n  cs.cohort_users,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.status_segment = cs.status_segment\nORDER BY\n  CASE r.status_segment\n    WHEN 'SUCCESS' THEN 1\n    WHEN 'FAILED' THEN 2\n    ELSE 3\n  END,\n  r.period_n;", "file": "sql/upi-retention-queries.sql"}, "18": {"section": "m", "sql": "-- =============================================================================\n-- First 5 outward attempts per user (any status); bucket = count SUCCESS in those 5.\n-- Requires exactly 5 attempts. Cohort month = first payout SUCCESS month.\n-- Retention M+0..M+6 on payout SUCCESS activity. Buckets 0\u20135.\n\nWITH out_tx AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    status,\n    id,\n    created_at\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst5_ranked AS (\n  SELECT\n    pid,\n    status\n  FROM out_tx\n  QUALIFY ROW_NUMBER() OVER (PARTITION BY pid ORDER BY created_at, id) <= 5\n),\nfirst5 AS (\n  SELECT\n    pid,\n    COUNTIF(status = 'SUCCESS') AS succ_in_first5\n  FROM first5_ranked\n  GROUP BY pid\n  HAVING COUNT(*) = 5\n),\nfirst_payout_succ AS (\n  SELECT\n    pid,\n    MIN(d) AS fd\n  FROM out_tx\n  WHERE status = 'SUCCESS'\n  GROUP BY pid\n),\nuser_cohort AS (\n  SELECT\n    f.pid,\n    DATE_TRUNC(p.fd, MONTH) AS cohort_month,\n    CAST(f.succ_in_first5 AS INT64) AS success_bucket\n  FROM first5 f\n  JOIN first_payout_succ p ON f.pid = p.pid\n  WHERE p.fd >= DATE('2025-08-01')\n    AND p.fd < DATE('2026-02-01')\n    AND f.succ_in_first5 BETWEEN 0 AND 5\n),\npayout_succ AS (\n  SELECT\n    pid,\n    DATE_TRUNC(d, MONTH) AS ym\n  FROM out_tx\n  WHERE status = 'SUCCESS'\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_succ\n),\nretention AS (\n  SELECT\n    u.success_bucket,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT success_bucket, COUNT(*) AS cohort_users\n  FROM user_cohort\n  GROUP BY 1\n)\nSELECT\n  r.success_bucket,\n  r.period_n,\n  cs.cohort_users,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.success_bucket = cs.success_bucket\nORDER BY r.success_bucket DESC, r.period_n;", "file": "sql/upi-retention-queries.sql"}, "19": {"section": "n", "sql": "-- =============================================================================\n-- Linkage count = DISTINCT user_bank_accounts.id for user, linked by end of first 30d\n-- after first payout SUCCESS. Join: transactions.user_profile_id -> users.profile_id\n--   -> user_bank_accounts.user_id = users.id\n-- Segments: 1 | 2 | 3 | 4+ accounts. Retention M+0..M+6 on payout SUCCESS.\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst_payout AS (\n  SELECT pid, MIN(d) AS fd\n  FROM payout_txns\n  GROUP BY pid\n),\nlinkages AS (\n  SELECT\n    u.profile_id AS pid,\n    COUNT(DISTINCT b.id) AS n_linked\n  FROM `bharatpe-analytics-prod.upi.user_bank_accounts` b\n  JOIN `bharatpe-analytics-prod.upi.users` u\n    ON b.user_id = u.id\n  JOIN first_payout f\n    ON u.profile_id = f.pid\n  WHERE IFNULL(b.__deleted, 'false') = 'false'\n    AND IFNULL(u.__deleted, 'false') = 'false'\n    AND DATE(b.created_at) <= DATE_ADD(f.fd, INTERVAL 30 DAY)\n  GROUP BY u.profile_id\n),\nuser_cohort AS (\n  SELECT\n    f.pid,\n    DATE_TRUNC(f.fd, MONTH) AS cohort_month,\n    COALESCE(l.n_linked, 0) AS n_linked,\n    CASE\n      WHEN COALESCE(l.n_linked, 0) = 1 THEN '1 account'\n      WHEN COALESCE(l.n_linked, 0) = 2 THEN '2 accounts'\n      WHEN COALESCE(l.n_linked, 0) = 3 THEN '3 accounts'\n      WHEN COALESCE(l.n_linked, 0) >= 4 THEN '4+ accounts'\n      ELSE '0 accounts'\n    END AS linkage_segment\n  FROM first_payout f\n  LEFT JOIN linkages l ON f.pid = l.pid\n  WHERE f.fd >= DATE('2025-08-01')\n    AND f.fd < DATE('2026-02-01')\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_txns\n),\nretention AS (\n  SELECT\n    u.linkage_segment,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n    AND u.linkage_segment IN ('1 account', '2 accounts', '3 accounts', '4+ accounts')\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT linkage_segment, COUNT(*) AS cohort_users, ROUND(AVG(n_linked), 2) AS mean_linked\n  FROM user_cohort\n  WHERE linkage_segment IN ('1 account', '2 accounts', '3 accounts', '4+ accounts')\n  GROUP BY 1\n)\nSELECT\n  r.linkage_segment,\n  r.period_n,\n  cs.cohort_users,\n  cs.mean_linked,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.linkage_segment = cs.linkage_segment\nORDER BY cs.mean_linked, r.period_n;", "file": "sql/upi-retention-queries.sql"}, "20": {"section": "o", "sql": "-- =============================================================================\n-- Dominant account_type = type with most linked account rows by end of first 30d\n-- after first payout SUCCESS (tie-break: account_type ASC).\n-- Segments: SAVINGS | CURRENT | CREDIT | CREDITLINE | OTHER dominant | No linked.\n-- Retention M+0..M+6 on payout SUCCESS. Pool: first-payout SUCCESS 2025-08..2026-01.\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst_payout AS (\n  SELECT pid, MIN(d) AS fd\n  FROM payout_txns\n  GROUP BY pid\n),\nlinked AS (\n  SELECT\n    u.profile_id AS pid,\n    COALESCE(b.account_type, 'UNKNOWN') AS account_type\n  FROM `bharatpe-analytics-prod.upi.user_bank_accounts` b\n  JOIN `bharatpe-analytics-prod.upi.users` u\n    ON b.user_id = u.id\n  JOIN first_payout f\n    ON u.profile_id = f.pid\n  WHERE IFNULL(b.__deleted, 'false') = 'false'\n    AND IFNULL(u.__deleted, 'false') = 'false'\n    AND DATE(b.created_at) <= DATE_ADD(f.fd, INTERVAL 30 DAY)\n),\ntype_counts AS (\n  SELECT pid, account_type, COUNT(*) AS n\n  FROM linked\n  GROUP BY 1, 2\n),\ndominant AS (\n  SELECT pid, account_type AS dominant_account_type\n  FROM type_counts\n  QUALIFY ROW_NUMBER() OVER (PARTITION BY pid ORDER BY n DESC, account_type) = 1\n),\nuser_cohort AS (\n  SELECT\n    f.pid,\n    DATE_TRUNC(f.fd, MONTH) AS cohort_month,\n    CASE\n      WHEN d.dominant_account_type IN ('SAVINGS', 'CURRENT', 'CREDIT', 'CREDITLINE')\n        THEN d.dominant_account_type\n      WHEN d.pid IS NULL THEN 'No linked account (30d)'\n      ELSE 'OTHER dominant'\n    END AS dominant_type\n  FROM first_payout f\n  LEFT JOIN dominant d ON f.pid = d.pid\n  WHERE f.fd >= DATE('2025-08-01')\n    AND f.fd < DATE('2026-02-01')\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_txns\n),\nretention AS (\n  SELECT\n    u.dominant_type,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT dominant_type, COUNT(*) AS cohort_users\n  FROM user_cohort\n  GROUP BY 1\n)\nSELECT\n  r.dominant_type,\n  r.period_n,\n  cs.cohort_users,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.dominant_type = cs.dominant_type\nORDER BY cs.cohort_users DESC, r.period_n;\n\n-- Appendix: exclusive single type\n\n-- =============================================================================\n-- Users with exactly one distinct account_type among linked rows in window.\n-- \"Mixed account types\" = 2+ distinct types. Retention M+0..M+6.\n\nWITH payout_txns AS (\n  SELECT\n    user_profile_id AS pid,\n    DATE(created_at) AS d,\n    DATE_TRUNC(DATE(created_at), MONTH) AS ym\n  FROM `bharatpe-analytics-prod.upi.upi_transactions`\n  WHERE status = 'SUCCESS'\n    AND user_profile_id IS NOT NULL AND user_profile_id != ''\n    AND IFNULL(__deleted, 'false') = 'false'\n    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'\n    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)\n),\nfirst_payout AS (\n  SELECT pid, MIN(d) AS fd\n  FROM payout_txns\n  GROUP BY pid\n),\nlinked AS (\n  SELECT\n    u.profile_id AS pid,\n    COALESCE(b.account_type, 'UNKNOWN') AS account_type\n  FROM `bharatpe-analytics-prod.upi.user_bank_accounts` b\n  JOIN `bharatpe-analytics-prod.upi.users` u\n    ON b.user_id = u.id\n  JOIN first_payout f\n    ON u.profile_id = f.pid\n  WHERE IFNULL(b.__deleted, 'false') = 'false'\n    AND IFNULL(u.__deleted, 'false') = 'false'\n    AND DATE(b.created_at) <= DATE_ADD(f.fd, INTERVAL 30 DAY)\n),\ntype_counts AS (\n  SELECT pid, account_type, COUNT(*) AS n\n  FROM linked\n  GROUP BY 1, 2\n),\nuser_agg AS (\n  SELECT pid, COUNT(DISTINCT account_type) AS n_distinct_types\n  FROM type_counts\n  GROUP BY pid\n),\nonly_type AS (\n  SELECT t.pid, t.account_type\n  FROM type_counts t\n  JOIN user_agg u ON t.pid = u.pid AND u.n_distinct_types = 1\n),\nmixed AS (\n  SELECT pid FROM user_agg WHERE n_distinct_types >= 2\n),\nuser_cohort AS (\n  SELECT\n    f.pid,\n    DATE_TRUNC(f.fd, MONTH) AS cohort_month,\n    CASE\n      WHEN m.pid IS NOT NULL THEN 'Mixed account types'\n      WHEN o.account_type = 'SAVINGS' THEN 'SAVINGS only'\n      WHEN o.account_type = 'CURRENT' THEN 'CURRENT only'\n      WHEN o.pid IS NOT NULL THEN 'Other type only'\n      ELSE 'No linked account (30d)'\n    END AS account_type_segment\n  FROM first_payout f\n  LEFT JOIN only_type o ON f.pid = o.pid\n  LEFT JOIN mixed m ON f.pid = m.pid\n  WHERE f.fd >= DATE('2025-08-01')\n    AND f.fd < DATE('2026-02-01')\n),\nmonth_active AS (\n  SELECT DISTINCT pid, ym AS activity_month\n  FROM payout_txns\n),\nretention AS (\n  SELECT\n    u.account_type_segment,\n    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,\n    COUNT(DISTINCT u.pid) AS active_users\n  FROM user_cohort u\n  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month\n  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6\n    AND u.account_type_segment IN (\n      'SAVINGS only', 'CURRENT only', 'Mixed account types', 'Other type only'\n    )\n  GROUP BY 1, 2\n),\ncohort_sizes AS (\n  SELECT account_type_segment, COUNT(*) AS cohort_users\n  FROM user_cohort\n  WHERE account_type_segment IN (\n    'SAVINGS only', 'CURRENT only', 'Mixed account types', 'Other type only'\n  )\n  GROUP BY 1\n)\nSELECT\n  r.account_type_segment,\n  r.period_n,\n  cs.cohort_users,\n  r.active_users,\n  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct\nFROM retention r\nJOIN cohort_sizes cs ON r.account_type_segment = cs.account_type_segment\nORDER BY cs.cohort_users DESC, r.period_n;", "file": "sql/upi-retention-queries.sql"}}</script>
+<script type="application/json" id="sql-sources-data">{"6": {"section": "a", "sql": "-- =============================================================================
+-- Payout: subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'
+-- Cohort month: calendar month of first payout SUCCESS per user
+-- M+1: ≥1 payout SUCCESS in the next calendar month
+-- Output: cohort_month, cohort_users, m1_active_users, m1_retention_pct
+
+WITH payout_txns AS (
+  SELECT
+    user_profile_id AS pid,
+    DATE(created_at) AS d,
+    DATE_TRUNC(DATE(created_at), MONTH) AS ym
+  FROM `bharatpe-analytics-prod.upi.upi_transactions`
+  WHERE status = 'SUCCESS'
+    AND user_profile_id IS NOT NULL AND user_profile_id != ''
+    AND IFNULL(__deleted, 'false') = 'false'
+    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 18 MONTH)
+),
+user_first_payout AS (
+  SELECT
+    pid,
+    DATE_TRUNC(MIN(d), MONTH) AS cohort_month
+  FROM payout_txns
+  GROUP BY pid
+),
+cohorts AS (
+  SELECT cohort_month, COUNT(*) AS cohort_users
+  FROM user_first_payout
+  GROUP BY cohort_month
+),
+month_active AS (
+  SELECT DISTINCT pid, ym AS activity_month
+  FROM payout_txns
+),
+m1 AS (
+  SELECT
+    f.cohort_month,
+    COUNT(DISTINCT f.pid) AS m1_active_users
+  FROM user_first_payout f
+  JOIN month_active m
+    ON f.pid = m.pid
+   AND DATE_DIFF(m.activity_month, f.cohort_month, MONTH) = 1
+  GROUP BY f.cohort_month
+)
+SELECT
+  c.cohort_month,
+  c.cohort_users,
+  IFNULL(m.m1_active_users, 0) AS m1_active_users,
+  ROUND(100 * IFNULL(m.m1_active_users, 0) / NULLIF(c.cohort_users, 0), 2) AS m1_retention_pct
+FROM cohorts c
+LEFT JOIN m1 m ON c.cohort_month = m.cohort_month
+WHERE c.cohort_month >= DATE_TRUNC(DATE_SUB(CURRENT_DATE(), INTERVAL 14 MONTH), MONTH)
+  AND c.cohort_month < DATE_TRUNC(CURRENT_DATE(), MONTH)
+ORDER BY c.cohort_month;", "file": "sql/upi-retention-queries.sql"}, "7": {"section": "b", "sql": "-- =============================================================================
+-- Payout: subType IS DISTINCT FROM 'RECEIVE_EXTERNAL' (same as section a).
+-- After first qualifying PAYOUT SUCCESS, count further PAYOUT SUCCESS txns in the
+-- next 30 days (inclusive of first-payout day). Bucket → Light / Medium / Heavy / Power.
+-- Cohort month = month of first PAYOUT SUCCESS. Retention M+k = share with ≥1 PAYOUT
+-- SUCCESS in calendar month cohort_month + k months.
+--
+-- Buckets:
+--   Light:  1 payout SUCCESS in first 30d
+--   Medium: 2–5
+--   Heavy:  6–20
+--   Power:  21+
+--
+-- Adjust pool window in user_dim WHERE (default Aug 2025–Jan 2026).
+
+WITH payout_txns AS (
+  SELECT
+    user_profile_id AS pid,
+    created_at,
+    DATE(created_at) AS d
+  FROM `bharatpe-analytics-prod.upi.upi_transactions`
+  WHERE status = 'SUCCESS'
+    AND user_profile_id IS NOT NULL AND user_profile_id != ''
+    AND IFNULL(__deleted, 'false') = 'false'
+    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 14 MONTH)
+),
+user_first AS (
+  SELECT
+    pid,
+    DATE_TRUNC(MIN(d), MONTH) AS cohort_month,
+    MIN(created_at) AS first_ts
+  FROM payout_txns
+  GROUP BY pid
+),
+first_30d AS (
+  SELECT s.pid, COUNT(*) AS txns_first_30d
+  FROM payout_txns s
+  JOIN user_first f ON s.pid = f.pid
+    AND s.d BETWEEN DATE(f.first_ts) AND DATE_ADD(DATE(f.first_ts), INTERVAL 30 DAY)
+  GROUP BY s.pid
+),
+user_dim AS (
+  SELECT
+    f.pid,
+    f.cohort_month,
+    CASE
+      WHEN IFNULL(t30.txns_first_30d, 0) <= 1 THEN 'Light'
+      WHEN t30.txns_first_30d BETWEEN 2 AND 5 THEN 'Medium'
+      WHEN t30.txns_first_30d BETWEEN 6 AND 20 THEN 'Heavy'
+      ELSE 'Power'
+    END AS volume_segment
+  FROM user_first f
+  LEFT JOIN first_30d t30 ON f.pid = t30.pid
+  WHERE f.cohort_month >= DATE('2025-08-01')
+    AND f.cohort_month < DATE('2026-02-01')
+),
+monthly_active AS (
+  SELECT DISTINCT pid, DATE_TRUNC(d, MONTH) AS activity_month
+  FROM payout_txns
+),
+retention AS (
+  SELECT
+    u.volume_segment,
+    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,
+    COUNT(DISTINCT u.pid) AS active_users
+  FROM user_dim u
+  JOIN monthly_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month
+  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6
+  GROUP BY 1, 2
+),
+cohort_sizes AS (
+  SELECT volume_segment, COUNT(*) AS cohort_users
+  FROM user_dim
+  GROUP BY 1
+)
+SELECT
+  r.volume_segment,
+  r.period_n,
+  cs.cohort_users,
+  r.active_users,
+  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct
+FROM retention r
+JOIN cohort_sizes cs ON r.volume_segment = cs.volume_segment
+ORDER BY
+  CASE r.volume_segment
+    WHEN 'Light' THEN 1 WHEN 'Medium' THEN 2 WHEN 'Heavy' THEN 3 WHEN 'Power' THEN 4
+  END,
+  r.period_n;", "file": "sql/upi-retention-queries.sql"}, "8": {"section": "c", "sql": "-- =============================================================================
+-- Onboarding month: calendar month of upi.users.created_at (profile_id cohort).
+-- Activity: payout SUCCESS on upi_transactions (subType not RECEIVE_EXTERNAL).
+-- Join: users.profile_id = upi_transactions.user_profile_id
+-- Periods: M+0 (same month as onboarding), M+1, M+2, M+3, M+6
+-- Retention %: users with ≥1 payout SUCCESS in that calendar month ÷ cohort size
+--
+-- Note: Later periods are blank/incomplete until that calendar month has elapsed
+-- (e.g. M+6 for Dec 2025 needs activity in Jun 2026).
+
+WITH users_dim AS (
+  SELECT
+    profile_id AS pid,
+    DATE_TRUNC(DATE(created_at), MONTH) AS onboarding_month
+  FROM `bharatpe-analytics-prod.upi.users`
+  WHERE IFNULL(__deleted, 'false') = 'false'
+    AND profile_id IS NOT NULL AND profile_id != ''
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 18 MONTH)
+),
+payout_months AS (
+  SELECT DISTINCT
+    user_profile_id AS pid,
+    DATE_TRUNC(DATE(created_at), MONTH) AS activity_month
+  FROM `bharatpe-analytics-prod.upi.upi_transactions`
+  WHERE status = 'SUCCESS'
+    AND user_profile_id IS NOT NULL AND user_profile_id != ''
+    AND IFNULL(__deleted, 'false') = 'false'
+    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 18 MONTH)
+),
+cohort_sizes AS (
+  SELECT onboarding_month, COUNT(*) AS cohort_users
+  FROM users_dim
+  GROUP BY 1
+),
+retention AS (
+  SELECT
+    u.onboarding_month,
+    DATE_DIFF(p.activity_month, u.onboarding_month, MONTH) AS period_n,
+    COUNT(DISTINCT u.pid) AS active_users
+  FROM users_dim u
+  JOIN payout_months p ON u.pid = p.pid
+  WHERE DATE_DIFF(p.activity_month, u.onboarding_month, MONTH) IN (0, 1, 2, 3, 6)
+  GROUP BY 1, 2
+)
+SELECT
+  c.onboarding_month,
+  c.cohort_users,
+  per AS period_n,
+  IFNULL(r.active_users, 0) AS active_users,
+  ROUND(100 * IFNULL(r.active_users, 0) / c.cohort_users, 2) AS retention_pct
+FROM cohort_sizes c
+CROSS JOIN UNNEST([0, 1, 2, 3, 6]) AS per
+LEFT JOIN retention r
+  ON c.onboarding_month = r.onboarding_month AND per = r.period_n
+WHERE c.onboarding_month >= DATE_TRUNC(DATE_SUB(CURRENT_DATE(), INTERVAL 14 MONTH), MONTH)
+  AND c.onboarding_month < DATE_TRUNC(CURRENT_DATE(), MONTH)
+ORDER BY c.onboarding_month, per;", "file": "sql/upi-retention-queries.sql"}, "9": {"section": "d", "sql": "-- =============================================================================
+-- Bucket = AVG(ABS(amount)) on payout SUCCESS txns in [first_payout_day, +30d].
+-- Cohort month = month of first payout SUCCESS. Retention M+0..M+6 on payout activity.
+-- TPV buckets: avg_lt_100 | avg_100_500 | avg_500_2000 | avg_ge_2000
+
+WITH payout_txns AS (
+  SELECT
+    user_profile_id AS pid,
+    DATE(created_at) AS d,
+    DATE_TRUNC(DATE(created_at), MONTH) AS ym,
+    ABS(SAFE_CAST(amount AS FLOAT64)) AS amt
+  FROM `bharatpe-analytics-prod.upi.upi_transactions`
+  WHERE status = 'SUCCESS'
+    AND user_profile_id IS NOT NULL AND user_profile_id != ''
+    AND IFNULL(__deleted, 'false') = 'false'
+    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)
+),
+first_payout AS (
+  SELECT pid, MIN(d) AS fd
+  FROM payout_txns
+  GROUP BY pid
+),
+avg30 AS (
+  SELECT
+    o.pid,
+    AVG(o.amt) AS avg_payout_amt,
+    SUM(o.amt) AS tpv_30d,
+    COUNT(*) AS txn_cnt_30d
+  FROM payout_txns o
+  JOIN first_payout f ON o.pid = f.pid
+  WHERE o.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)
+  GROUP BY o.pid
+),
+user_cohort AS (
+  SELECT
+    f.pid,
+    DATE_TRUNC(f.fd, MONTH) AS cohort_month,
+    CASE
+      WHEN a.avg_payout_amt < 100 THEN 'avg_lt_100'
+      WHEN a.avg_payout_amt < 500 THEN 'avg_100_500'
+      WHEN a.avg_payout_amt < 2000 THEN 'avg_500_2000'
+      ELSE 'avg_ge_2000'
+    END AS tpv_bucket,
+    a.avg_payout_amt,
+    a.tpv_30d
+  FROM first_payout f
+  JOIN avg30 a ON f.pid = a.pid
+  WHERE f.fd >= DATE('2025-08-01')
+    AND f.fd < DATE('2026-02-01')
+),
+month_active AS (
+  SELECT DISTINCT pid, ym AS activity_month
+  FROM payout_txns
+),
+retention AS (
+  SELECT
+    u.tpv_bucket,
+    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,
+    COUNT(DISTINCT u.pid) AS active_users
+  FROM user_cohort u
+  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month
+  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6
+  GROUP BY 1, 2
+),
+cohort_sizes AS (
+  SELECT
+    tpv_bucket,
+    COUNT(*) AS cohort_users,
+    ROUND(AVG(avg_payout_amt), 2) AS mean_avg_amt,
+    ROUND(AVG(tpv_30d), 2) AS mean_tpv_30d
+  FROM user_cohort
+  GROUP BY 1
+)
+SELECT
+  r.tpv_bucket,
+  r.period_n,
+  cs.cohort_users,
+  cs.mean_avg_amt,
+  cs.mean_tpv_30d,
+  r.active_users,
+  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct
+FROM retention r
+JOIN cohort_sizes cs ON r.tpv_bucket = cs.tpv_bucket
+ORDER BY
+  CASE r.tpv_bucket
+    WHEN 'avg_lt_100' THEN 1
+    WHEN 'avg_100_500' THEN 2
+    WHEN 'avg_500_2000' THEN 3
+    ELSE 4
+  END,
+  r.period_n;", "file": "sql/upi-retention-queries.sql"}, "10": {"section": "e", "sql": "-- =============================================================================
+-- Pay-in: subType = 'RECEIVE_EXTERNAL' SUCCESS in [first_payout_day, +30d].
+-- Bucket on pay-in count; cohort month = month of first payout SUCCESS.
+-- Retention M+0..M+6 = payout activity (subType IS DISTINCT FROM 'RECEIVE_EXTERNAL').
+-- Pay-in buckets: Light <5 | Medium 5-20 | Heavy 21-50 | Power 51+
+
+WITH payout_txns AS (
+  SELECT
+    user_profile_id AS pid,
+    DATE(created_at) AS d,
+    DATE_TRUNC(DATE(created_at), MONTH) AS ym
+  FROM `bharatpe-analytics-prod.upi.upi_transactions`
+  WHERE status = 'SUCCESS'
+    AND user_profile_id IS NOT NULL AND user_profile_id != ''
+    AND IFNULL(__deleted, 'false') = 'false'
+    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)
+),
+all_succ AS (
+  SELECT
+    user_profile_id AS pid,
+    DATE(created_at) AS d,
+    subType AS st
+  FROM `bharatpe-analytics-prod.upi.upi_transactions`
+  WHERE status = 'SUCCESS'
+    AND user_profile_id IS NOT NULL AND user_profile_id != ''
+    AND IFNULL(__deleted, 'false') = 'false'
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)
+),
+first_payout AS (
+  SELECT pid, MIN(d) AS fd
+  FROM payout_txns
+  GROUP BY pid
+),
+payin_30d AS (
+  SELECT
+    f.pid,
+    f.fd,
+    COUNTIF(
+      s.st = 'RECEIVE_EXTERNAL'
+      AND s.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)
+    ) AS payin_n
+  FROM first_payout f
+  INNER JOIN all_succ s ON f.pid = s.pid
+  GROUP BY f.pid, f.fd
+),
+user_cohort AS (
+  SELECT
+    p.pid,
+    DATE_TRUNC(p.fd, MONTH) AS cohort_month,
+    p.payin_n,
+    CASE
+      WHEN p.payin_n < 5 THEN 'Light'
+      WHEN p.payin_n BETWEEN 5 AND 20 THEN 'Medium'
+      WHEN p.payin_n BETWEEN 21 AND 50 THEN 'Heavy'
+      ELSE 'Power'
+    END AS payin_segment
+  FROM payin_30d p
+  WHERE p.fd >= DATE('2025-08-01')
+    AND p.fd < DATE('2026-02-01')
+),
+month_active AS (
+  SELECT DISTINCT pid, ym AS activity_month
+  FROM payout_txns
+),
+retention AS (
+  SELECT
+    u.payin_segment,
+    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,
+    COUNT(DISTINCT u.pid) AS active_users
+  FROM user_cohort u
+  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month
+  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6
+  GROUP BY 1, 2
+),
+cohort_sizes AS (
+  SELECT
+    payin_segment,
+    COUNT(*) AS cohort_users,
+    ROUND(AVG(payin_n), 2) AS mean_payin
+  FROM user_cohort
+  GROUP BY 1
+)
+SELECT
+  r.payin_segment,
+  r.period_n,
+  cs.cohort_users,
+  cs.mean_payin,
+  r.active_users,
+  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct
+FROM retention r
+JOIN cohort_sizes cs ON r.payin_segment = cs.payin_segment
+ORDER BY
+  CASE r.payin_segment
+    WHEN 'Light' THEN 1
+    WHEN 'Medium' THEN 2
+    WHEN 'Heavy' THEN 3
+    ELSE 4
+  END,
+  r.period_n;", "file": "sql/upi-retention-queries.sql"}, "11": {"section": "f", "sql": "-- =============================================================================
+-- After first payout SUCCESS, label users by distinct payout subTypes in [fd, +30d]:
+--   Only QR | Only UPI_ID | Only CONTACT | Only INTENT | Mixture (2+ distinct)
+--   Other only = single subType not in the four rails (excluded from POOLED SELECT)
+-- Retention M+0..M+6 = payout activity. NULL subType stored as 'NULL'.
+
+WITH payout_txns AS (
+  SELECT
+    user_profile_id AS pid,
+    DATE(created_at) AS d,
+    DATE_TRUNC(DATE(created_at), MONTH) AS ym,
+    subType AS st
+  FROM `bharatpe-analytics-prod.upi.upi_transactions`
+  WHERE status = 'SUCCESS'
+    AND user_profile_id IS NOT NULL AND user_profile_id != ''
+    AND IFNULL(__deleted, 'false') = 'false'
+    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)
+),
+first_payout AS (
+  SELECT pid, MIN(d) AS fd
+  FROM payout_txns
+  GROUP BY pid
+),
+win AS (
+  SELECT
+    o.pid,
+    IFNULL(o.st, 'NULL') AS st
+  FROM payout_txns o
+  JOIN first_payout f ON o.pid = f.pid
+  WHERE o.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)
+),
+subtype_agg AS (
+  SELECT
+    pid,
+    COUNT(DISTINCT st) AS n_distinct_st,
+    ARRAY_AGG(DISTINCT st ORDER BY st) AS sts
+  FROM win
+  GROUP BY pid
+),
+user_cohort AS (
+  SELECT
+    a.pid,
+    DATE_TRUNC(f.fd, MONTH) AS cohort_month,
+    CASE
+      WHEN a.n_distinct_st = 1 AND a.sts[OFFSET(0)] = 'QR' THEN 'Only QR'
+      WHEN a.n_distinct_st = 1 AND a.sts[OFFSET(0)] = 'UPI_ID' THEN 'Only UPI_ID'
+      WHEN a.n_distinct_st = 1 AND a.sts[OFFSET(0)] = 'CONTACT' THEN 'Only CONTACT'
+      WHEN a.n_distinct_st = 1 AND a.sts[OFFSET(0)] = 'INTENT' THEN 'Only INTENT'
+      WHEN a.n_distinct_st >= 2 THEN 'Mixture'
+      ELSE 'Other only'
+    END AS rail_segment
+  FROM subtype_agg a
+  JOIN first_payout f ON a.pid = f.pid
+  WHERE f.fd >= DATE('2025-08-01')
+    AND f.fd < DATE('2026-02-01')
+),
+month_active AS (
+  SELECT DISTINCT pid, ym AS activity_month
+  FROM payout_txns
+),
+retention AS (
+  SELECT
+    u.rail_segment,
+    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,
+    COUNT(DISTINCT u.pid) AS active_users
+  FROM user_cohort u
+  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month
+  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6
+  GROUP BY 1, 2
+),
+cohort_sizes AS (
+  SELECT rail_segment, COUNT(*) AS cohort_users
+  FROM user_cohort
+  GROUP BY 1
+)
+SELECT
+  r.rail_segment,
+  r.period_n,
+  cs.cohort_users,
+  r.active_users,
+  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct
+FROM retention r
+JOIN cohort_sizes cs ON r.rail_segment = cs.rail_segment
+WHERE r.rail_segment != 'Other only'
+ORDER BY
+  CASE r.rail_segment
+    WHEN 'Only QR' THEN 1
+    WHEN 'Only UPI_ID' THEN 2
+    WHEN 'Only CONTACT' THEN 3
+    WHEN 'Only INTENT' THEN 4
+    WHEN 'Mixture' THEN 5
+    ELSE 6
+  END,
+  r.period_n;", "file": "sql/upi-retention-queries.sql"}, "12": {"section": "g", "sql": "-- =============================================================================
+-- Top 20 MCCs = highest payout SUCCESS txn count in 16-month scan window.
+-- Per user: dominant MCC = max txn count in [first_payout_day, +30d]; ties by mcc.
+-- Retention M+0..M+6 on payout activity. See retention_by_top20_mcc.sql (legacy).
+
+WITH payout_txns AS (
+  SELECT
+    user_profile_id AS pid,
+    DATE(created_at) AS d,
+    DATE_TRUNC(DATE(created_at), MONTH) AS ym,
+    mcc
+  FROM `bharatpe-analytics-prod.upi.upi_transactions`
+  WHERE status = 'SUCCESS'
+    AND user_profile_id IS NOT NULL AND user_profile_id != ''
+    AND IFNULL(__deleted, 'false') = 'false'
+    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)
+),
+first_payout AS (
+  SELECT pid, MIN(d) AS fd
+  FROM payout_txns
+  GROUP BY pid
+),
+top20_mcc AS (
+  SELECT mcc
+  FROM (
+    SELECT mcc, COUNT(*) AS cnt
+    FROM payout_txns
+    GROUP BY mcc
+  )
+  QUALIFY ROW_NUMBER() OVER (ORDER BY cnt DESC) <= 20
+),
+mcc_counts AS (
+  SELECT
+    o.pid,
+    o.mcc,
+    COUNT(*) AS n
+  FROM payout_txns o
+  JOIN first_payout f ON o.pid = f.pid
+  WHERE o.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)
+  GROUP BY o.pid, o.mcc
+),
+dominant AS (
+  SELECT pid, mcc AS dom_mcc
+  FROM (
+    SELECT
+      pid,
+      mcc,
+      ROW_NUMBER() OVER (
+        PARTITION BY pid
+        ORDER BY n DESC, COALESCE(CAST(mcc AS STRING), '')
+      ) AS rn
+    FROM mcc_counts
+  )
+  WHERE rn = 1
+),
+user_cohort AS (
+  SELECT
+    d.pid,
+    DATE_TRUNC(f.fd, MONTH) AS cohort_month,
+    CASE
+      WHEN t.mcc IS NOT NULL THEN COALESCE(CAST(d.dom_mcc AS STRING), 'NULL')
+      ELSE 'OTHER'
+    END AS mcc_seg
+  FROM dominant d
+  JOIN first_payout f ON d.pid = f.pid
+  LEFT JOIN top20_mcc t ON d.dom_mcc IS NOT DISTINCT FROM t.mcc
+  WHERE f.fd >= DATE('2025-08-01')
+    AND f.fd < DATE('2026-02-01')
+),
+month_active AS (
+  SELECT DISTINCT pid, ym AS activity_month
+  FROM payout_txns
+),
+retention AS (
+  SELECT
+    u.mcc_seg,
+    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,
+    COUNT(DISTINCT u.pid) AS active_users
+  FROM user_cohort u
+  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month
+  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6
+  GROUP BY 1, 2
+),
+cohort_sizes AS (
+  SELECT mcc_seg, COUNT(*) AS cohort_users
+  FROM user_cohort
+  GROUP BY 1
+)
+SELECT
+  r.mcc_seg,
+  r.period_n,
+  cs.cohort_users,
+  r.active_users,
+  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct
+FROM retention r
+JOIN cohort_sizes cs ON r.mcc_seg = cs.mcc_seg
+ORDER BY cs.cohort_users DESC, r.mcc_seg, r.period_n;", "file": "sql/upi-retention-queries.sql"}, "13": {"section": "h", "sql": "-- =============================================================================
+-- is_bharatpe_qr: IFNULL(..., 0). Segments:
+--   Only BharatPe QR (all txns = 1) | Only non-BharatPe QR (all = 0) | Mixed (both)
+-- Retention M+0..M+6 on payout activity. See retention_by_bharatpe_qr_share.sql (share buckets).
+
+WITH payout_txns AS (
+  SELECT
+    user_profile_id AS pid,
+    DATE(created_at) AS d,
+    DATE_TRUNC(DATE(created_at), MONTH) AS ym,
+    IFNULL(is_bharatpe_qr, 0) AS bp_qr
+  FROM `bharatpe-analytics-prod.upi.upi_transactions`
+  WHERE status = 'SUCCESS'
+    AND user_profile_id IS NOT NULL AND user_profile_id != ''
+    AND IFNULL(__deleted, 'false') = 'false'
+    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)
+),
+first_payout AS (
+  SELECT pid, MIN(d) AS fd
+  FROM payout_txns
+  GROUP BY pid
+),
+qr_30d AS (
+  SELECT
+    o.pid,
+    COUNT(*) AS n_txn,
+    COUNTIF(o.bp_qr = 1) AS n_bp,
+    COUNTIF(o.bp_qr = 0) AS n_non_bp
+  FROM payout_txns o
+  JOIN first_payout f ON o.pid = f.pid
+  WHERE o.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)
+  GROUP BY o.pid
+),
+user_cohort AS (
+  SELECT
+    q.pid,
+    DATE_TRUNC(f.fd, MONTH) AS cohort_month,
+    CASE
+      WHEN q.n_bp = q.n_txn AND q.n_txn > 0 THEN 'Only BharatPe QR'
+      WHEN q.n_non_bp = q.n_txn AND q.n_txn > 0 THEN 'Only non-BharatPe QR'
+      WHEN q.n_bp > 0 AND q.n_non_bp > 0 THEN 'Mixed'
+      ELSE 'No payout in window'
+    END AS qr_segment
+  FROM qr_30d q
+  JOIN first_payout f ON q.pid = f.pid
+  WHERE f.fd >= DATE('2025-08-01')
+    AND f.fd < DATE('2026-02-01')
+),
+month_active AS (
+  SELECT DISTINCT pid, ym AS activity_month
+  FROM payout_txns
+),
+retention AS (
+  SELECT
+    u.qr_segment,
+    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,
+    COUNT(DISTINCT u.pid) AS active_users
+  FROM user_cohort u
+  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month
+  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6
+    AND u.qr_segment IN ('Only BharatPe QR', 'Only non-BharatPe QR', 'Mixed')
+  GROUP BY 1, 2
+),
+cohort_sizes AS (
+  SELECT qr_segment, COUNT(*) AS cohort_users
+  FROM user_cohort
+  WHERE qr_segment IN ('Only BharatPe QR', 'Only non-BharatPe QR', 'Mixed')
+  GROUP BY 1
+)
+SELECT
+  r.qr_segment,
+  r.period_n,
+  cs.cohort_users,
+  r.active_users,
+  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct
+FROM retention r
+JOIN cohort_sizes cs ON r.qr_segment = cs.qr_segment
+ORDER BY
+  CASE r.qr_segment
+    WHEN 'Only non-BharatPe QR' THEN 1
+    WHEN 'Mixed' THEN 2
+    ELSE 3
+  END,
+  r.period_n;", "file": "sql/upi-retention-queries.sql"}, "14": {"section": "i", "sql": "-- =============================================================================
+-- Ever redeemed = >=1 payout SUCCESS in [first_payout_day, +30d] with reward_amount > 0
+-- Never redeemed = no such txn in window. Retention M+0..M+6 on payout activity.
+
+WITH payout_txns AS (
+  SELECT
+    user_profile_id AS pid,
+    DATE(created_at) AS d,
+    DATE_TRUNC(DATE(created_at), MONTH) AS ym,
+    SAFE_CAST(reward_amount AS FLOAT64) AS reward_amt
+  FROM `bharatpe-analytics-prod.upi.upi_transactions`
+  WHERE status = 'SUCCESS'
+    AND user_profile_id IS NOT NULL AND user_profile_id != ''
+    AND IFNULL(__deleted, 'false') = 'false'
+    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)
+),
+first_payout AS (
+  SELECT pid, MIN(d) AS fd
+  FROM payout_txns
+  GROUP BY pid
+),
+reward_30d AS (
+  SELECT
+    o.pid,
+    COUNTIF(o.reward_amt > 0) AS n_redeem
+  FROM payout_txns o
+  JOIN first_payout f ON o.pid = f.pid
+  WHERE o.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)
+  GROUP BY o.pid
+),
+user_cohort AS (
+  SELECT
+    q.pid,
+    DATE_TRUNC(f.fd, MONTH) AS cohort_month,
+    CASE
+      WHEN q.n_redeem > 0 THEN 'Ever redeemed'
+      ELSE 'Never redeemed'
+    END AS reward_segment
+  FROM reward_30d q
+  JOIN first_payout f ON q.pid = f.pid
+  WHERE f.fd >= DATE('2025-08-01')
+    AND f.fd < DATE('2026-02-01')
+),
+month_active AS (
+  SELECT DISTINCT pid, ym AS activity_month
+  FROM payout_txns
+),
+retention AS (
+  SELECT
+    u.reward_segment,
+    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,
+    COUNT(DISTINCT u.pid) AS active_users
+  FROM user_cohort u
+  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month
+  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6
+  GROUP BY 1, 2
+),
+cohort_sizes AS (
+  SELECT reward_segment, COUNT(*) AS cohort_users
+  FROM user_cohort
+  GROUP BY 1
+)
+SELECT
+  r.reward_segment,
+  r.period_n,
+  cs.cohort_users,
+  r.active_users,
+  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct
+FROM retention r
+JOIN cohort_sizes cs ON r.reward_segment = cs.reward_segment
+ORDER BY
+  CASE r.reward_segment WHEN 'Never redeemed' THEN 1 ELSE 2 END,
+  r.period_n;", "file": "sql/upi-retention-queries.sql"}, "15": {"section": "j", "sql": "-- =============================================================================
+-- Earn in first 30d after first payout: user-specified type rule on ALL SUCCESS txns.
+-- Cohort anchor: first payout (subType not RECEIVE_EXTERNAL). Retention on payout M+0..M+6.
+-- See upi-schema-reference.md: type never = RECEIVE_EXTERNAL; pay-ins can satisfy type rule.
+
+WITH payout_txns AS (
+  SELECT
+    user_profile_id AS pid,
+    DATE(created_at) AS d,
+    DATE_TRUNC(DATE(created_at), MONTH) AS ym
+  FROM `bharatpe-analytics-prod.upi.upi_transactions`
+  WHERE status = 'SUCCESS'
+    AND user_profile_id IS NOT NULL AND user_profile_id != ''
+    AND IFNULL(__deleted, 'false') = 'false'
+    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)
+),
+all_succ AS (
+  SELECT
+    user_profile_id AS pid,
+    DATE(created_at) AS d,
+    type,
+    SAFE_CAST(amount AS FLOAT64) AS amt
+  FROM `bharatpe-analytics-prod.upi.upi_transactions`
+  WHERE status = 'SUCCESS'
+    AND user_profile_id IS NOT NULL AND user_profile_id != ''
+    AND IFNULL(__deleted, 'false') = 'false'
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)
+),
+first_payout AS (
+  SELECT pid, MIN(d) AS fd
+  FROM payout_txns
+  GROUP BY pid
+),
+earn_30d AS (
+  SELECT
+    f.pid,
+    COUNTIF(s.type IS DISTINCT FROM 'RECEIVE_EXTERNAL' AND s.amt > 50) AS n_earn
+  FROM first_payout f
+  JOIN all_succ s
+    ON f.pid = s.pid
+   AND s.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)
+  GROUP BY f.pid
+),
+user_cohort AS (
+  SELECT
+    e.pid,
+    DATE_TRUNC(f.fd, MONTH) AS cohort_month,
+    CASE
+      WHEN e.n_earn > 0 THEN 'Ever earned'
+      ELSE 'Never earned'
+    END AS earn_segment
+  FROM earn_30d e
+  JOIN first_payout f ON e.pid = f.pid
+  WHERE f.fd >= DATE('2025-08-01')
+    AND f.fd < DATE('2026-02-01')
+),
+month_active AS (
+  SELECT DISTINCT pid, ym AS activity_month
+  FROM payout_txns
+),
+retention AS (
+  SELECT
+    u.earn_segment,
+    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,
+    COUNT(DISTINCT u.pid) AS active_users
+  FROM user_cohort u
+  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month
+  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6
+  GROUP BY 1, 2
+),
+cohort_sizes AS (
+  SELECT earn_segment, COUNT(*) AS cohort_users
+  FROM user_cohort
+  GROUP BY 1
+)
+SELECT
+  r.earn_segment,
+  r.period_n,
+  cs.cohort_users,
+  r.active_users,
+  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct
+FROM retention r
+JOIN cohort_sizes cs ON r.earn_segment = cs.earn_segment
+ORDER BY CASE r.earn_segment WHEN 'Never earned' THEN 1 ELSE 2 END, r.period_n;
+
+-- Appendix: payout-only earn
+
+-- =============================================================================
+
+WITH payout_txns AS (
+  SELECT
+    user_profile_id AS pid,
+    DATE(created_at) AS d,
+    DATE_TRUNC(DATE(created_at), MONTH) AS ym,
+    SAFE_CAST(amount AS FLOAT64) AS amt
+  FROM `bharatpe-analytics-prod.upi.upi_transactions`
+  WHERE status = 'SUCCESS'
+    AND user_profile_id IS NOT NULL AND user_profile_id != ''
+    AND IFNULL(__deleted, 'false') = 'false'
+    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)
+),
+first_payout AS (
+  SELECT pid, MIN(d) AS fd
+  FROM payout_txns
+  GROUP BY pid
+),
+earn_30d AS (
+  SELECT
+    o.pid,
+    COUNTIF(o.amt > 50) AS n_earn
+  FROM payout_txns o
+  JOIN first_payout f ON o.pid = f.pid
+  WHERE o.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)
+  GROUP BY o.pid
+),
+user_cohort AS (
+  SELECT
+    e.pid,
+    DATE_TRUNC(f.fd, MONTH) AS cohort_month,
+    CASE
+      WHEN e.n_earn > 0 THEN 'Ever earned (payout only)'
+      ELSE 'Never earned (payout only)'
+    END AS earn_segment
+  FROM earn_30d e
+  JOIN first_payout f ON e.pid = f.pid
+  WHERE f.fd >= DATE('2025-08-01')
+    AND f.fd < DATE('2026-02-01')
+),
+month_active AS (
+  SELECT DISTINCT pid, ym AS activity_month
+  FROM payout_txns
+),
+retention AS (
+  SELECT
+    u.earn_segment,
+    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,
+    COUNT(DISTINCT u.pid) AS active_users
+  FROM user_cohort u
+  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month
+  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6
+  GROUP BY 1, 2
+),
+cohort_sizes AS (
+  SELECT earn_segment, COUNT(*) AS cohort_users
+  FROM user_cohort
+  GROUP BY 1
+)
+SELECT
+  r.earn_segment,
+  r.period_n,
+  cs.cohort_users,
+  r.active_users,
+  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct
+FROM retention r
+JOIN cohort_sizes cs ON r.earn_segment = cs.earn_segment
+ORDER BY r.earn_segment, r.period_n;", "file": "sql/upi-retention-queries.sql"}, "16": {"section": "k", "sql": "-- =============================================================================
+-- Platform = JSON_VALUE(attributes, '$.platform') on payout SUCCESS in first 30d.
+-- Segments: Only Android | Only iOS (Ios) | Mixed (both) | Unknown (excluded from POOLED)
+-- Retention M+0..M+6 on payout activity.
+
+WITH payout_txns AS (
+  SELECT
+    user_profile_id AS pid,
+    DATE(created_at) AS d,
+    DATE_TRUNC(DATE(created_at), MONTH) AS ym,
+    JSON_VALUE(attributes, '$.platform') AS platform
+  FROM `bharatpe-analytics-prod.upi.upi_transactions`
+  WHERE status = 'SUCCESS'
+    AND user_profile_id IS NOT NULL AND user_profile_id != ''
+    AND IFNULL(__deleted, 'false') = 'false'
+    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)
+),
+first_payout AS (
+  SELECT pid, MIN(d) AS fd
+  FROM payout_txns
+  GROUP BY pid
+),
+win AS (
+  SELECT
+    o.pid,
+    o.platform
+  FROM payout_txns o
+  JOIN first_payout f ON o.pid = f.pid
+  WHERE o.d BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)
+),
+platform_agg AS (
+  SELECT
+    pid,
+    COUNTIF(platform = 'Android') AS n_android,
+    COUNTIF(platform = 'Ios') AS n_ios,
+    COUNT(*) AS n_txn
+  FROM win
+  GROUP BY pid
+),
+user_cohort AS (
+  SELECT
+    a.pid,
+    DATE_TRUNC(f.fd, MONTH) AS cohort_month,
+    CASE
+      WHEN a.n_android = a.n_txn AND a.n_txn > 0 THEN 'Only Android'
+      WHEN a.n_ios = a.n_txn AND a.n_txn > 0 THEN 'Only iOS'
+      WHEN a.n_android > 0 AND a.n_ios > 0 THEN 'Mixed (Android + iOS)'
+      ELSE 'Unknown / other platform'
+    END AS platform_segment
+  FROM platform_agg a
+  JOIN first_payout f ON a.pid = f.pid
+  WHERE f.fd >= DATE('2025-08-01')
+    AND f.fd < DATE('2026-02-01')
+),
+month_active AS (
+  SELECT DISTINCT pid, ym AS activity_month
+  FROM payout_txns
+),
+retention AS (
+  SELECT
+    u.platform_segment,
+    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,
+    COUNT(DISTINCT u.pid) AS active_users
+  FROM user_cohort u
+  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month
+  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6
+    AND u.platform_segment IN ('Only Android', 'Only iOS', 'Mixed (Android + iOS)')
+  GROUP BY 1, 2
+),
+cohort_sizes AS (
+  SELECT platform_segment, COUNT(*) AS cohort_users
+  FROM user_cohort
+  WHERE platform_segment IN ('Only Android', 'Only iOS', 'Mixed (Android + iOS)')
+  GROUP BY 1
+)
+SELECT
+  r.platform_segment,
+  r.period_n,
+  cs.cohort_users,
+  r.active_users,
+  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct
+FROM retention r
+JOIN cohort_sizes cs ON r.platform_segment = cs.platform_segment
+ORDER BY
+  CASE r.platform_segment
+    WHEN 'Only Android' THEN 1
+    WHEN 'Only iOS' THEN 2
+    ELSE 3
+  END,
+  r.period_n;", "file": "sql/upi-retention-queries.sql"}, "17": {"section": "l", "sql": "-- =============================================================================
+-- First outward row = earliest payout-direction txn per user (subType not RECEIVE_EXTERNAL).
+-- Cohort month = month of that first attempt. Segments: SUCCESS | FAILED | INITIALIZED
+--   (INITIALIZED = INITIALIZED, PENDING, AUTH_PENDING). Retention = payout SUCCESS M+0..M+6.
+
+WITH out_tx AS (
+  SELECT
+    user_profile_id AS pid,
+    DATE(created_at) AS d,
+    DATE_TRUNC(DATE(created_at), MONTH) AS ym,
+    status,
+    id,
+    created_at
+  FROM `bharatpe-analytics-prod.upi.upi_transactions`
+  WHERE user_profile_id IS NOT NULL AND user_profile_id != ''
+    AND IFNULL(__deleted, 'false') = 'false'
+    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)
+),
+first_out AS (
+  SELECT
+    pid,
+    d AS fd,
+    status AS first_status
+  FROM out_tx
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY pid ORDER BY created_at, id) = 1
+),
+user_cohort AS (
+  SELECT
+    f.pid,
+    DATE_TRUNC(f.fd, MONTH) AS cohort_month,
+    CASE
+      WHEN f.first_status = 'SUCCESS' THEN 'SUCCESS'
+      WHEN f.first_status = 'FAILED' THEN 'FAILED'
+      WHEN f.first_status IN ('INITIALIZED', 'PENDING', 'AUTH_PENDING') THEN 'INITIALIZED'
+      ELSE 'OTHER'
+    END AS status_segment
+  FROM first_out f
+  WHERE f.fd >= DATE('2025-08-01')
+    AND f.fd < DATE('2026-02-01')
+),
+payout_succ AS (
+  SELECT
+    user_profile_id AS pid,
+    DATE_TRUNC(DATE(created_at), MONTH) AS ym
+  FROM `bharatpe-analytics-prod.upi.upi_transactions`
+  WHERE status = 'SUCCESS'
+    AND user_profile_id IS NOT NULL AND user_profile_id != ''
+    AND IFNULL(__deleted, 'false') = 'false'
+    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)
+),
+month_active AS (
+  SELECT DISTINCT pid, ym AS activity_month
+  FROM payout_succ
+),
+retention AS (
+  SELECT
+    u.status_segment,
+    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,
+    COUNT(DISTINCT u.pid) AS active_users
+  FROM user_cohort u
+  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month
+  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6
+    AND u.status_segment IN ('SUCCESS', 'FAILED', 'INITIALIZED')
+  GROUP BY 1, 2
+),
+cohort_sizes AS (
+  SELECT status_segment, COUNT(*) AS cohort_users
+  FROM user_cohort
+  WHERE status_segment IN ('SUCCESS', 'FAILED', 'INITIALIZED')
+  GROUP BY 1
+)
+SELECT
+  r.status_segment,
+  r.period_n,
+  cs.cohort_users,
+  r.active_users,
+  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct
+FROM retention r
+JOIN cohort_sizes cs ON r.status_segment = cs.status_segment
+ORDER BY
+  CASE r.status_segment
+    WHEN 'SUCCESS' THEN 1
+    WHEN 'FAILED' THEN 2
+    ELSE 3
+  END,
+  r.period_n;", "file": "sql/upi-retention-queries.sql"}, "18": {"section": "m", "sql": "-- =============================================================================
+-- First 5 outward attempts per user (any status); bucket = count SUCCESS in those 5.
+-- Requires exactly 5 attempts. Cohort month = first payout SUCCESS month.
+-- Retention M+0..M+6 on payout SUCCESS activity. Buckets 0–5.
+
+WITH out_tx AS (
+  SELECT
+    user_profile_id AS pid,
+    DATE(created_at) AS d,
+    status,
+    id,
+    created_at
+  FROM `bharatpe-analytics-prod.upi.upi_transactions`
+  WHERE user_profile_id IS NOT NULL AND user_profile_id != ''
+    AND IFNULL(__deleted, 'false') = 'false'
+    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)
+),
+first5_ranked AS (
+  SELECT
+    pid,
+    status
+  FROM out_tx
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY pid ORDER BY created_at, id) <= 5
+),
+first5 AS (
+  SELECT
+    pid,
+    COUNTIF(status = 'SUCCESS') AS succ_in_first5
+  FROM first5_ranked
+  GROUP BY pid
+  HAVING COUNT(*) = 5
+),
+first_payout_succ AS (
+  SELECT
+    pid,
+    MIN(d) AS fd
+  FROM out_tx
+  WHERE status = 'SUCCESS'
+  GROUP BY pid
+),
+user_cohort AS (
+  SELECT
+    f.pid,
+    DATE_TRUNC(p.fd, MONTH) AS cohort_month,
+    CAST(f.succ_in_first5 AS INT64) AS success_bucket
+  FROM first5 f
+  JOIN first_payout_succ p ON f.pid = p.pid
+  WHERE p.fd >= DATE('2025-08-01')
+    AND p.fd < DATE('2026-02-01')
+    AND f.succ_in_first5 BETWEEN 0 AND 5
+),
+payout_succ AS (
+  SELECT
+    pid,
+    DATE_TRUNC(d, MONTH) AS ym
+  FROM out_tx
+  WHERE status = 'SUCCESS'
+),
+month_active AS (
+  SELECT DISTINCT pid, ym AS activity_month
+  FROM payout_succ
+),
+retention AS (
+  SELECT
+    u.success_bucket,
+    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,
+    COUNT(DISTINCT u.pid) AS active_users
+  FROM user_cohort u
+  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month
+  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6
+  GROUP BY 1, 2
+),
+cohort_sizes AS (
+  SELECT success_bucket, COUNT(*) AS cohort_users
+  FROM user_cohort
+  GROUP BY 1
+)
+SELECT
+  r.success_bucket,
+  r.period_n,
+  cs.cohort_users,
+  r.active_users,
+  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct
+FROM retention r
+JOIN cohort_sizes cs ON r.success_bucket = cs.success_bucket
+ORDER BY r.success_bucket DESC, r.period_n;", "file": "sql/upi-retention-queries.sql"}, "19": {"section": "n", "sql": "-- =============================================================================
+-- Linkage count = DISTINCT user_bank_accounts.id for user, linked by end of first 30d
+-- after first payout SUCCESS. Join: transactions.user_profile_id -> users.profile_id
+--   -> user_bank_accounts.user_id = users.id
+-- Segments: 1 | 2 | 3 | 4+ accounts. Retention M+0..M+6 on payout SUCCESS.
+
+WITH payout_txns AS (
+  SELECT
+    user_profile_id AS pid,
+    DATE(created_at) AS d,
+    DATE_TRUNC(DATE(created_at), MONTH) AS ym
+  FROM `bharatpe-analytics-prod.upi.upi_transactions`
+  WHERE status = 'SUCCESS'
+    AND user_profile_id IS NOT NULL AND user_profile_id != ''
+    AND IFNULL(__deleted, 'false') = 'false'
+    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)
+),
+first_payout AS (
+  SELECT pid, MIN(d) AS fd
+  FROM payout_txns
+  GROUP BY pid
+),
+linkages AS (
+  SELECT
+    u.profile_id AS pid,
+    COUNT(DISTINCT b.id) AS n_linked
+  FROM `bharatpe-analytics-prod.upi.user_bank_accounts` b
+  JOIN `bharatpe-analytics-prod.upi.users` u
+    ON b.user_id = u.id
+  JOIN first_payout f
+    ON u.profile_id = f.pid
+  WHERE IFNULL(b.__deleted, 'false') = 'false'
+    AND IFNULL(u.__deleted, 'false') = 'false'
+    AND DATE(b.created_at) <= DATE_ADD(f.fd, INTERVAL 30 DAY)
+  GROUP BY u.profile_id
+),
+user_cohort AS (
+  SELECT
+    f.pid,
+    DATE_TRUNC(f.fd, MONTH) AS cohort_month,
+    COALESCE(l.n_linked, 0) AS n_linked,
+    CASE
+      WHEN COALESCE(l.n_linked, 0) = 1 THEN '1 account'
+      WHEN COALESCE(l.n_linked, 0) = 2 THEN '2 accounts'
+      WHEN COALESCE(l.n_linked, 0) = 3 THEN '3 accounts'
+      WHEN COALESCE(l.n_linked, 0) >= 4 THEN '4+ accounts'
+      ELSE '0 accounts'
+    END AS linkage_segment
+  FROM first_payout f
+  LEFT JOIN linkages l ON f.pid = l.pid
+  WHERE f.fd >= DATE('2025-08-01')
+    AND f.fd < DATE('2026-02-01')
+),
+month_active AS (
+  SELECT DISTINCT pid, ym AS activity_month
+  FROM payout_txns
+),
+retention AS (
+  SELECT
+    u.linkage_segment,
+    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,
+    COUNT(DISTINCT u.pid) AS active_users
+  FROM user_cohort u
+  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month
+  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6
+    AND u.linkage_segment IN ('1 account', '2 accounts', '3 accounts', '4+ accounts')
+  GROUP BY 1, 2
+),
+cohort_sizes AS (
+  SELECT linkage_segment, COUNT(*) AS cohort_users, ROUND(AVG(n_linked), 2) AS mean_linked
+  FROM user_cohort
+  WHERE linkage_segment IN ('1 account', '2 accounts', '3 accounts', '4+ accounts')
+  GROUP BY 1
+)
+SELECT
+  r.linkage_segment,
+  r.period_n,
+  cs.cohort_users,
+  cs.mean_linked,
+  r.active_users,
+  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct
+FROM retention r
+JOIN cohort_sizes cs ON r.linkage_segment = cs.linkage_segment
+ORDER BY cs.mean_linked, r.period_n;", "file": "sql/upi-retention-queries.sql"}, "21": {"section": "o", "sql": "-- =============================================================================
+-- Dominant account_type = type with most linked account rows by end of first 30d
+-- after first payout SUCCESS (tie-break: account_type ASC).
+-- Segments: SAVINGS | CURRENT | CREDIT | CREDITLINE | OTHER dominant | No linked.
+-- Retention M+0..M+6 on payout SUCCESS. Pool: first-payout SUCCESS 2025-08..2026-01.
+
+WITH payout_txns AS (
+  SELECT
+    user_profile_id AS pid,
+    DATE(created_at) AS d,
+    DATE_TRUNC(DATE(created_at), MONTH) AS ym
+  FROM `bharatpe-analytics-prod.upi.upi_transactions`
+  WHERE status = 'SUCCESS'
+    AND user_profile_id IS NOT NULL AND user_profile_id != ''
+    AND IFNULL(__deleted, 'false') = 'false'
+    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)
+),
+first_payout AS (
+  SELECT pid, MIN(d) AS fd
+  FROM payout_txns
+  GROUP BY pid
+),
+linked AS (
+  SELECT
+    u.profile_id AS pid,
+    COALESCE(b.account_type, 'UNKNOWN') AS account_type
+  FROM `bharatpe-analytics-prod.upi.user_bank_accounts` b
+  JOIN `bharatpe-analytics-prod.upi.users` u
+    ON b.user_id = u.id
+  JOIN first_payout f
+    ON u.profile_id = f.pid
+  WHERE IFNULL(b.__deleted, 'false') = 'false'
+    AND IFNULL(u.__deleted, 'false') = 'false'
+    AND DATE(b.created_at) <= DATE_ADD(f.fd, INTERVAL 30 DAY)
+),
+type_counts AS (
+  SELECT pid, account_type, COUNT(*) AS n
+  FROM linked
+  GROUP BY 1, 2
+),
+dominant AS (
+  SELECT pid, account_type AS dominant_account_type
+  FROM type_counts
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY pid ORDER BY n DESC, account_type) = 1
+),
+user_cohort AS (
+  SELECT
+    f.pid,
+    DATE_TRUNC(f.fd, MONTH) AS cohort_month,
+    CASE
+      WHEN d.dominant_account_type IN ('SAVINGS', 'CURRENT', 'CREDIT', 'CREDITLINE')
+        THEN d.dominant_account_type
+      WHEN d.pid IS NULL THEN 'No linked account (30d)'
+      ELSE 'OTHER dominant'
+    END AS dominant_type
+  FROM first_payout f
+  LEFT JOIN dominant d ON f.pid = d.pid
+  WHERE f.fd >= DATE('2025-08-01')
+    AND f.fd < DATE('2026-02-01')
+),
+month_active AS (
+  SELECT DISTINCT pid, ym AS activity_month
+  FROM payout_txns
+),
+retention AS (
+  SELECT
+    u.dominant_type,
+    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,
+    COUNT(DISTINCT u.pid) AS active_users
+  FROM user_cohort u
+  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month
+  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6
+  GROUP BY 1, 2
+),
+cohort_sizes AS (
+  SELECT dominant_type, COUNT(*) AS cohort_users
+  FROM user_cohort
+  GROUP BY 1
+)
+SELECT
+  r.dominant_type,
+  r.period_n,
+  cs.cohort_users,
+  r.active_users,
+  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct
+FROM retention r
+JOIN cohort_sizes cs ON r.dominant_type = cs.dominant_type
+ORDER BY cs.cohort_users DESC, r.period_n;
+
+-- Appendix: exclusive single type
+
+-- =============================================================================
+-- Users with exactly one distinct account_type among linked rows in window.
+-- \"Mixed account types\" = 2+ distinct types. Retention M+0..M+6.
+
+WITH payout_txns AS (
+  SELECT
+    user_profile_id AS pid,
+    DATE(created_at) AS d,
+    DATE_TRUNC(DATE(created_at), MONTH) AS ym
+  FROM `bharatpe-analytics-prod.upi.upi_transactions`
+  WHERE status = 'SUCCESS'
+    AND user_profile_id IS NOT NULL AND user_profile_id != ''
+    AND IFNULL(__deleted, 'false') = 'false'
+    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)
+),
+first_payout AS (
+  SELECT pid, MIN(d) AS fd
+  FROM payout_txns
+  GROUP BY pid
+),
+linked AS (
+  SELECT
+    u.profile_id AS pid,
+    COALESCE(b.account_type, 'UNKNOWN') AS account_type
+  FROM `bharatpe-analytics-prod.upi.user_bank_accounts` b
+  JOIN `bharatpe-analytics-prod.upi.users` u
+    ON b.user_id = u.id
+  JOIN first_payout f
+    ON u.profile_id = f.pid
+  WHERE IFNULL(b.__deleted, 'false') = 'false'
+    AND IFNULL(u.__deleted, 'false') = 'false'
+    AND DATE(b.created_at) <= DATE_ADD(f.fd, INTERVAL 30 DAY)
+),
+type_counts AS (
+  SELECT pid, account_type, COUNT(*) AS n
+  FROM linked
+  GROUP BY 1, 2
+),
+user_agg AS (
+  SELECT pid, COUNT(DISTINCT account_type) AS n_distinct_types
+  FROM type_counts
+  GROUP BY pid
+),
+only_type AS (
+  SELECT t.pid, t.account_type
+  FROM type_counts t
+  JOIN user_agg u ON t.pid = u.pid AND u.n_distinct_types = 1
+),
+mixed AS (
+  SELECT pid FROM user_agg WHERE n_distinct_types >= 2
+),
+user_cohort AS (
+  SELECT
+    f.pid,
+    DATE_TRUNC(f.fd, MONTH) AS cohort_month,
+    CASE
+      WHEN m.pid IS NOT NULL THEN 'Mixed account types'
+      WHEN o.account_type = 'SAVINGS' THEN 'SAVINGS only'
+      WHEN o.account_type = 'CURRENT' THEN 'CURRENT only'
+      WHEN o.pid IS NOT NULL THEN 'Other type only'
+      ELSE 'No linked account (30d)'
+    END AS account_type_segment
+  FROM first_payout f
+  LEFT JOIN only_type o ON f.pid = o.pid
+  LEFT JOIN mixed m ON f.pid = m.pid
+  WHERE f.fd >= DATE('2025-08-01')
+    AND f.fd < DATE('2026-02-01')
+),
+month_active AS (
+  SELECT DISTINCT pid, ym AS activity_month
+  FROM payout_txns
+),
+retention AS (
+  SELECT
+    u.account_type_segment,
+    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,
+    COUNT(DISTINCT u.pid) AS active_users
+  FROM user_cohort u
+  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month
+  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6
+    AND u.account_type_segment IN (
+      'SAVINGS only', 'CURRENT only', 'Mixed account types', 'Other type only'
+    )
+  GROUP BY 1, 2
+),
+cohort_sizes AS (
+  SELECT account_type_segment, COUNT(*) AS cohort_users
+  FROM user_cohort
+  WHERE account_type_segment IN (
+    'SAVINGS only', 'CURRENT only', 'Mixed account types', 'Other type only'
+  )
+  GROUP BY 1
+)
+SELECT
+  r.account_type_segment,
+  r.period_n,
+  cs.cohort_users,
+  r.active_users,
+  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct
+FROM retention r
+JOIN cohort_sizes cs ON r.account_type_segment = cs.account_type_segment
+ORDER BY cs.cohort_users DESC, r.period_n;", "file": "sql/upi-retention-queries.sql"}, "20": {"section": "p", "sql": "-- (p) UPI wallet count on device — POOLED
+-- Segments: Single UPI app | 2-4 UPI apps | 5+ UPI apps
+-- -----------------------------------------------------------------------------
+
+WITH payout_txns AS (
+  SELECT
+    user_profile_id AS pid,
+    DATE(created_at) AS d,
+    DATE_TRUNC(DATE(created_at), MONTH) AS ym
+  FROM `bharatpe-analytics-prod.upi.upi_transactions`
+  WHERE status = 'SUCCESS'
+    AND user_profile_id IS NOT NULL AND user_profile_id != ''
+    AND IFNULL(__deleted, 'false') = 'false'
+    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)
+),
+user_first AS (
+  SELECT
+    pid,
+    DATE_TRUNC(MIN(d), MONTH) AS cohort_month,
+    MIN(d) AS fd
+  FROM payout_txns
+  GROUP BY pid
+),
+psp AS (
+  SELECT
+    customerId,
+    appDetails,
+    ROW_NUMBER() OVER (PARTITION BY customerId ORDER BY updatedAt DESC) AS rn
+  FROM `bharatpe-analytics-prod.bharatpe_mongo_data.consumer_psp`
+  WHERE IFNULL(__deleted, 'false') = 'false'
+    AND appDetails IS NOT NULL AND appDetails != ''
+    AND DATE(createdAt) >= DATE('2024-01-01')
+),
+user_base AS (
+  SELECT
+    f.pid,
+    f.cohort_month,
+    p.appDetails
+  FROM user_first f
+  JOIN `bharatpe-analytics-prod.upi.users` u
+    ON f.pid = u.profile_id
+   AND IFNULL(u.__deleted, 'false') = 'false'
+  INNER JOIN psp p
+    ON CAST(u.client_reference_id AS INT64) = p.customerId
+   AND p.rn = 1
+  WHERE f.fd >= DATE('2025-08-01')
+    AND f.fd < DATE('2026-02-01')
+),
+apps AS (
+  SELECT
+    b.pid,
+    LOWER(TRIM(COALESCE(
+      JSON_VALUE(elem, '$.name'),
+      TRIM(JSON_VALUE(elem, '$'), '\"')
+    ))) AS app_name
+  FROM user_base b,
+  UNNEST(JSON_QUERY_ARRAY(b.appDetails)) AS elem
+),
+upi_brand AS (
+  SELECT DISTINCT
+    pid,
+    CASE
+      WHEN app_name IN ('paytm', 'paytm payments bank') THEN 'paytm'
+      WHEN app_name = 'phonepe'
+        OR REGEXP_CONTAINS(app_name, r'^com\.phonepe') THEN 'phonepe'
+      WHEN app_name IN ('google pay', 'gpay')
+        OR REGEXP_CONTAINS(app_name, r'nbu\.paisa') THEN 'gpay'
+      WHEN app_name = 'bhim'
+        OR REGEXP_CONTAINS(app_name, r'bhim\.upi|npci\.bhim') THEN 'bhim'
+      WHEN app_name = 'cred'
+        OR REGEXP_CONTAINS(app_name, r'dreamplug') THEN 'cred'
+      WHEN app_name = 'navi'
+        OR REGEXP_CONTAINS(app_name, r'^com\.navi') THEN 'navi'
+      WHEN app_name IN ('super.money', 'supermoney', 'super money')
+        OR REGEXP_CONTAINS(app_name, r'super\.money|money\.super') THEN 'supermoney'
+      WHEN app_name = 'mobikwik'
+        OR REGEXP_CONTAINS(app_name, r'mobikwik') THEN 'mobikwik'
+      WHEN app_name = 'amazon pay' THEN 'amazonpay'
+      WHEN app_name = 'whatsapp' THEN 'whatsapp'
+      WHEN app_name = 'slice' THEN 'slice'
+      WHEN app_name = 'jupiter' THEN 'jupiter'
+      WHEN app_name = 'fi money' THEN 'fi'
+      WHEN app_name = 'freecharge' THEN 'freecharge'
+      WHEN app_name IN ('payzapp', 'hdfc payzapp') THEN 'payzapp'
+      WHEN app_name = 'yono sbi' THEN 'yono'
+      WHEN app_name = 'icici imobile' THEN 'icici'
+      WHEN app_name = 'axis pay' THEN 'axis'
+      WHEN app_name = 'kotak 811' THEN 'kotak'
+      WHEN app_name IN ('bharatpe', 'bharatpe for business') THEN 'bharatpe'
+      WHEN app_name IN (
+        'postpe', 'lazy pay', 'simpl', 'airtel thanks',
+        'jiofinance', 'jio payments bank', 'yespay', 'popclub', 'twid'
+      ) THEN 'other_wallet'
+      ELSE NULL
+    END AS upi_brand
+  FROM apps
+),
+user_upi AS (
+  SELECT
+    b.pid,
+    b.cohort_month,
+    COUNT(DISTINCT ub.upi_brand) AS upi_n
+  FROM user_base b
+  LEFT JOIN upi_brand ub ON b.pid = ub.pid
+  GROUP BY 1, 2
+),
+user_cohort AS (
+  SELECT
+    pid,
+    cohort_month,
+    CASE
+      WHEN upi_n = 1 THEN 'Single UPI app'
+      WHEN upi_n BETWEEN 2 AND 4 THEN '2-4 UPI apps'
+      WHEN upi_n >= 5 THEN '5+ UPI apps'
+      ELSE 'No core UPI wallet detected'
+    END AS upi_segment
+  FROM user_upi
+),
+month_active AS (
+  SELECT DISTINCT pid, ym AS activity_month
+  FROM payout_txns
+),
+retention AS (
+  SELECT
+    u.upi_segment,
+    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,
+    COUNT(DISTINCT u.pid) AS active_users
+  FROM user_cohort u
+  JOIN month_active m
+    ON u.pid = m.pid
+   AND m.activity_month >= u.cohort_month
+  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6
+    AND u.upi_segment IN ('Single UPI app', '2-4 UPI apps', '5+ UPI apps')
+  GROUP BY 1, 2
+),
+cohort_sizes AS (
+  SELECT upi_segment, COUNT(*) AS cohort_users
+  FROM user_cohort
+  WHERE upi_segment IN ('Single UPI app', '2-4 UPI apps', '5+ UPI apps')
+  GROUP BY 1
+)
+SELECT
+  r.upi_segment,
+  r.period_n,
+  cs.cohort_users,
+  r.active_users,
+  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct
+FROM retention r
+JOIN cohort_sizes cs ON r.upi_segment = cs.upi_segment
+ORDER BY
+  CASE r.upi_segment
+    WHEN 'Single UPI app' THEN 1
+    WHEN '2-4 UPI apps' THEN 2
+    ELSE 3
+  END,
+  r.period_n;
+
+
+-- -----------------------------------------------------------------------------
+-- (p) Installed app category flags — POOLED (Has / No per category)
+-- -----------------------------------------------------------------------------
+
+WITH payout_txns AS (
+  SELECT
+    user_profile_id AS pid,
+    DATE(created_at) AS d,
+    DATE_TRUNC(DATE(created_at), MONTH) AS ym
+  FROM `bharatpe-analytics-prod.upi.upi_transactions`
+  WHERE status = 'SUCCESS'
+    AND user_profile_id IS NOT NULL AND user_profile_id != ''
+    AND IFNULL(__deleted, 'false') = 'false'
+    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)
+),
+user_first AS (
+  SELECT
+    pid,
+    DATE_TRUNC(MIN(d), MONTH) AS cohort_month,
+    MIN(d) AS fd
+  FROM payout_txns
+  GROUP BY pid
+),
+psp AS (
+  SELECT
+    customerId,
+    appDetails,
+    ROW_NUMBER() OVER (PARTITION BY customerId ORDER BY updatedAt DESC) AS rn
+  FROM `bharatpe-analytics-prod.bharatpe_mongo_data.consumer_psp`
+  WHERE IFNULL(__deleted, 'false') = 'false'
+    AND appDetails IS NOT NULL AND appDetails != ''
+    AND DATE(createdAt) >= DATE('2024-01-01')
+),
+user_base AS (
+  SELECT
+    f.pid,
+    f.cohort_month,
+    p.appDetails
+  FROM user_first f
+  JOIN `bharatpe-analytics-prod.upi.users` u
+    ON f.pid = u.profile_id
+   AND IFNULL(u.__deleted, 'false') = 'false'
+  INNER JOIN psp p
+    ON CAST(u.client_reference_id AS INT64) = p.customerId
+   AND p.rn = 1
+  WHERE f.fd >= DATE('2025-08-01')
+    AND f.fd < DATE('2026-02-01')
+),
+apps AS (
+  SELECT
+    b.pid,
+    LOWER(TRIM(COALESCE(
+      JSON_VALUE(elem, '$.name'),
+      TRIM(JSON_VALUE(elem, '$'), '\"')
+    ))) AS app_name
+  FROM user_base b,
+  UNNEST(JSON_QUERY_ARRAY(b.appDetails)) AS elem
+),
+flags AS (
+  SELECT
+    b.pid,
+    b.cohort_month,
+    LOGICAL_OR(REGEXP_CONTAINS(
+      a.app_name,
+      r'^(flipkart|amazon|myntra|meesho|ajio|nykaa)$'
+    )) AS has_ecommerce,
+    LOGICAL_OR(REGEXP_CONTAINS(
+      a.app_name,
+      r'^(blinkit|zepto|bigbasket|jiomart)$'
+    )) AS has_qcommerce,
+    LOGICAL_OR(REGEXP_CONTAINS(
+      a.app_name,
+      r'^(uber|ola|rapido|makemytrip|goibibo|irctc rail connect|redbus|ixigo|yatra)$'
+    )) AS has_travel,
+    LOGICAL_OR(REGEXP_CONTAINS(
+      a.app_name,
+      r'^(swiggy|zomato)$'
+    )) AS has_food
+  FROM user_base b
+  LEFT JOIN apps a ON b.pid = a.pid
+  GROUP BY 1, 2
+),
+segments AS (
+  SELECT pid, cohort_month, 'Has ecommerce app' AS app_segment
+  FROM flags WHERE has_ecommerce
+  UNION ALL
+  SELECT pid, cohort_month, 'No ecommerce app'
+  FROM flags WHERE NOT has_ecommerce
+  UNION ALL
+  SELECT pid, cohort_month, 'Has quick-commerce app'
+  FROM flags WHERE has_qcommerce
+  UNION ALL
+  SELECT pid, cohort_month, 'No quick-commerce app'
+  FROM flags WHERE NOT has_qcommerce
+  UNION ALL
+  SELECT pid, cohort_month, 'Has travel app'
+  FROM flags WHERE has_travel
+  UNION ALL
+  SELECT pid, cohort_month, 'No travel app'
+  FROM flags WHERE NOT has_travel
+  UNION ALL
+  SELECT pid, cohort_month, 'Has food-delivery app'
+  FROM flags WHERE has_food
+  UNION ALL
+  SELECT pid, cohort_month, 'No food-delivery app'
+  FROM flags WHERE NOT has_food
+),
+month_active AS (
+  SELECT DISTINCT pid, ym AS activity_month
+  FROM payout_txns
+),
+retention AS (
+  SELECT
+    s.app_segment,
+    DATE_DIFF(m.activity_month, s.cohort_month, MONTH) AS period_n,
+    COUNT(DISTINCT s.pid) AS active_users
+  FROM segments s
+  JOIN month_active m
+    ON s.pid = m.pid
+   AND m.activity_month >= s.cohort_month
+  WHERE DATE_DIFF(m.activity_month, s.cohort_month, MONTH) BETWEEN 0 AND 6
+  GROUP BY 1, 2
+),
+cohort_sizes AS (
+  SELECT app_segment, COUNT(DISTINCT pid) AS cohort_users
+  FROM segments
+  GROUP BY 1
+)
+SELECT
+  r.app_segment,
+  r.period_n,
+  cs.cohort_users,
+  r.active_users,
+  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct
+FROM retention r
+JOIN cohort_sizes cs ON r.app_segment = cs.app_segment
+ORDER BY r.app_segment, r.period_n;
+
+-- Appendix: category flags (Has / No per lifestyle app)
+
+-- (p) Installed app category flags — POOLED (Has / No per category)
+-- -----------------------------------------------------------------------------
+
+WITH payout_txns AS (
+  SELECT
+    user_profile_id AS pid,
+    DATE(created_at) AS d,
+    DATE_TRUNC(DATE(created_at), MONTH) AS ym
+  FROM `bharatpe-analytics-prod.upi.upi_transactions`
+  WHERE status = 'SUCCESS'
+    AND user_profile_id IS NOT NULL AND user_profile_id != ''
+    AND IFNULL(__deleted, 'false') = 'false'
+    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)
+),
+user_first AS (
+  SELECT
+    pid,
+    DATE_TRUNC(MIN(d), MONTH) AS cohort_month,
+    MIN(d) AS fd
+  FROM payout_txns
+  GROUP BY pid
+),
+psp AS (
+  SELECT
+    customerId,
+    appDetails,
+    ROW_NUMBER() OVER (PARTITION BY customerId ORDER BY updatedAt DESC) AS rn
+  FROM `bharatpe-analytics-prod.bharatpe_mongo_data.consumer_psp`
+  WHERE IFNULL(__deleted, 'false') = 'false'
+    AND appDetails IS NOT NULL AND appDetails != ''
+    AND DATE(createdAt) >= DATE('2024-01-01')
+),
+user_base AS (
+  SELECT
+    f.pid,
+    f.cohort_month,
+    p.appDetails
+  FROM user_first f
+  JOIN `bharatpe-analytics-prod.upi.users` u
+    ON f.pid = u.profile_id
+   AND IFNULL(u.__deleted, 'false') = 'false'
+  INNER JOIN psp p
+    ON CAST(u.client_reference_id AS INT64) = p.customerId
+   AND p.rn = 1
+  WHERE f.fd >= DATE('2025-08-01')
+    AND f.fd < DATE('2026-02-01')
+),
+apps AS (
+  SELECT
+    b.pid,
+    LOWER(TRIM(COALESCE(
+      JSON_VALUE(elem, '$.name'),
+      TRIM(JSON_VALUE(elem, '$'), '\"')
+    ))) AS app_name
+  FROM user_base b,
+  UNNEST(JSON_QUERY_ARRAY(b.appDetails)) AS elem
+),
+flags AS (
+  SELECT
+    b.pid,
+    b.cohort_month,
+    LOGICAL_OR(REGEXP_CONTAINS(
+      a.app_name,
+      r'^(flipkart|amazon|myntra|meesho|ajio|nykaa)$'
+    )) AS has_ecommerce,
+    LOGICAL_OR(REGEXP_CONTAINS(
+      a.app_name,
+      r'^(blinkit|zepto|bigbasket|jiomart)$'
+    )) AS has_qcommerce,
+    LOGICAL_OR(REGEXP_CONTAINS(
+      a.app_name,
+      r'^(uber|ola|rapido|makemytrip|goibibo|irctc rail connect|redbus|ixigo|yatra)$'
+    )) AS has_travel,
+    LOGICAL_OR(REGEXP_CONTAINS(
+      a.app_name,
+      r'^(swiggy|zomato)$'
+    )) AS has_food
+  FROM user_base b
+  LEFT JOIN apps a ON b.pid = a.pid
+  GROUP BY 1, 2
+),
+segments AS (
+  SELECT pid, cohort_month, 'Has ecommerce app' AS app_segment
+  FROM flags WHERE has_ecommerce
+  UNION ALL
+  SELECT pid, cohort_month, 'No ecommerce app'
+  FROM flags WHERE NOT has_ecommerce
+  UNION ALL
+  SELECT pid, cohort_month, 'Has quick-commerce app'
+  FROM flags WHERE has_qcommerce
+  UNION ALL
+  SELECT pid, cohort_month, 'No quick-commerce app'
+  FROM flags WHERE NOT has_qcommerce
+  UNION ALL
+  SELECT pid, cohort_month, 'Has travel app'
+  FROM flags WHERE has_travel
+  UNION ALL
+  SELECT pid, cohort_month, 'No travel app'
+  FROM flags WHERE NOT has_travel
+  UNION ALL
+  SELECT pid, cohort_month, 'Has food-delivery app'
+  FROM flags WHERE has_food
+  UNION ALL
+  SELECT pid, cohort_month, 'No food-delivery app'
+  FROM flags WHERE NOT has_food
+),
+month_active AS (
+  SELECT DISTINCT pid, ym AS activity_month
+  FROM payout_txns
+),
+retention AS (
+  SELECT
+    s.app_segment,
+    DATE_DIFF(m.activity_month, s.cohort_month, MONTH) AS period_n,
+    COUNT(DISTINCT s.pid) AS active_users
+  FROM segments s
+  JOIN month_active m
+    ON s.pid = m.pid
+   AND m.activity_month >= s.cohort_month
+  WHERE DATE_DIFF(m.activity_month, s.cohort_month, MONTH) BETWEEN 0 AND 6
+  GROUP BY 1, 2
+),
+cohort_sizes AS (
+  SELECT app_segment, COUNT(DISTINCT pid) AS cohort_users
+  FROM segments
+  GROUP BY 1
+)
+SELECT
+  r.app_segment,
+  r.period_n,
+  cs.cohort_users,
+  r.active_users,
+  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct
+FROM retention r
+JOIN cohort_sizes cs ON r.app_segment = cs.app_segment
+ORDER BY r.app_segment, r.period_n;", "file": "sql/upi-retention-queries.sql"}}</script>
   <script>
     (function () {
       const slides = Array.from(document.querySelectorAll(".slide"));
@@ -2708,7 +4617,7 @@
       });
 
 
-      // SQL source modal (slides 6–21)
+      // SQL source modal (slides 6–22)
       const sqlSourcesEl = document.getElementById("sql-sources-data");
       const sqlSources = sqlSourcesEl ? JSON.parse(sqlSourcesEl.textContent) : {};
       const sqlModal = document.getElementById("sql-modal");

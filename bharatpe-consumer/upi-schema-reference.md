@@ -1,13 +1,13 @@
-# UPI warehouse schema reference (3 tables)
+# UPI warehouse schema reference (`upi` + installed-apps join)
 
 **Project:** `bharatpe-analytics-prod`  
-**Dataset:** `upi`  
+**Primary dataset:** `upi` · **Installed apps:** `bharatpe_mongo_data.consumer_psp`  
 **Location:** `asia-south1`  
-**Documented:** 2026-05-25 via BigQuery MCP (`get_table_info`, profiling on all three tables below)
+**Documented:** 2026-05-25 via BigQuery MCP (`get_table_info`, profiling)
 
 **Note:** `payment_instrument` is not a warehouse table; use **`user_bank_accounts`** as the linked bank-account / payment-instrument dimension.
 
-This file captures column-level understanding for retention and cohort work. **Scope is limited to the three tables below** — no other `upi.*` tables are documented here.
+This file captures column-level understanding for retention and cohort work. **Core scope:** three `upi.*` tables below. **Lens (p):** join `consumer_psp` for device installed-app segmentation (see [Table 4](#table-4-bharatpe_mongo_dataconsumer_psp-installed-apps)).
 
 ---
 
@@ -294,13 +294,75 @@ Use `payee_bank_account_id` only when the analysis needs the counterparty accoun
 
 ---
 
-## Cross-table relationships (only these three)
+## Table 4: `bharatpe_mongo_data.consumer_psp` (installed apps)
+
+**Full ID:** `bharatpe-analytics-prod.bharatpe_mongo_data.consumer_psp`  
+**Role:** Latest device snapshot of installed apps per consumer (`appDetails` JSON array). Used for retention lens **(p)** — UPI wallet count and lifestyle app flags.  
+**Partition:** **Required** filter on `DATE(createdAt)` in every query (e.g. `>= '2024-01-01'`).
+
+### Join to UPI users
+
+```sql
+FROM `bharatpe-analytics-prod.upi.users` u
+JOIN (
+  SELECT
+    customerId,
+    appDetails,
+    updatedAt,
+    ROW_NUMBER() OVER (PARTITION BY customerId ORDER BY updatedAt DESC) AS rn
+  FROM `bharatpe-analytics-prod.bharatpe_mongo_data.consumer_psp`
+  WHERE IFNULL(__deleted, 'false') = 'false'
+    AND appDetails IS NOT NULL AND appDetails != ''
+    AND DATE(createdAt) >= DATE('2024-01-01')
+) psp
+  ON CAST(u.client_reference_id AS INT64) = psp.customerId
+ AND psp.rn = 1
+WHERE IFNULL(u.__deleted, 'false') = 'false'
+```
+
+| Column | Type | Description / usage |
+|--------|------|---------------------|
+| `customerId` | INTEGER | Consumer id; join to `CAST(upi.users.client_reference_id AS INT64)` |
+| `appDetails` | STRING | JSON array of installed app **display names** (sometimes Android package ids) |
+| `createdAt` | TIMESTAMP | Row create time — **partition key** |
+| `updatedAt` | TIMESTAMP | Use for latest snapshot per `customerId` |
+| `size` | INTEGER | Count of apps in snapshot (metadata) |
+| `__deleted` | STRING | Soft delete; filter `IFNULL(__deleted, 'false') = 'false'` |
+
+### Parsing `appDetails`
+
+Each element is either a plain string (`"PhonePe"`) or an object with a `name` field:
+
+```sql
+UNNEST(JSON_QUERY_ARRAY(appDetails)) AS elem
+-- display name:
+LOWER(TRIM(COALESCE(JSON_VALUE(elem, '$.name'), TRIM(JSON_VALUE(elem, '$'), '"'))))
+```
+
+### Segmentation rules (lens p)
+
+| Segment type | Rule |
+|--------------|------|
+| **UPI wallet count** | `COUNT(DISTINCT upi_brand)` from mapped core wallets (Paytm, PhonePe, GPay, BHIM, CRED, Navi, super.money, …). Exclude BNPL/lending/broking apps and merge BharatPe + BharatPe for Business → one brand. Buckets: Single (1) · 2–4 · 5+. |
+| **Ecommerce flag** | Flipkart, Amazon, Myntra, Meesho, Ajio, Nykaa |
+| **Quick-commerce** | Blinkit, Zepto, BigBasket, JioMart |
+| **Travel** | Uber, Ola, Rapido, MakeMyTrip, Goibibo, IRCTC Rail Connect, Redbus, ixigo, Yatra |
+| **Food delivery** | Swiggy, Zomato |
+
+**Coverage (Aug 2025–Jan 2026 first-payout cohort):** ~**646k** users with PSP match (**~90%**); ~**74k** without — analyse PSP users separately (do not mix “no snapshot” into install buckets).
+
+**Queries:** [`sql/upi-retention-queries.sql`](sql/upi-retention-queries.sql) section **(p)**; results in [`analyses/upi-retention-results.md`](analyses/upi-retention-results.md) section **(p)**.
+
+---
+
+## Cross-table relationships
 
 ```mermaid
 erDiagram
   users ||--o{ user_bank_accounts : "id = user_id"
   user_bank_accounts ||--o{ upi_transactions : "id = payer_bank_account_id"
   users ||--o{ upi_transactions : "profile_id = user_profile_id"
+  users ||--o| consumer_psp : "client_reference_id = customerId"
 ```
 
 | From | To | Key | Notes |
@@ -309,6 +371,7 @@ erDiagram
 | `users` | `user_bank_accounts` | `users.id` = `user_bank_accounts.user_id` | User → linked accounts (1:N) |
 | `upi_transactions` | `user_bank_accounts` | `payer_bank_account_id` = `id` | Outward txn funding account |
 | `upi_transactions` | `user_bank_accounts` | `payee_bank_account_id` = `id` | Optional; payee / receive side |
+| `users` | `consumer_psp` | `CAST(client_reference_id AS INT64)` = `customerId` | Latest row per customer via `updatedAt` |
 
 ---
 
@@ -332,7 +395,8 @@ When you give instructions for retention-by-transaction-bucket:
 | `upi_transactions` | OK | OK |
 | `users` | OK | OK |
 | `user_bank_accounts` | OK | OK |
+| `consumer_psp` | OK | OK (lens p) |
 
 ---
 
-*Source queries run against `bharatpe-analytics-prod.upi` only. No other datasets or `upi` sibling tables were scanned per scope.*
+*Core retention SQL uses `bharatpe-analytics-prod.upi`. Installed-app lens **(p)** additionally uses `bharatpe_mongo_data.consumer_psp`.*

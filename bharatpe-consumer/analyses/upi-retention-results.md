@@ -1,11 +1,11 @@
 # UPI retention — results
 
 **Project:** `bharatpe-analytics-prod` · **Dataset:** `upi`  
-**Run date:** 2026-05-20 (BigQuery MCP)  
+**Run date:** 2026-05-20 (BigQuery MCP; section **(p)** installed-apps lens added)  
 **Queries:** [`../sql/upi-retention-queries.sql`](../sql/upi-retention-queries.sql)  
 **Schema:** [`../upi-schema-reference.md`](../upi-schema-reference.md)
 
-**Scope:** Retention outcomes use **payout** activity (`subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'`). **(e)** pay-in count; **(f)** exclusive subType rails; **(g)** dominant MCC; **(h)** BharatPe QR; **(i)** Zillion redemption; **(j)** Zillion earn; **(k)** platform; **(l)** first outward status; **(m)** first-5 SUCCESS count; **(n)** linked **bank-account** count; **(o)** linked **account type** (`user_bank_accounts.account_type` × `users` × `upi_transactions`).
+**Scope:** Retention outcomes use **payout** activity (`subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'`). **(e)** pay-in count; **(f)** exclusive subType rails; **(g)** dominant MCC; **(h)** BharatPe QR; **(i)** Zillion redemption; **(j)** Zillion earn; **(k)** platform; **(l)** first outward status; **(m)** first-5 SUCCESS count; **(n)** linked **bank-account** count; **(o)** linked **account type**; **(p)** installed apps (`consumer_psp.appDetails` × `users.client_reference_id`).
 
 ---
 
@@ -440,7 +440,7 @@ Matches [`retention_by_top20_mcc.sql`](../sql/retention_by_top20_mcc.sql) and de
 
 | MCC | Label (ISO summary) | Cohort users | M+1 | M+2 | M+3 | M+6 |
 |-----|---------------------|-------------:|----:|----:|----:|----:|
-| **0000** | Generic / unclassified | 443,567 | **26.9** | 16.1 | 12.4 | 5.2 |
+| **0000** | P2P / unclassified | 443,567 | **26.9** | 16.1 | 12.4 | 5.2 |
 | **5411** | Grocery / supermarkets | 103,390 | **34.8** | 19.3 | 14.5 | 5.8 |
 | **OTHER** | Outside global top 20 | 53,111 | **20.2** | 12.8 | 10.2 | 4.0 |
 | **4814** | Telecom | 32,099 | **35.2** | 22.2 | 17.5 | 6.2 |
@@ -465,7 +465,7 @@ Matches [`retention_by_top20_mcc.sql`](../sql/retention_by_top20_mcc.sql) and de
 **Readout:**
 
 - **M+1 spread ~15% → ~47%** across dominant MCCs; **4814 (telecom)** and **5411 (grocery)** are large segments with **~35% M+1**.
-- **0000** is **~62%** of the pool (443k users) at **~27% M+1** — default/unclassified merchant bucket; interpret with product context.
+- **0000 (P2P)** is **~62%** of the pool (443k users) at **~27% M+1** — default/unclassified merchant bucket; interpret with product context.
 - **OTHER** (~7% of users): dominant MCC not in global top 20 → **~20% M+1**.
 - **5412** shows the highest M+1 (**~47%**) but **&lt;0.2%** of users — directional only at this size.
 - Long-tail MCCs (e.g. **7407**, **5732**) sit **~15% M+1** pooled.
@@ -476,7 +476,7 @@ Matches [`retention_by_top20_mcc.sql`](../sql/retention_by_top20_mcc.sql) and de
 
 | MCC | Label | Cohort users | M+1 | M+3 | M+6 |
 |-----|-------|-------------:|----:|----:|----:|
-| **0000** | Generic / unclassified | 87,618 | **20.3** | 12.1 | 6.0 |
+| **0000** | P2P / unclassified | 87,618 | **20.3** | 12.1 | 6.0 |
 | **5411** | Grocery | 18,045 | **30.1** | 16.4 | 6.9 |
 | **OTHER** | Outside top 20 | 8,394 | **17.2** | 10.1 | 5.4 |
 | **4814** | Telecom | 4,107 | **36.3** | 21.9 | 11.7 |
@@ -1019,9 +1019,82 @@ Users with exactly **one** distinct `account_type` among linked accounts; **Mixe
 
 ---
 
+## (p) Installed-app lens (`consumer_psp.appDetails` × `users`)
+
+### Definition
+
+| Term | Rule |
+|------|------|
+| **PSP snapshot** | Latest `consumer_psp` row per `customerId` (`ORDER BY updatedAt DESC`) with non-empty `appDetails` |
+| **Join** | `CAST(upi.users.client_reference_id AS INT64) = consumer_psp.customerId` |
+| **Cohort** | First **payout SUCCESS** date **2025-08-01 → 2026-01-31** (same ~720k pool as **(b)–(o)**) |
+| **PSP coverage** | **646,496** users with a PSP snapshot (**89.7%** of cohort); **74,417** with **no** matching PSP row |
+| **Partition** | `DATE(consumer_psp.createdAt) >= '2024-01-01'` (required on `consumer_psp`) |
+| **Retention M+k** | % with ≥1 payout SUCCESS in calendar month `cohort_month + k` |
+
+`appDetails` is a JSON array of installed app **display names** (sometimes package IDs). Analysis uses **display-name** matching unless noted.
+
+**Important:** Retention tables below are for users **with** a PSP snapshot only. Do **not** pool “No install snapshot” users into UPI-count buckets — they lack `appDetails` and would confound M+1 (~43% if mis-mixed vs ~28% PSP cohort average).
+
+### UPI wallet count (distinct **core** brands)
+
+Count **distinct** mapped brands among major UPI / wallet apps (Paytm, PhonePe, GPay, BHIM, CRED, Navi, super.money, MobiKwik, Amazon Pay, WhatsApp, bank wallets, BharatPe, etc.). **Excluded** from the count: lending/BNPL (KreditBee, Moneyview, …), investing (Groww, Upstox, …), Truecaller, and duplicate BharatPe variants (consumer + business → one **bharatpe** brand).
+
+| UPI wallets on device | Cohort users | M+0 | M+1 | M+2 | M+3 | M+4 | M+5 | M+6 |
+|----------------------|-------------:|----:|----:|----:|----:|----:|----:|----:|
+| **Single UPI app** | 493 | 100 | **12.4** | 6.5 | 6.1 | 3.5 | 3.0 | 1.4 |
+| **2–4 UPI apps** | 123,406 | 100 | **21.3** | 11.4 | 8.6 | 6.8 | 4.8 | 3.2 |
+| **5+ UPI apps** | 520,559 | 100 | **29.0** | 17.4 | 13.4 | 10.8 | 7.8 | 5.5 |
+| *(No core UPI wallet detected)* | *38* | — | — | — | — | — | — | — |
+
+#### Active users (pooled) — M+1
+
+| Segment | M+1 |
+|---------|----:|
+| Single UPI app | 61 |
+| 2–4 UPI apps | 26,335 |
+| 5+ UPI apps | 151,131 |
+
+**Readout:** More **competitor UPI wallets** on the device correlates with **higher** payout retention (M+1 **~12% → ~21% → ~29%**). The **single-wallet** slice is small (**493** users) — directional only. Most PSP users (**~81%**) show **5+** distinct core UPI brands (heavy multi-app install lists are common in `appDetails`).
+
+### Lifestyle / commerce app flags (PSP users, non-exclusive)
+
+Binary flags from display-name allowlists (any match in `appDetails`).
+
+| Segment | Cohort users | M+0 | M+1 | M+2 | M+3 | M+4 | M+5 | M+6 |
+|---------|-------------:|----:|----:|----:|----:|----:|----:|----:|
+| **Has ecommerce app** | 564,207 | 100 | **28.9** | 17.3 | 13.4 | 10.8 | 7.7 | 5.4 |
+| **No ecommerce app** | 80,289 | 100 | **17.8** | 8.6 | 6.2 | 4.8 | 3.2 | 2.1 |
+| **Has quick-commerce app** | 174,735 | 100 | **36.1** | 23.6 | 18.9 | 15.7 | 11.6 | 8.2 |
+| **No quick-commerce app** | 469,761 | 100 | **24.4** | 13.5 | 10.1 | 7.9 | 5.6 | 3.8 |
+| **Has travel app** | 232,532 | 100 | **34.4** | 21.9 | 17.3 | 14.2 | 10.4 | 7.4 |
+| **No travel app** | 411,964 | 100 | **23.7** | 13.1 | 9.7 | 7.6 | 5.4 | 3.7 |
+| **Has food-delivery app** | 140,893 | 100 | **34.6** | 22.4 | 17.7 | 14.8 | 10.9 | 7.7 |
+| **No food-delivery app** | 503,603 | 100 | **25.6** | 14.5 | 11.0 | 8.7 | 6.2 | 4.3 |
+
+**Ecommerce allowlist:** Flipkart, Amazon, Myntra, Meesho, Ajio, Nykaa.  
+**Quick-commerce:** Blinkit, Zepto, BigBasket, JioMart.  
+**Travel:** Uber, Ola, Rapido, MakeMyTrip, Goibibo, IRCTC Rail Connect, Redbus, ixigo, Yatra.  
+**Food delivery:** Swiggy, Zomato.
+
+**Readout:**
+
+- **Ecommerce** installed (**~87%** of PSP cohort) vs not: M+1 **~29%** vs **~18%** — ecommerce-heavy devices align with stickier payers (likely confounded with overall app engagement).
+- **Quick-commerce** and **food-delivery** show the largest M+1 lift (**~36%** / **~35%** vs **~24–26%** without).
+- **Travel** apps: **~34%** M+1 with vs **~24%** without.
+
+### Methodology notes
+
+1. **Latest PSP row** — reflects most recent device scan, not necessarily within 30d of first payout; sensitivity analysis can filter `psp.updatedAt <= first_payout + 30d` (reduces matched users to ~318k).
+2. **Do not count package IDs as separate UPI apps** without brand mapping — inflates “5+ UPI” (raw package regex can show **>600k** users in 5+).
+3. **Do not treat BNPL / lending / broking apps as UPI competitors** — inflates wallet counts and dilutes retention spread.
+4. Users **without** `consumer_psp` match (**~74k**, **~10%**) are omitted from tables above; report separately if needed.
+
+---
+
 ## Refresh
 
-1. Run queries in [`../sql/upi-retention-queries.sql`](../sql/upi-retention-queries.sql) (sections **(a)–(o)**).
+1. Run queries in [`../sql/upi-retention-queries.sql`](../sql/upi-retention-queries.sql) (sections **(a)–(p)**).
 2. Update tables in this file with new output.
 
 ---
@@ -1046,3 +1119,5 @@ Users with exactly **one** distinct `account_type` among linked accounts; **Mixe
 | First-5 payout SUCCESS count M+k | (m) | `(m) … POOLED` and `(m) … BY cohort_month` |
 | Bank-account linkage count M+k | (n) | `(n) … POOLED` and `(n) … BY cohort_month` |
 | Linked account type (dominant / exclusive) M+k | (o) | `(o) … POOLED`, `(o) … BY cohort_month`, `(o) … exclusive POOLED` |
+| Installed UPI wallet count M+k | (p) | `(p) … UPI count POOLED` |
+| Installed app category flags M+k | (p) | `(p) … category flags POOLED` |
