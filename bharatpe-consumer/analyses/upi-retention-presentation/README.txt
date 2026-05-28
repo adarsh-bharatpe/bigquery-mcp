@@ -5,7 +5,7 @@ This folder is the only copy of the deck (no duplicate HTML elsewhere).
 
 Files
 -----
-  upi-retention-results.html   Presentation (32 navigable slides; CSS, JS, SQL all inline)
+  upi-retention-results.html   Presentation (34 navigable slides; 7 chapter intros; lens index omitted)
   assets/logos/*.svg           Competitor logos (paths: assets/logos/…)
   serve.py                     Optional local server (recommended)
   start.sh / start.bat         Launch server + browser
@@ -18,7 +18,7 @@ Run
 
 Offline: double-click upi-retention-results.html (keep assets/ beside it).
 
-Navigation: ← → Space · Home/End · lens index slide 26 · Source on slides 6–22 · Play Store 5.18–5.20 slides 23–25.
+Navigation: ← → Space · Home/End · Chapter title slides at agenda sections · Source on slides 7–23 · Play Store 25–27 (lens index omitted).
 
 SQL sources JSON (canonical): ../sql-sources.json (synced into HTML #sql-sources-data).
 
