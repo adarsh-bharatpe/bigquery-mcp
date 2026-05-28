@@ -5,7 +5,7 @@ This folder is the only copy of the deck (no duplicate HTML elsewhere).
 
 Files
 -----
-  upi-retention-results.html   Presentation (35 slides; CSS, JS, SQL all inline)
+  upi-retention-results.html   Presentation (32 navigable slides; CSS, JS, SQL all inline)
   assets/logos/*.svg           Competitor logos (paths: assets/logos/…)
   serve.py                     Optional local server (recommended)
   start.sh / start.bat         Launch server + browser

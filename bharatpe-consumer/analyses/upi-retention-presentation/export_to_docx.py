@@ -282,7 +282,7 @@ def export(html_path: Path, out_path: Path) -> None:
         italic=True,
     )
 
-    slides = soup.select("section.slide[data-slide]")
+    slides = soup.select("section.slide[data-slide]:not(.slide-omitted)")
     slides.sort(key=lambda s: int(s.get("data-slide", 0)))
 
     for slide in slides:
