@@ -3155,3 +3155,80 @@ SELECT
 FROM retention r
 JOIN cohort_sizes cs ON r.app_segment = cs.app_segment
 ORDER BY r.app_segment, r.period_n;
+
+
+-- =============================================================================
+-- (q) Retention lens — UPI Lite enabled (`upi_transactions.note`)
+-- =============================================================================
+-- UPI Lite signal: ≥1 SUCCESS txn with UPPER(note) LIKE '%UPI LITE%' in the
+-- first 30 calendar days after first payout SUCCESS (setup, topup, payment,
+-- closure, etc.). Retention M+0..M+6 on payout SUCCESS (subType not RECEIVE_EXTERNAL).
+-- Pool: first-payout SUCCESS cohort months 2025-08-01 → 2026-01-31.
+
+WITH payout_txns AS (
+  SELECT
+    user_profile_id AS pid,
+    DATE(created_at) AS d,
+    DATE_TRUNC(DATE(created_at), MONTH) AS ym
+  FROM `bharatpe-analytics-prod.upi.upi_transactions`
+  WHERE status = 'SUCCESS'
+    AND user_profile_id IS NOT NULL AND user_profile_id != ''
+    AND IFNULL(__deleted, 'false') = 'false'
+    AND subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'
+    AND DATE(created_at) >= DATE_SUB(CURRENT_DATE(), INTERVAL 16 MONTH)
+),
+first_payout AS (
+  SELECT pid, MIN(d) AS fd
+  FROM payout_txns
+  GROUP BY pid
+),
+lite_in_30d AS (
+  SELECT DISTINCT f.pid
+  FROM first_payout f
+  INNER JOIN `bharatpe-analytics-prod.upi.upi_transactions` t
+    ON t.user_profile_id = f.pid
+  WHERE t.status = 'SUCCESS'
+    AND IFNULL(t.__deleted, 'false') = 'false'
+    AND UPPER(t.note) LIKE '%UPI LITE%'
+    AND DATE(t.created_at) BETWEEN f.fd AND DATE_ADD(f.fd, INTERVAL 30 DAY)
+),
+user_cohort AS (
+  SELECT
+    f.pid,
+    DATE_TRUNC(f.fd, MONTH) AS cohort_month,
+    IF(l.pid IS NOT NULL, 'UPI Lite enabled (30d)', 'Not enabled (30d)') AS lite_segment
+  FROM first_payout f
+  LEFT JOIN lite_in_30d l ON f.pid = l.pid
+  WHERE f.fd >= DATE('2025-08-01')
+    AND f.fd < DATE('2026-02-01')
+),
+month_active AS (
+  SELECT DISTINCT pid, ym AS activity_month
+  FROM payout_txns
+),
+retention AS (
+  SELECT
+    u.lite_segment,
+    DATE_DIFF(m.activity_month, u.cohort_month, MONTH) AS period_n,
+    COUNT(DISTINCT u.pid) AS active_users
+  FROM user_cohort u
+  JOIN month_active m ON u.pid = m.pid AND m.activity_month >= u.cohort_month
+  WHERE DATE_DIFF(m.activity_month, u.cohort_month, MONTH) BETWEEN 0 AND 6
+  GROUP BY 1, 2
+),
+cohort_sizes AS (
+  SELECT lite_segment, COUNT(*) AS cohort_users
+  FROM user_cohort
+  GROUP BY 1
+)
+SELECT
+  r.lite_segment,
+  r.period_n,
+  cs.cohort_users,
+  r.active_users,
+  ROUND(100 * r.active_users / cs.cohort_users, 2) AS retention_pct
+FROM retention r
+JOIN cohort_sizes cs ON r.lite_segment = cs.lite_segment
+ORDER BY
+  CASE r.lite_segment WHEN 'Not enabled (30d)' THEN 1 ELSE 2 END,
+  r.period_n;

@@ -7,7 +7,7 @@
 
 **Note:** `payment_instrument` is not a warehouse table; use **`user_bank_accounts`** as the linked bank-account / payment-instrument dimension.
 
-This file captures column-level understanding for retention and cohort work. **Core scope:** three `upi.*` tables below. **Lens (p):** join `consumer_psp` for device installed-app segmentation (see [Table 4](#table-4-bharatpe_mongo_dataconsumer_psp-installed-apps)).
+This file captures column-level understanding for retention and cohort work. **Core scope:** three `upi.*` tables below. **Lens (p):** join `consumer_psp` for device installed-app segmentation (see [Table 4](#table-4-bharatpe_mongo_dataconsumer_psp-installed-apps)). **Lens (q):** UPI Lite enablement via `upi_transactions.note` (see [UPI Lite (lens q)](#upi-lite-lens-q-via-upi_transactionsnote)).
 
 ---
 
@@ -64,6 +64,37 @@ Partition filter on `DATE(created_at)` recommended for cost control.
 
 ---
 
+## UPI Lite (lens q) via `upi_transactions.note`
+
+**Retention lens 5.17 (q):** user is **UPI Lite enabled** if they have ≥1 **SUCCESS** row with `UPPER(note) LIKE '%UPI LITE%'` between **first payout SUCCESS day** and **+30 days**. Retention is measured on **payout** activity (`subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'`), same pool as lenses **(b)–(p)** (first payout Aug 2025–Jan 2026).
+
+**Important:** Lite setup/topup rows are usually **not** payout rails — they appear as `type = 'PAY'`, `subType = 'RECEIVE_EXTERNAL'`. The enablement filter intentionally scans **all SUCCESS** txns (any `subType`) so setup/topup notes are captured.
+
+### Top `note` values where `UPPER(note) LIKE '%UPI LITE%'` (Aug 2025–Jan 2026, SUCCESS)
+
+| `note` | Approx. rows | Typical `subType` |
+|--------|-------------:|-------------------|
+| Setup of UPI LITE | 17,650 | `RECEIVE_EXTERNAL` |
+| Topup UPI LITE | 17,191 | `RECEIVE_EXTERNAL` |
+| UPI LITE Closure | 2,127 | `RECEIVE_EXTERNAL` |
+| Upi Lite Payment / UPI LITE Payment | ~800 | `RECEIVE_EXTERNAL` or payout |
+| Delete UPI Lite Account | 279 | `RECEIVE_EXTERNAL` |
+
+**Distinct users** with any Lite note in that window (all txns): ~**9.6k**; in the **first-30d-after-first-payout** pool: ~**5.6k** (**~0.8%** of ~720k).
+
+**Queries:** [`sql/upi-retention-queries.sql`](sql/upi-retention-queries.sql) section **(q)**; deck modal [`analyses/sql-sources.json`](analyses/sql-sources.json) key **`22`**; results [`analyses/upi-retention-results.md`](analyses/upi-retention-results.md) section **(q)**.
+
+```sql
+-- Enablement flag (first 30d after first payout SUCCESS)
+UPPER(note) LIKE '%UPI LITE%'
+AND status = 'SUCCESS'
+AND IFNULL(__deleted, 'false') = 'false'
+```
+
+**Related column (accounts, not used for lens q):** `user_bank_accounts.upi_lite_status` — separate from txn `note` signal.
+
+---
+
 ## Table 1: `upi.upi_transactions`
 
 **Full ID:** `bharatpe-analytics-prod.upi.upi_transactions`  
@@ -92,7 +123,7 @@ Partition filter on `DATE(created_at)` recommended for cost control.
 | `user_profile_id` | STRING | **User key** — join to `users.profile_id` |
 | `upi_trans_log_id` | INTEGER | Link to UPI transaction log |
 | `response_code` | STRING | Bank/gateway response code |
-| `note` | STRING | Free-text note |
+| `note` | STRING | Free-text note; **UPI Lite** flows use labels such as `Setup of UPI LITE`, `Topup UPI LITE` (lens **(q)** uses `UPPER(note) LIKE '%UPI LITE%'`) |
 | `pre_approved` | STRING | Pre-approval flag |
 | `txn_message` | STRING | Txn message |
 | `ref_url` | STRING | Reference URL |
@@ -399,4 +430,4 @@ When you give instructions for retention-by-transaction-bucket:
 
 ---
 
-*Core retention SQL uses `bharatpe-analytics-prod.upi`. Installed-app lens **(p)** additionally uses `bharatpe_mongo_data.consumer_psp`.*
+*Core retention SQL uses `bharatpe-analytics-prod.upi`. Installed-app lens **(p)** additionally uses `bharatpe_mongo_data.consumer_psp`. UPI Lite lens **(q)** uses only `upi.upi_transactions` (`note`).*

@@ -1,11 +1,42 @@
 # UPI retention — results
 
 **Project:** `bharatpe-analytics-prod` · **Dataset:** `upi`  
-**Run date:** 2026-05-20 (BigQuery MCP; section **(p)** installed-apps lens added)  
+**Run date:** 2026-05-20 (BigQuery MCP; lenses **(p)** installed apps, **(q)** UPI Lite added)  
 **Queries:** [`../sql/upi-retention-queries.sql`](../sql/upi-retention-queries.sql)  
+**Deck SQL modal:** [`sql-sources.json`](sql-sources.json) (keys `6`–`22` → presentation slides 6–22)  
 **Schema:** [`../upi-schema-reference.md`](../upi-schema-reference.md)
 
-**Scope:** Retention outcomes use **payout** activity (`subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'`). **(e)** pay-in count; **(f)** exclusive subType rails; **(g)** dominant MCC; **(h)** BharatPe QR; **(i)** Zillion redemption; **(j)** Zillion earn; **(k)** platform; **(l)** first outward status; **(m)** first-5 SUCCESS count; **(n)** linked **bank-account** count; **(o)** linked **account type**; **(p)** installed apps (`consumer_psp.appDetails` × `users.client_reference_id`).
+**Scope:** Retention outcomes use **payout** activity (`subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'`). **(e)** pay-in count; **(f)** exclusive subType rails; **(g)** dominant MCC; **(h)** BharatPe QR; **(i)** Zillion redemption; **(j)** Zillion earn; **(k)** platform; **(l)** first outward status; **(m)** first-5 SUCCESS count; **(n)** linked **bank-account** count; **(o)** linked **account type**; **(p)** installed apps (`consumer_psp.appDetails` × `users.client_reference_id`); **(q)** UPI Lite enabled (`upi_transactions.note`).
+
+---
+
+## Sources & query map
+
+| Lens | Section | Primary table(s) | Deck slide | `sql-sources.json` key |
+|------|---------|------------------|------------|------------------------|
+| 5.1 | (a) | `upi_transactions` | 6 | `6` |
+| 5.2 | (b) | `upi_transactions` | 7 | `7` |
+| 5.3 | (c) | `users`, `upi_transactions` | 8 | `8` |
+| 5.4 | (d) | `upi_transactions` | 9 | `9` |
+| 5.5 | (e) | `upi_transactions` | 10 | `10` |
+| 5.6 | (f) | `upi_transactions` | 11 | `11` |
+| 5.7 | (g) | `upi_transactions` | 12 | `12` |
+| 5.8 | (h) | `upi_transactions` | 13 | `13` |
+| 5.9 | (i) | `upi_transactions` | 14 | `14` |
+| 5.10 | (j) | `upi_transactions` | 15 | `15` |
+| 5.11 | (k) | `upi_transactions` | 16 | `16` |
+| 5.12 | (l) | `upi_transactions` | 17 | `17` |
+| 5.13 | (m) | `upi_transactions` | 18 | `18` |
+| 5.14 | (n) | `users`, `user_bank_accounts`, `upi_transactions` | 19 | `19` |
+| 5.15 | (p) | `consumer_psp`, `users`, `upi_transactions` | 20 | `20` |
+| 5.16 | (o) | `user_bank_accounts`, `users`, `upi_transactions` | 21 | `21` |
+| **5.17** | **(q)** | **`upi_transactions` (`note`)** | **22** | **`22`** |
+| **5.18** | — | **Google Play review logs** (qualitative) | **23** | — |
+| **5.19** | — | **Play Store verbatim reviews** (qualitative) | **24** | — |
+
+**Standard filters (all payout lenses):** `status = 'SUCCESS'`, `user_profile_id` present, `IFNULL(__deleted,'false') = 'false'`, payout = `subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'`, pool = first payout SUCCESS **Aug 2025–Jan 2026** unless noted.
+
+**Refresh:** run [`../sql/upi-retention-queries.sql`](../sql/upi-retention-queries.sql), update tables below, then re-export [`sql-sources.json`](sql-sources.json) into the HTML deck (`#sql-sources-data`).
 
 ---
 
@@ -1092,9 +1123,98 @@ Binary flags from display-name allowlists (any match in `appDetails`).
 
 ---
 
+## (q) UPI Lite enabled (`upi_transactions.note`)
+
+### Definition
+
+| Term | Rule |
+|------|------|
+| **Cohort anchor** | First **payout SUCCESS** per `user_profile_id` (same pool as **(b)–(p)**) |
+| **UPI Lite enabled** | ≥1 **SUCCESS** row in `upi_transactions` with `UPPER(note) LIKE '%UPI LITE%'` between first payout day and **+30 days** |
+| **Not enabled** | No such row in that window |
+| **Retention M+k** | % with ≥1 **payout SUCCESS** (`subType IS DISTINCT FROM 'RECEIVE_EXTERNAL'`) in calendar month `cohort_month + k` |
+
+**Signal notes (Aug 2025–Jan 2026 pool):** Most Lite rows are pay-in labelled (`subType = 'RECEIVE_EXTERNAL'`) — e.g. **Setup of UPI LITE**, **Topup UPI LITE**, **UPI LITE Closure**; a smaller share are Lite payments. The flag is an **onboarding / wallet-setup** signal in the first 30d, not payout-rail mix. See [`../upi-schema-reference.md`](../upi-schema-reference.md) § UPI Lite.
+
+**Pool window:** first-payout SUCCESS **2025-08-01 → 2026-01-31** (**720,379** users in run).
+
+**Query:** [`../sql/upi-retention-queries.sql`](../sql/upi-retention-queries.sql) section **(q)** · deck modal [`sql-sources.json`](sql-sources.json) key **`22`** (slide **5.17**).
+
+---
+
+### Results — pooled retention %
+
+| Segment | Cohort users | M+0 | M+1 | M+2 | M+3 | M+4 | M+5 | M+6 |
+|---------|-------------:|----:|----:|----:|----:|----:|----:|----:|
+| **Not enabled (30d)** | 714,787 | 100 | **27.7** | 16.4 | 12.6 | 10.2 | 7.4 | 5.2 |
+| **UPI Lite enabled (30d)** | 5,592 | 100 | **49.6** | 29.3 | 21.5 | 16.9 | 11.7 | 7.4 |
+
+**Readout:**
+
+- **~0.8%** of the pooled cohort enable UPI Lite in the first 30d after first payout, but they retain at **~50% M+1** vs **~28%** for users without a Lite signal — roughly **2×** M+1 lift (directionally similar to other “power user” lenses).
+- Lite enablement correlates with **higher pay-in / wallet engagement** (setup/topup notes); treat as a **product nudge** after first payout, not as a mass segment today.
+
+---
+
+## 5.18 Play Store review sentiment (qualitative)
+
+**Source:** Google Play review logs · **period analysed for themes:** Jan 2026–May 2026 (negative / performance subset) · **corpus since:** Jan 2025.
+
+### Volume (since Jan 2025)
+
+| Metric | Count |
+|--------|------:|
+| Total Play Store reviews | **101,116** |
+| Reviews with comments | **4,269** |
+| Poor ratings (1–3★) with comments | **1,938** |
+| Custom reviews (curated) | **1,800** |
+
+### (a) Keyword sentiment themes — negative reviews
+
+| # | Theme | Keywords | Sentiment |
+|---|-------|----------|-----------|
+| **1** | **Severe app lag & slowness** | slow, very slow, slow motion hanging, too slow to pay, taking much time | Extreme frustration; slower than other UPI apps |
+| **2** | **Unfulfilled rewards & missing cashback** | no reward, no cashback, zillion coin not received, fake promises | Betrayal; fake reward promises in 2026 reviews |
+| **3** | **App crashing, freezing & not opening** | crashing, getting stuck, error opening app, closed automatically, freeze | Complete utility blockage at open / login |
+| **4** | **Scams, fraud & loss of trust** | fraud, scam, fake app, chor, luteri company | Severe distrust; “thieving company” language |
+| **5** | **Aggressive loan recovery & harassment** | loan recovery, relatives called, dhamki, bad words | Harassment; threats over small pending amounts |
+| **6** | **Network & server failures** | server problem, network failure, internet connection, server service very slowly | Backend instability despite user network OK |
+
+### (b) Month-wise negative performance sentiment (Jun 2025 – May 2026)
+
+| Month | Negative score | Summary |
+|-------|----------------:|---------|
+| **Jun 2025** | **6/10** | Crash spike, endless loading; “full of bugs,” freeze on first page |
+| **Jul 2025** | **8/10** | App won’t open; “device not compatible” popups; laggy UI |
+| **Aug 2025** | **10/10** | **Peak** — startup crashes, 10–15s scanner load, 5G incompatibility |
+| **Sep 2025** | **8/10** | Error 999, auto-close, QR hang, very slow txns |
+| **Oct 2025** | **5/10** | Reload loops, slow speed, restart during payment |
+| **Nov 2025** | **4/10** | Transfers up to “5 min” vs ~1s elsewhere; freeze on first screen |
+| **Dec 2025** | **2/10** | Low volume; stuck after QR scan, UI lag |
+| **Jan 2026** | **2/10** | Popups / auto-close; QR widget → home not scanner |
+| **Feb 2026** | **3/10** | Crash on open; login freeze; infinite loading |
+| **Mar 2026** | **8/10** | **Speed resurgence** — “too slow to pay,” slow servers, laggy UI |
+| **Apr 2026** | **9/10** | “Low speed,” slower than other UPI apps, hanging |
+| **May 2026** | **5/10** | Hangs, poor optimization, network stalls |
+
+**Readout:** Play Store voice mirrors BigQuery lenses on **speed** (5.4 TPV, platform), **Zillion/rewards** (5.9–5.10), and **trust/support** — use as qualitative validation for product priorities; deck slide **23**.
+
+### 5.19 Verbatim negative reviews (deck slide 24)
+
+**23 curated quotes** in a scrollable two-column layout (replaces marquee on 5.18 for readability).
+
+| Date | Excerpt |
+|------|---------|
+| 2026-01-01 – 2026-05-14 | 17 dated reviews (login/OTP stuck, crashes, slow txns, server errors, cashback lag, blank screen, etc.) |
+| Undated | 6 additional quotes (slow vs CRED/Paytm, Zillion scratch card, invalid UPI ID, Hindi “slow chal raha hai”, etc.) |
+
+**Deck:** slide **23** = themes + month scores · slide **24** = full verbatim text.
+
+---
+
 ## Refresh
 
-1. Run queries in [`../sql/upi-retention-queries.sql`](../sql/upi-retention-queries.sql) (sections **(a)–(p)**).
+1. Run queries in [`../sql/upi-retention-queries.sql`](../sql/upi-retention-queries.sql) (sections **(a)–(q)**).
 2. Update tables in this file with new output.
 
 ---
@@ -1121,3 +1241,4 @@ Binary flags from display-name allowlists (any match in `appDetails`).
 | Linked account type (dominant / exclusive) M+k | (o) | `(o) … POOLED`, `(o) … BY cohort_month`, `(o) … exclusive POOLED` |
 | Installed UPI wallet count M+k | (p) | `(p) … UPI count POOLED` |
 | Installed app category flags M+k | (p) | `(p) … category flags POOLED` |
+| UPI Lite enabled (note) M+k | (q) | `(q) … UPI Lite enabled POOLED` |
