@@ -1,0 +1,9 @@
+{
+  "files.exclude": {
+    "bharatpe-consumer/analyses/upi-retention-presentation/.export-venv": true,
+    "bharatpe-consumer/analyses/upi-retention-presentation/_renumber_slides.py": true
+  },
+  "search.exclude": {
+    "bharatpe-consumer/analyses/upi-retention-presentation/.export-venv": true
+  }
+}
