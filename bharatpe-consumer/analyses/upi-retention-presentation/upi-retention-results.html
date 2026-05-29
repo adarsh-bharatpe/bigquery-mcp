@@ -270,6 +270,98 @@
       color: #0b3a9f;
       box-shadow: inset 3px 0 0 #2563eb;
     }
+  /* Chart / table view toggle (slides 4, 6–21) */
+    .btn-view-toggle {
+      position: fixed;
+      top: 22px;
+      right: 22px;
+      z-index: 103;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 16px 9px 12px;
+      border: 2px solid rgba(0, 73, 207, 0.35);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--brand-dark);
+      font-weight: 700;
+      font-size: clamp(0.75rem, 1.3vmin, 0.9rem);
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 4px 18px rgba(15, 23, 42, 0.12);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+    .btn-view-toggle:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(0, 73, 207, 0.18); }
+    .btn-view-toggle[aria-pressed="true"] {
+      background: linear-gradient(135deg, var(--brand) 0%, #0066e6 100%);
+      color: #fff;
+      border-color: transparent;
+    }
+    .slide.has-chart-toggle.active .btn-view-toggle { display: inline-flex; animation: fabPop 0.4s ease backwards; }
+    .view-toggle-track {
+      width: 36px;
+      height: 20px;
+      border-radius: 999px;
+      background: #cbd5e1;
+      position: relative;
+      flex-shrink: 0;
+      transition: background 0.2s ease;
+    }
+    .btn-view-toggle[aria-pressed="true"] .view-toggle-track { background: rgba(255, 255, 255, 0.35); }
+    .view-toggle-thumb {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.25);
+      transition: transform 0.22s var(--ease-out);
+    }
+    .btn-view-toggle[aria-pressed="true"] .view-toggle-thumb { transform: translateX(16px); }
+    .retention-chart-panel {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      min-height: min(280px, 42vh);
+      gap: 6px;
+      padding: clamp(4px, 0.6vh, 8px) 0;
+    }
+    .retention-chart-panel .chart-title {
+      font-size: clamp(0.82rem, 1.45vmin, 1rem);
+      font-weight: 700;
+      color: var(--brand-dark);
+      margin: 0;
+      flex-shrink: 0;
+    }
+    .chart-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      flex-shrink: 0;
+      font-size: clamp(0.68rem, 1.15vmin, 0.82rem);
+      color: var(--muted);
+    }
+    .chart-legend-item { display: inline-flex; align-items: center; gap: 5px; }
+    .chart-legend-swatch { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+    .retention-chart-svg {
+      width: 100%;
+      flex: 1;
+      min-height: 200px;
+      max-height: min(52vh, 480px);
+    }
+    .slide.chart-view-active .table-panel > table.data,
+    .slide.chart-view-active .slide-body > table.data { display: none !important; }
+    .slide.chart-view-active .retention-chart-panel { display: flex; }
+    .slide.chart-view-active .table-panel { min-height: min(300px, 45vh); }
+    .retention-chart-svg .chart-grid line { stroke: #e2e8f0; stroke-width: 1; }
+    .retention-chart-svg .chart-bar { transition: opacity 0.15s ease; }
+    .retention-chart-svg .chart-bar:hover { opacity: 0.85; }
+    .retention-chart-svg .chart-line { fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+    .retention-chart-svg .chart-dot { stroke: #fff; stroke-width: 1.5; }
+    .retention-chart-svg .chart-axis-label { font-size: 11px; fill: #64748b; font-family: inherit; }
+    .retention-chart-svg .chart-value-label { font-size: 9px; fill: #334155; font-weight: 600; font-family: inherit; }
     .split-tables { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
     .lens-index { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-top: 10px; }
     .lens-index button.lens-btn { width: 100%; text-align: left; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; font-size: clamp(0.82rem, 1.5vmin, 1rem); cursor: pointer; font-family: inherit; }
@@ -2077,7 +2169,7 @@
       .slide.title-slide .title-chips, .slide.title-slide .title-parts, .slide.title-slide .takeaway,
       .slide.title-slide .meta, .slide.title-slide .title-part-arrow { animation: none !important; }
     }
-    @media print { .nav-btn, .nav-hint, .slide-counter, .progress, .sql-modal, .btn-source-fab, .deck-bg { display: none !important; } .slide { display: flex !important; page-break-after: always; min-height: 100vh; overflow: visible; animation: none !important; } }
+    @media print { .nav-btn, .nav-hint, .slide-counter, .progress, .sql-modal, .btn-source-fab, .btn-view-toggle, .deck-bg { display: none !important; } .slide { display: flex !important; page-break-after: always; min-height: 100vh; overflow: visible; animation: none !important; } .retention-chart-panel { display: none !important; } table.data { display: table !important; } }
   </style>
 </head>
 <body>
@@ -3437,6 +3529,214 @@
         return match ? Number(match[0]) : Number.NaN;
       }
 
+      const CHART_SERIES_COLORS = ["#0049cf", "#0066e6", "#c2410c", "#0d9488", "#7c3aed", "#ca8a04"];
+
+      function isDateLabel(text) {
+        return /^\d{4}-\d{2}$/.test(String(text || "").trim());
+      }
+
+      function parseTableRows(table) {
+        const headers = Array.from(table.querySelectorAll("thead th")).map((th) =>
+          (th.textContent || "").replace(/\s+/g, " ").trim()
+        );
+        const rows = Array.from(table.querySelectorAll("tbody tr"))
+          .filter((tr) => !tr.querySelector("td[colspan]"))
+          .map((tr) => {
+            const cells = Array.from(tr.querySelectorAll("td")).map((td) =>
+              (td.textContent || "").replace(/\s+/g, " ").trim()
+            );
+            return { label: cells[0] || "", cells };
+          })
+          .filter((r) => r.label);
+        return { headers, rows };
+      }
+
+      function getMetricColumns(headers, rows) {
+        const skipHeader = /users?|cohort|created|active|mean|tpv|ticket|₹|count|share|rule/i;
+        const metrics = [];
+        headers.forEach((header, i) => {
+          if (i === 0) return;
+          if (skipHeader.test(header)) return;
+          const isRetentionHeader = /M\s*\+?\s*\d+|M\d+\s*%|%\s*$/i.test(header);
+          const vals = rows.map((r) => toNumber(r.cells[i]));
+          const numeric = vals.filter((v) => Number.isFinite(v));
+          if (!numeric.length) return;
+          const mostlyPct = numeric.every((v) => v >= 0 && v <= 100);
+          if (isRetentionHeader || mostlyPct) {
+            if (header === "M+0" && numeric.every((v) => v >= 99)) return;
+            metrics.push({ index: i, label: header });
+          }
+        });
+        return metrics;
+      }
+
+      function truncateLabel(text, max) {
+        const s = String(text || "");
+        return s.length > max ? s.slice(0, max - 1) + "…" : s;
+      }
+
+      function renderGroupedBarSvg(labels, series, opts) {
+        const W = 800;
+        const H = 320;
+        const pad = { t: 16, r: 16, b: 56, l: 44 };
+        const innerW = W - pad.l - pad.r;
+        const innerH = H - pad.t - pad.b;
+        let maxVal = 0;
+        series.forEach((s) => s.values.forEach((v) => { if (v > maxVal) maxVal = v; }));
+        maxVal = Math.max(maxVal * 1.12, 10);
+        const n = labels.length;
+        const groupW = innerW / Math.max(n, 1);
+        const barGap = 3;
+        const barW = Math.max(4, (groupW - barGap * (series.length + 1)) / series.length);
+        const gridLines = [0, 0.25, 0.5, 0.75, 1].map((f) => {
+          const y = pad.t + innerH * (1 - f);
+          const val = Math.round(maxVal * f);
+          return `<line class="chart-grid" x1="${pad.l}" y1="${y}" x2="${W - pad.r}" y2="${y}"/><text class="chart-axis-label" x="${pad.l - 6}" y="${y + 4}" text-anchor="end">${val}%</text>`;
+        }).join("");
+        let bars = "";
+        labels.forEach((label, gi) => {
+          const gx = pad.l + gi * groupW + barGap;
+          series.forEach((s, si) => {
+            const v = s.values[gi];
+            if (!Number.isFinite(v)) return;
+            const bh = (v / maxVal) * innerH;
+            const x = gx + si * (barW + barGap);
+            const y = pad.t + innerH - bh;
+            const color = s.color || CHART_SERIES_COLORS[si % CHART_SERIES_COLORS.length];
+            bars += `<rect class="chart-bar" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barW.toFixed(1)}" height="${bh.toFixed(1)}" fill="${color}" rx="2"><title>${label} · ${s.name}: ${v}%</title></rect>`;
+            if (n <= 8 && barW >= 14) {
+              bars += `<text class="chart-value-label" x="${(x + barW / 2).toFixed(1)}" y="${(y - 4).toFixed(1)}" text-anchor="middle">${v}%</text>`;
+            }
+          });
+          const lx = pad.l + gi * groupW + groupW / 2;
+          const ly = H - pad.b + 18;
+          const rot = n > 6 ? ` transform="rotate(-32 ${lx} ${ly})"` : "";
+          const anchor = n > 6 ? "end" : "middle";
+          bars += `<text class="chart-axis-label"${rot} x="${lx}" y="${ly}" text-anchor="${anchor}">${truncateLabel(label, opts?.maxLabel || 14)}</text>`;
+        });
+        return `<svg class="retention-chart-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${opts?.title || "Retention chart"}">${gridLines}${bars}</svg>`;
+      }
+
+      function renderLineSvg(labels, series, opts) {
+        const W = 800;
+        const H = 320;
+        const pad = { t: 20, r: 16, b: 52, l: 44 };
+        const innerW = W - pad.l - pad.r;
+        const innerH = H - pad.t - pad.b;
+        let maxVal = 0;
+        series.forEach((s) => s.values.forEach((v) => { if (Number.isFinite(v) && v > maxVal) maxVal = v; }));
+        maxVal = Math.max(maxVal * 1.1, 10);
+        const n = labels.length;
+        const xAt = (i) => pad.l + (n <= 1 ? innerW / 2 : (i / (n - 1)) * innerW);
+        const yAt = (v) => pad.t + innerH - (v / maxVal) * innerH;
+        const gridLines = [0, 0.25, 0.5, 0.75, 1].map((f) => {
+          const y = pad.t + innerH * (1 - f);
+          return `<line class="chart-grid" x1="${pad.l}" y1="${y}" x2="${W - pad.r}" y2="${y}"/><text class="chart-axis-label" x="${pad.l - 6}" y="${y + 4}" text-anchor="end">${Math.round(maxVal * f)}%</text>`;
+        }).join("");
+        let paths = "";
+        series.forEach((s, si) => {
+          const color = s.color || CHART_SERIES_COLORS[si % CHART_SERIES_COLORS.length];
+          const pts = s.values.map((v, i) => (Number.isFinite(v) ? `${xAt(i)},${yAt(v)}` : null)).filter(Boolean);
+          if (pts.length < 2) return;
+          paths += `<polyline class="chart-line" points="${pts.join(" ")}" stroke="${color}"/>`;
+          s.values.forEach((v, i) => {
+            if (!Number.isFinite(v)) return;
+            paths += `<circle class="chart-dot" cx="${xAt(i)}" cy="${yAt(v)}" r="4" fill="${color}"><title>${labels[i]} · ${s.name}: ${v}%</title></circle>`;
+          });
+        });
+        labels.forEach((label, i) => {
+          const lx = xAt(i);
+          const ly = H - pad.b + 16;
+          paths += `<text class="chart-axis-label" x="${lx}" y="${ly}" text-anchor="middle">${truncateLabel(label, 7)}</text>`;
+        });
+        return `<svg class="retention-chart-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${opts?.title || "Retention trend"}">${gridLines}${paths}</svg>`;
+      }
+
+      function buildChartPanel(table, titleHint) {
+        const { headers, rows } = parseTableRows(table);
+        if (!rows.length) return null;
+        const metrics = getMetricColumns(headers, rows);
+        if (!metrics.length) return null;
+
+        const labels = rows.map((r) => r.label);
+        const series = metrics.map((m, si) => ({
+          name: m.label,
+          color: CHART_SERIES_COLORS[si % CHART_SERIES_COLORS.length],
+          values: rows.map((r) => toNumber(r.cells[m.index])),
+        }));
+
+        const useLine = labels.length >= 6 && labels.every(isDateLabel);
+        const panel = document.createElement("div");
+        panel.className = "retention-chart-panel";
+
+        const heading = document.createElement("h3");
+        heading.className = "chart-title";
+        const panelTitle = table.closest(".table-panel")?.querySelector("h3")?.textContent?.trim();
+        heading.textContent = panelTitle || titleHint || "Retention %";
+        panel.appendChild(heading);
+
+        const legend = document.createElement("div");
+        legend.className = "chart-legend";
+        legend.innerHTML = series
+          .map((s) => `<span class="chart-legend-item"><span class="chart-legend-swatch" style="background:${s.color}"></span>${s.name}</span>`)
+          .join("");
+        panel.appendChild(legend);
+
+        const svgHtml = useLine
+          ? renderLineSvg([...labels].reverse(), series.map((s) => ({ ...s, values: [...s.values].reverse() })), { title: heading.textContent, maxLabel: 7 })
+          : renderGroupedBarSvg(labels, series, { title: heading.textContent, maxLabel: labels.length > 6 ? 10 : 16 });
+        panel.insertAdjacentHTML("beforeend", svgHtml);
+        return panel;
+      }
+
+      function ensureTablePanel(table) {
+        let panel = table.closest(".table-panel");
+        if (panel) return panel;
+        panel = document.createElement("div");
+        panel.className = "table-panel chartable-panel";
+        table.parentNode.insertBefore(panel, table);
+        panel.appendChild(table);
+        return panel;
+      }
+
+      function initChartToggles() {
+        const chartSlides = new Set([5, ...Array.from({ length: 16 }, (_, i) => i + 7)]);
+        document.querySelectorAll("section.slide[data-slide]").forEach((slide) => {
+          const slideNum = Number(slide.getAttribute("data-slide"));
+          if (!chartSlides.has(slideNum)) return;
+
+          const body = slide.querySelector(".slide-body");
+          if (!body) return;
+
+          body.querySelectorAll("table.data").forEach((table) => {
+            const panel = ensureTablePanel(table);
+            if (panel.querySelector(".retention-chart-panel")) return;
+            const slideTitle = slide.querySelector(".slide-heading")?.textContent?.trim() || "";
+            const chart = buildChartPanel(table, slideTitle);
+            if (!chart) return;
+            panel.appendChild(chart);
+          });
+
+          if (!body.querySelector(".retention-chart-panel")) return;
+
+          slide.classList.add("has-chart-toggle");
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "btn-view-toggle";
+          btn.setAttribute("aria-pressed", "false");
+          btn.setAttribute("aria-label", "Show chart view");
+          btn.innerHTML = '<span class="view-toggle-track" aria-hidden="true"><span class="view-toggle-thumb"></span></span><span class="view-toggle-text">Chart view</span>';
+          btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const on = !slide.classList.toggle("chart-view-active");
+            btn.setAttribute("aria-pressed", on ? "true" : "false");
+            btn.setAttribute("aria-label", on ? "Show table view" : "Show chart view");
+            btn.querySelector(".view-toggle-text").textContent = on ? "Table view" : "Chart view";
+          });
+          slide.querySelector(".slide-frame")?.appendChild(btn);
+        });
+      }
+
       function highlightMaxM6Rows() {
         // Requested scope: slide 4 and slides 6–21 (current deck structure maps to data-slide 5 and 7–22).
         const targetSlides = new Set([5, ...Array.from({ length: 16 }, (_, i) => i + 7)]);
@@ -3589,6 +3889,7 @@
         counter.textContent = "1 / " + total;
         runReveal(slides[0]);
       }
+      initChartToggles();
       highlightMaxM6Rows();
     })();
   </script>

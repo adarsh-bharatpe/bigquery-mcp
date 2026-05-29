@@ -1,1 +1,5 @@
 .DS_Store
+
+# Local presentation tooling artifacts
+bharatpe-consumer/analyses/upi-retention-presentation/.export-venv/
+bharatpe-consumer/analyses/upi-retention-presentation/_renumber_slides.py
