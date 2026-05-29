@@ -5,5 +5,9 @@
   },
   "search.exclude": {
     "bharatpe-consumer/analyses/upi-retention-presentation/.export-venv": true
-  }
+  },
+  "git.openRepositoryInParentFolders": "never",
+  "git.autoRepositoryDetection": "subFolders",
+  "git.repositoryScanMaxDepth": 3
 }
+

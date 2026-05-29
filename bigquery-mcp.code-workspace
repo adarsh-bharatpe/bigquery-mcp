@@ -1,0 +1,15 @@
+{
+  "folders": [
+    {
+      "path": ".",
+      "name": "bigquery-mcp"
+    }
+  ],
+  "settings": {
+    "git.openRepositoryInParentFolders": "never",
+    "files.exclude": {
+      "bharatpe-consumer/analyses/upi-retention-presentation/.export-venv": true,
+      "bharatpe-consumer/analyses/upi-retention-presentation/_renumber_slides.py": true
+    }
+  }
+}
